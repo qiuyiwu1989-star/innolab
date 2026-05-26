@@ -1,0 +1,109 @@
+{
+  "version": "1.0",
+  "created": "2026-04-05",
+  "last_updated": "2026-04-20",
+  "total_cases": 10,
+  "cases": [
+    {
+      "id": "case-001",
+      "title": "InnoLab方法论深度评估（自我诊断）",
+      "domain": ["产品", "AI工具"],
+      "tags": ["自我诊断", "方法论评估", "质量分级"],
+      "related_methods": ["CG14", "CG07", "PD05"],
+      "wiki_obj_token": "XTy2dPlcZozqzbxfiJIc648Znhd",
+      "summary": "51个方法论的质量体检：从5星到2星，识别出7个需要补强的方法",
+      "added_date": "2026-04-05",
+      "file": null
+    },
+    {
+      "id": "case-002",
+      "title": "球球老师：AI儿童内心对话产品",
+      "domain": ["教育", "AI产品", "儿童"],
+      "tags": ["蓝海战略", "差异化", "灵魂对话"],
+      "related_methods": ["ST06", "GN02", "PD10"],
+      "summary": "不教知识、挖真实感受的AI儿童对话产品，全新品类定位",
+      "added_date": "2026-04-20",
+      "file": "education/qiuqiu-teacher.json"
+    },
+    {
+      "id": "case-003",
+      "title": "某教育公司：AI课程设计的L3陷阱",
+      "domain": ["教育", "企业AI转型"],
+      "tags": ["L2-L4跃迁", "人机协作", "权责真空"],
+      "related_methods": ["CG06", "ST10", "ST09"],
+      "summary": "课程大纲生成卡在L3——权责真空，教研说不行但说不出为什么",
+      "added_date": "2026-04-20",
+      "file": "education/ai-curriculum-l3-trap.json"
+    },
+    {
+      "id": "case-004",
+      "title": "AIIP项目：老蔡IP的四层构建",
+      "domain": ["IP商业化", "产品设计"],
+      "tags": ["IP四层知识图谱", "角色基因", "老瓶换新装"],
+      "related_methods": ["PD02", "GN02", "GN04"],
+      "summary": "从文化符号到商业应用的四层IP知识图谱实践",
+      "added_date": "2026-04-20",
+      "file": "product/aip-OldCai-ip.json"
+    },
+    {
+      "id": "case-005",
+      "title": "造物云：KA设计服务公司的AI攻守",
+      "domain": ["企业服务", "设计", "AI转型"],
+      "tags": ["攻守矩阵", "J曲线", "AI Agent"],
+      "related_methods": ["ST07", "DC05", "ST10"],
+      "summary": "守线提升KA效率，攻线AI Agent产品化——攻线从守线中长出来",
+      "added_date": "2026-04-20",
+      "file": "enterprise/zaowuyun-ai-offense-defense.json"
+    },
+    {
+      "id": "case-006",
+      "title": "某传统零售企业：AI转型三大幻觉",
+      "domain": ["零售", "企业AI转型"],
+      "tags": ["战略幻觉", "工具崇拜", "数据囤积"],
+      "related_methods": ["ST08", "CG01", "ST07"],
+      "summary": "同时掉入工具崇拜+完美规划+数据囤积三大幻觉",
+      "added_date": "2026-04-20",
+      "file": "enterprise/retail-ai-illusions.json"
+    },
+    {
+      "id": "case-007",
+      "title": "50人教育公司：双轨人才体系实践",
+      "domain": ["教育", "企业AI转型", "人才"],
+      "tags": ["双轨人才", "AI培训", "能力认证"],
+      "related_methods": ["ST09", "CG06", "EV03"],
+      "summary": "专家轨道+全员轨道双轨并行，3个月产出3个AI提效项目",
+      "added_date": "2026-04-20",
+      "file": "education/dual-track-talent-practice.json"
+    },
+    {
+      "id": "case-008",
+      "title": "造物云：IP设计流程三阶重构",
+      "domain": ["设计", "AI产品"],
+      "tags": ["流程三阶进化", "10x价值", "AI重构"],
+      "related_methods": ["ST10", "CG06"],
+      "summary": "IP设计周期从4-6周压缩到3-5天——整体快了10倍",
+      "added_date": "2026-04-20",
+      "file": "product/ip-design-process-rebuild.json"
+    },
+    {
+      "id": "case-009",
+      "title": "老瓶新装：文创爆款案例集",
+      "domain": ["消费品", "文创", "AI生成"],
+      "tags": ["老瓶换新装", "AI生成", "文化符号"],
+      "related_methods": ["GN04", "PD02", "PD06"],
+      "summary": "胶带纸×颐和园、果盘×木纹、T恤×Q版——三个成功组合",
+      "added_date": "2026-04-20",
+      "file": "product/old-bottle-new-wine-cases.json"
+    },
+    {
+      "id": "case-010",
+      "title": "球球老师×兜兜：对话数据飞轮原型",
+      "domain": ["教育", "AI产品", "数据飞轮"],
+      "tags": ["数据场景飞轮", "对话数据", "冷启动"],
+      "related_methods": ["EV02", "GN02"],
+      "summary": "对话场景产生认知数据，但数据回路未闭合——飞轮转不起来",
+      "added_date": "2026-04-20",
+      "file": "education/qiuqiu-data-flywheel.json"
+    }
+  ]
+}
