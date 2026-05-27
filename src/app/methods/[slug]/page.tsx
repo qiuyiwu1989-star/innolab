@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
-import {
-  getAllMethods,
-  getMethodBySlug,
-  type Method,
-} from "@/lib/methods";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { getAllMethods, getMethodBySlug } from "@/lib/methods";
 import { engines } from "@/lib/engines";
 import { getCasesByMethodId } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
@@ -17,10 +13,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const methods = getAllMethods();
-  // 去重以避免 slug 碰撞导致构建报错
   const seen = new Set<string>();
-  return methods
+  return getAllMethods()
     .filter((m) => {
       if (seen.has(m.slug)) return false;
       seen.add(m.slug);
@@ -31,11 +25,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const method = getMethodBySlug(slug);
-  if (!method) return { title: "未找到" };
+  const m = getMethodBySlug(slug);
+  if (!m) return { title: "未找到" };
   return {
-    title: `${method.titleCn}（${method.id}）`,
-    description: method.oneliner || `${method.titleCn} — InnoLab 方法卡`,
+    title: `${m.titleCn}（${m.id}）`,
+    description: m.oneliner || `${m.titleCn} — InnoLab 方法卡`,
   };
 }
 
@@ -45,97 +39,87 @@ export default async function MethodDetailPage({ params }: Props) {
   if (!method) notFound();
 
   const engine = engines.find((e) => e.key === method.engine);
-  const color = engine?.colorHex ?? "#000";
-
-  // 相关方法：同引擎，按 ID 相邻
-  const all = getAllMethods();
-  const sameEngine = all.filter(
+  const allMethods = getAllMethods();
+  const sameEngine = allMethods.filter(
     (m) => m.engine === method.engine && m.slug !== method.slug,
   );
   const idx = sameEngine.findIndex((m) => m.id > method.id);
   const related = (
-    idx === -1 ? sameEngine.slice(-3) : sameEngine.slice(Math.max(0, idx - 1), idx + 2)
+    idx === -1
+      ? sameEngine.slice(-3)
+      : sameEngine.slice(Math.max(0, idx - 1), idx + 2)
   ).slice(0, 4);
 
-  // 上一/下一方法（全库）
-  const fullIdx = all.findIndex((m) => m.slug === method.slug);
-  const prev = fullIdx > 0 ? all[fullIdx - 1] : null;
-  const next = fullIdx < all.length - 1 ? all[fullIdx + 1] : null;
+  const fullIdx = allMethods.findIndex((m) => m.slug === method.slug);
+  const prev = fullIdx > 0 ? allMethods[fullIdx - 1] : null;
+  const next =
+    fullIdx < allMethods.length - 1 ? allMethods[fullIdx + 1] : null;
 
   const body = cleanMarkdownBody(method.raw);
   const usedInCases = getCasesByMethodId(method.id);
 
   return (
-    <article className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
+    <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
       {/* 面包屑 */}
-      <nav className="mb-8 flex items-center gap-2 text-sm text-ink/50">
-        <Link href="/methods" className="hover:text-ink">
-          ← 方法库
+      <nav className="mb-8 flex items-center gap-2 text-sm text-dust">
+        <Link
+          href="/methods"
+          className="inline-flex items-center gap-1 transition hover:text-bone"
+        >
+          <ArrowLeft className="size-3.5" /> 方法库
         </Link>
         <span>/</span>
         <Link
           href={`/methods?engine=${method.engine}`}
-          className="hover:text-ink"
-          style={{ color }}
+          className="text-ash transition hover:text-bone"
         >
           {engine?.cn}
         </Link>
         <span>/</span>
-        <span className="font-mono">{method.id}</span>
+        <span className="numeral text-bone">{method.id}</span>
       </nav>
 
       {/* Hero */}
-      <header className="border-b border-mist pb-8">
+      <header className="border-b border-fog-2 pb-10">
         <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="font-mono text-xs font-semibold tracking-wider"
-            style={{ color }}
-          >
-            {method.id}
-          </span>
-          <Badge color={color}>
-            {engine?.emoji} {engine?.cn}
-          </Badge>
+          <span className="numeral text-xs text-volt">{method.id}</span>
+          <Badge variant="outline">{engine?.cn}</Badge>
           {method.layer !== "—" && (
-            <Badge variant="outline" className="border-ink/20 text-ink/70">
-              {method.layer}
+            <Badge variant="ghost">
+              <span className="numeral">{method.layer}</span>
             </Badge>
           )}
-          {method.origin && (
-            <Badge variant="outline" className="border-ink/15 text-ink/50">
-              {method.origin}
-            </Badge>
-          )}
+          {method.origin && <Badge variant="ghost">{method.origin}</Badge>}
         </div>
-        <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
+        <h1 className="display mt-6 text-4xl text-bone sm:text-6xl">
           {method.titleCn}
         </h1>
         {method.titleEn && (
-          <p className="mt-2 font-mono text-sm uppercase tracking-wider text-ink/40">
+          <p className="mt-3 font-mono text-sm uppercase tracking-widest text-dust">
             {method.titleEn}
           </p>
         )}
         {method.oneliner && (
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ink/75">
+          <p className="mt-8 max-w-3xl text-lg leading-relaxed text-ash">
             {method.oneliner}
           </p>
         )}
       </header>
 
-      {/* 主体：左侧正文 + 右侧侧栏 */}
-      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
+      {/* 双栏 */}
+      <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]">
         <main className="min-w-0">
           <Markdown source={body} />
         </main>
 
-        <aside className="lg:sticky lg:top-20 lg:self-start">
-          <div className="rounded-2xl border border-mist bg-white p-5">
-            <div className="text-xs font-semibold uppercase tracking-wider text-ink/40">
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          <div className="rounded-lg border border-fog-2 bg-soot p-5">
+            <div className="numeral text-xs uppercase tracking-widest text-dust">
               Meta
             </div>
             <dl className="mt-3 space-y-2.5 text-sm">
               <Meta label="ID" value={method.id} mono />
-              <Meta label="引擎" value={`${engine?.emoji} ${engine?.cn}`} />
+              <Meta label="引擎" value={engine?.cn ?? "—"} />
               <Meta label="层级" value={method.layer} mono />
               {method.origin && <Meta label="来源类型" value={method.origin} />}
               {method.source && (
@@ -145,24 +129,19 @@ export default async function MethodDetailPage({ params }: Props) {
           </div>
 
           {related.length > 0 && (
-            <div className="mt-4 rounded-2xl border border-mist bg-white p-5">
-              <div className="text-xs font-semibold uppercase tracking-wider text-ink/40">
+            <div className="mt-4 rounded-lg border border-fog-2 bg-soot p-5">
+              <div className="numeral text-xs uppercase tracking-widest text-dust">
                 同引擎方法
               </div>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-3 space-y-2.5">
                 {related.map((m) => (
                   <li key={m.slug}>
                     <Link
                       href={`/methods/${m.slug}`}
                       className="group flex items-baseline gap-2 text-sm"
                     >
-                      <span
-                        className="font-mono text-xs"
-                        style={{ color }}
-                      >
-                        {m.id}
-                      </span>
-                      <span className="text-ink/80 transition group-hover:text-ink group-hover:underline">
+                      <span className="numeral text-xs text-volt">{m.id}</span>
+                      <span className="text-ash transition group-hover:text-bone group-hover:underline">
                         {m.titleCn}
                       </span>
                     </Link>
@@ -171,9 +150,9 @@ export default async function MethodDetailPage({ params }: Props) {
               </ul>
               <Link
                 href={`/methods?engine=${method.engine}`}
-                className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-cobalt hover:underline"
+                className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-volt hover:underline"
               >
-                查看全部 {engine?.cn} <ExternalLink className="size-3" />
+                查看全部 {engine?.cn} <ArrowUpRight className="size-3" />
               </Link>
             </div>
           )}
@@ -182,12 +161,17 @@ export default async function MethodDetailPage({ params }: Props) {
 
       {/* 用过此方法的案例 */}
       {usedInCases.length > 0 && (
-        <section className="mt-16 border-t border-mist pt-10">
+        <section className="mt-20 border-t border-fog-2 pt-12">
           <div className="flex items-baseline justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">
-              用过此方法的案例
-            </h2>
-            <span className="text-sm text-ink/50">
+            <div>
+              <div className="numeral text-xs uppercase tracking-widest text-volt">
+                Cases
+              </div>
+              <h2 className="display mt-2 text-2xl text-bone sm:text-3xl">
+                用过此方法的案例
+              </h2>
+            </div>
+            <span className="numeral text-sm text-dust">
               {usedInCases.length} 个
             </span>
           </div>
@@ -196,33 +180,31 @@ export default async function MethodDetailPage({ params }: Props) {
               <Link
                 key={c.id}
                 href={c.file ? `/cases/${c.id}` : "/cases"}
-                className="group flex flex-col gap-2 rounded-xl border border-mist bg-white p-4 transition hover:-translate-y-0.5 hover:border-ink hover:shadow"
+                className="group flex flex-col gap-2 rounded-lg border border-fog-2 bg-soot p-4 transition hover:border-volt hover:bg-graphite"
               >
-                <span className="font-mono text-xs text-ink/40">{c.id}</span>
-                <div className="text-sm font-semibold leading-snug">
+                <span className="numeral text-xs text-dust">{c.id}</span>
+                <div className="text-sm font-semibold leading-snug text-bone">
                   {c.title}
                 </div>
-                <p className="line-clamp-2 text-xs text-ink/60">{c.summary}</p>
+                <p className="line-clamp-2 text-xs text-ash">{c.summary}</p>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      {/* 上一/下一方法 */}
-      <nav className="mt-16 grid grid-cols-1 gap-3 border-t border-mist pt-8 sm:grid-cols-2">
+      {/* Prev / Next */}
+      <nav className="mt-16 grid grid-cols-1 gap-3 border-t border-fog-2 pt-8 sm:grid-cols-2">
         {prev ? (
           <Link
             href={`/methods/${prev.slug}`}
-            className="group flex flex-col gap-1 rounded-xl border border-mist bg-white p-4 transition hover:border-ink"
+            className="group flex flex-col gap-1 rounded-lg border border-fog-2 bg-soot p-4 transition hover:border-volt"
           >
-            <span className="flex items-center gap-1 text-xs text-ink/50">
+            <span className="flex items-center gap-1 text-xs text-dust">
               <ArrowLeft className="size-3" /> 上一个
             </span>
-            <span className="text-sm font-medium">
-              <span className="font-mono text-xs text-ink/40">
-                {prev.id}{" "}
-              </span>
+            <span className="text-sm font-medium text-bone">
+              <span className="numeral text-xs text-dust">{prev.id} </span>
               {prev.titleCn}
             </span>
           </Link>
@@ -232,17 +214,14 @@ export default async function MethodDetailPage({ params }: Props) {
         {next && (
           <Link
             href={`/methods/${next.slug}`}
-            className="group flex flex-col items-end gap-1 rounded-xl border border-mist bg-white p-4 text-right transition hover:border-ink"
+            className="group flex flex-col items-end gap-1 rounded-lg border border-fog-2 bg-soot p-4 text-right transition hover:border-volt"
           >
-            <span className="flex items-center gap-1 text-xs text-ink/50">
+            <span className="flex items-center gap-1 text-xs text-dust">
               下一个 <ArrowRight className="size-3" />
             </span>
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-bone">
               {next.titleCn}
-              <span className="font-mono text-xs text-ink/40">
-                {" "}
-                {next.id}
-              </span>
+              <span className="numeral text-xs text-dust"> {next.id}</span>
             </span>
           </Link>
         )}
@@ -263,10 +242,14 @@ function Meta({
   multiline?: boolean;
 }) {
   return (
-    <div className={multiline ? "flex flex-col gap-1" : "flex justify-between gap-3"}>
-      <dt className="shrink-0 text-ink/50">{label}</dt>
+    <div
+      className={
+        multiline ? "flex flex-col gap-1" : "flex justify-between gap-3"
+      }
+    >
+      <dt className="shrink-0 text-dust">{label}</dt>
       <dd
-        className={`${mono ? "font-mono" : ""} ${multiline ? "" : "text-right"} text-ink/85`}
+        className={`${mono ? "numeral" : ""} ${multiline ? "" : "text-right"} text-bone`}
       >
         {value}
       </dd>

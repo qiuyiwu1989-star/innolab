@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Quote, Tag, Layers, User, Calendar } from "lucide-react";
+import { ArrowLeft, Tag, Calendar, User } from "lucide-react";
 import { getAllCases, getCaseById } from "@/lib/cases";
 import { getAllMethods } from "@/lib/methods";
 import { engines } from "@/lib/engines";
@@ -13,7 +13,7 @@ interface Props {
 
 export async function generateStaticParams() {
   return getAllCases()
-    .filter((c) => c.file !== null) // 没详情文件的不生成路由
+    .filter((c) => c.file !== null)
     .map((c) => ({ id: c.id }));
 }
 
@@ -21,10 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const c = getCaseById(id);
   if (!c) return { title: "未找到案例" };
-  return {
-    title: c.title,
-    description: c.summary,
-  };
+  return { title: c.title, description: c.summary };
 }
 
 export default async function CaseDetailPage({ params }: Props) {
@@ -34,25 +31,27 @@ export default async function CaseDetailPage({ params }: Props) {
 
   const allMethods = getAllMethods();
   const relatedMethods = (c.related_methods ?? [])
-    .map((mid) => allMethods.find((m) => m.id.toUpperCase() === mid.toUpperCase()))
+    .map((mid) =>
+      allMethods.find((m) => m.id.toUpperCase() === mid.toUpperCase()),
+    )
     .filter((m): m is NonNullable<typeof m> => !!m);
 
   return (
-    <article className="mx-auto max-w-4xl px-6 py-10 sm:py-14">
+    <article className="mx-auto max-w-4xl px-6 py-12 sm:py-16">
       {/* 面包屑 */}
       <nav className="mb-8">
         <Link
           href="/cases"
-          className="inline-flex items-center gap-1 text-sm text-ink/50 hover:text-ink"
+          className="inline-flex items-center gap-1.5 text-sm text-dust hover:text-bone"
         >
-          <ArrowLeft className="size-3.5" /> 返回案例库
+          <ArrowLeft className="size-3.5" /> 案例库
         </Link>
       </nav>
 
       {/* Hero */}
       <header>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-ink/50">
-          <span className="font-mono">{c.id}</span>
+        <div className="flex flex-wrap items-center gap-3 text-xs text-dust">
+          <span className="numeral text-volt">{c.id}</span>
           {c.added_date && (
             <span className="inline-flex items-center gap-1">
               <Calendar className="size-3" /> {c.added_date}
@@ -64,24 +63,18 @@ export default async function CaseDetailPage({ params }: Props) {
             </span>
           )}
         </div>
-        <h1 className="mt-3 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+        <h1 className="display mt-4 text-4xl text-bone sm:text-5xl">
           {c.title}
         </h1>
-        <p className="mt-5 text-lg leading-relaxed text-ink/80">
-          {c.summary}
-        </p>
+        <p className="mt-6 text-lg leading-relaxed text-ash">{c.summary}</p>
         <div className="mt-6 flex flex-wrap gap-1.5">
           {(c.domain ?? []).map((d) => (
-            <Badge key={d} className="bg-ink text-paper">
+            <Badge key={d} variant="solid">
               {d}
             </Badge>
           ))}
           {(c.tags ?? []).map((t) => (
-            <Badge
-              key={t}
-              variant="outline"
-              className="border-ink/15 text-ink/60"
-            >
+            <Badge key={t} variant="outline">
               <Tag className="mr-1 size-3" />
               {t}
             </Badge>
@@ -89,14 +82,13 @@ export default async function CaseDetailPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Insight 高亮卡 */}
+      {/* Insight */}
       {c.insight && (
-        <aside className="mt-10 relative overflow-hidden rounded-2xl bg-gradient-to-br from-cobalt/8 via-violet/5 to-flare/8 p-7">
-          <Quote className="absolute right-6 top-6 size-12 text-cobalt/15" />
-          <div className="text-xs font-semibold uppercase tracking-wider text-cobalt">
-            核心洞察 · Insight
+        <aside className="mt-12 rounded-lg border border-volt/40 bg-volt/[0.04] p-7">
+          <div className="numeral text-xs uppercase tracking-widest text-volt">
+            Insight · 核心洞察
           </div>
-          <p className="mt-3 text-lg font-medium leading-relaxed text-ink">
+          <p className="mt-3 text-lg font-medium leading-relaxed text-bone">
             {c.insight}
           </p>
         </aside>
@@ -105,22 +97,19 @@ export default async function CaseDetailPage({ params }: Props) {
       {/* 关键事实 */}
       {c.key_facts && c.key_facts.length > 0 && (
         <section className="mt-12">
-          <h2 className="flex items-center gap-2 text-xl font-bold">
-            <Layers className="size-5 text-flare" />
-            关键事实
+          <h2 className="numeral text-xs uppercase tracking-widest text-volt">
+            Key Facts · 关键事实
           </h2>
           <ul className="mt-5 space-y-3">
             {c.key_facts.map((f, i) => (
               <li
                 key={i}
-                className="flex gap-4 rounded-xl border border-mist bg-white p-4"
+                className="flex gap-4 rounded-lg border border-fog-2 bg-soot p-4"
               >
-                <span className="shrink-0 font-mono text-xs font-semibold text-flare">
+                <span className="numeral shrink-0 text-xs text-volt">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-sm leading-relaxed text-ink/85">
-                  {f}
-                </span>
+                <span className="text-sm leading-relaxed text-ash">{f}</span>
               </li>
             ))}
           </ul>
@@ -130,34 +119,30 @@ export default async function CaseDetailPage({ params }: Props) {
       {/* 关联方法 */}
       {relatedMethods.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xl font-bold">用了哪些 InnoLab 方法</h2>
-          <p className="mt-1 text-sm text-ink/60">
-            点开看每个方法的完整定义和怎么用。
+          <h2 className="numeral text-xs uppercase tracking-widest text-volt">
+            Methods Used · 用了哪些方法
+          </h2>
+          <p className="mt-2 text-sm text-dust">
+            点开看每个方法的定义和怎么用。
           </p>
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {relatedMethods.map((m) => {
               const eng = engines.find((e) => e.key === m.engine);
-              const color = eng?.colorHex ?? "#000";
               return (
                 <Link
                   key={m.slug}
                   href={`/methods/${m.slug}`}
-                  className="group flex flex-col gap-2 rounded-xl border border-mist bg-white p-4 transition hover:-translate-y-0.5 hover:border-ink hover:shadow"
+                  className="group flex flex-col gap-2 rounded-lg border border-fog-2 bg-soot p-4 transition hover:border-volt hover:bg-graphite"
                 >
                   <div className="flex items-center gap-2">
-                    <span
-                      className="font-mono text-xs font-semibold"
-                      style={{ color }}
-                    >
-                      {m.id}
-                    </span>
-                    <Badge color={color}>{eng?.cn}</Badge>
+                    <span className="numeral text-xs text-volt">{m.id}</span>
+                    <Badge variant="outline">{eng?.cn}</Badge>
                   </div>
-                  <div className="text-sm font-semibold leading-snug">
+                  <div className="text-sm font-semibold leading-snug text-bone">
                     {m.titleCn}
                   </div>
                   {m.oneliner && (
-                    <div className="line-clamp-2 text-xs leading-relaxed text-ink/60">
+                    <div className="line-clamp-2 text-xs leading-relaxed text-ash">
                       {m.oneliner}
                     </div>
                   )}
@@ -170,21 +155,18 @@ export default async function CaseDetailPage({ params }: Props) {
 
       {/* 适用场景 */}
       {c.applicable_to && (
-        <section className="mt-12 rounded-2xl border border-mist bg-white p-6">
-          <div className="text-xs font-semibold uppercase tracking-wider text-ink/40">
-            适用场景
+        <section className="mt-12 rounded-lg border border-fog-2 bg-soot p-6">
+          <div className="numeral text-xs uppercase tracking-widest text-dust">
+            Applicable · 适用场景
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-ink/80">
+          <p className="mt-2 text-sm leading-relaxed text-ash">
             {c.applicable_to}
           </p>
         </section>
       )}
 
-      {/* Source footer */}
       {c.source && (
-        <footer className="mt-10 text-xs text-ink/40">
-          来源：{c.source}
-        </footer>
+        <footer className="mt-10 text-xs text-dust">来源 / {c.source}</footer>
       )}
     </article>
   );

@@ -20,13 +20,7 @@ export function MethodsExplorer({ methods }: { methods: Method[] }) {
       if (engine !== "all" && m.engine !== engine) return false;
       if (layer !== "all" && m.layer !== layer) return false;
       if (needle) {
-        const hay = [
-          m.titleCn,
-          m.titleEn,
-          m.id,
-          m.oneliner,
-          m.source,
-        ]
+        const hay = [m.titleCn, m.titleEn, m.id, m.oneliner, m.source]
           .filter(Boolean)
           .join(" ")
           .toLowerCase();
@@ -36,80 +30,62 @@ export function MethodsExplorer({ methods }: { methods: Method[] }) {
     });
   }, [methods, engine, layer, q]);
 
-  const hasActiveFilter = engine !== "all" || layer !== "all" || q.length > 0;
+  const hasActive = engine !== "all" || layer !== "all" || q.length > 0;
 
   return (
     <>
-      {/* ============ 搜索 + 引擎 chips ============ */}
-      <div className="space-y-4">
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-ink/40" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="搜索方法名、ID、关键词…  例如：蓝海、护城河、CG01"
-            className="w-full rounded-full border border-mist bg-white py-3 pl-11 pr-11 text-sm outline-none transition focus:border-cobalt"
-          />
-          {q && (
-            <button
-              type="button"
-              onClick={() => setQ("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-ink/40 hover:bg-mist hover:text-ink"
-              aria-label="清空"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
+      {/* —— 搜索 —— */}
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-dust" />
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="搜索方法名 · ID · 关键词    例：蓝海、CG14、波特"
+          className="w-full rounded-lg border border-fog-2 bg-soot py-3 pl-11 pr-11 text-sm outline-none transition focus:border-volt"
+        />
+        {q && (
+          <button
+            type="button"
+            onClick={() => setQ("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-dust hover:bg-graphite hover:text-bone"
+            aria-label="清空"
+          >
+            <X className="size-4" />
+          </button>
+        )}
+      </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-ink/40">引擎</span>
-          <FilterChip
-            active={engine === "all"}
-            onClick={() => setEngine("all")}
-            label="全部"
-            count={methods.length}
-          />
-          {engines.map((e) => (
-            <FilterChip
-              key={e.key}
-              active={engine === e.key}
-              onClick={() => setEngine(e.key)}
-              label={
-                <>
-                  <span className="mr-1">{e.emoji}</span>
-                  {e.cn}
-                </>
-              }
-              color={e.colorHex}
-              count={methods.filter((m) => m.engine === e.key).length}
-            />
-          ))}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-ink/40">层级</span>
-          <FilterChip
-            active={layer === "all"}
-            onClick={() => setLayer("all")}
-            label="全部"
-          />
-          {layers.map((l) => (
-            <FilterChip
-              key={l.id}
-              active={layer === l.id}
-              onClick={() => setLayer(l.id)}
-              label={
-                <span className="font-mono">
-                  {l.id} <span className="ml-0.5 font-sans">· {l.name}</span>
-                </span>
-              }
-              count={methods.filter((m) => m.layer === l.id).length}
-            />
-          ))}
-        </div>
-
-        {hasActiveFilter && (
+      {/* —— Filter rails —— */}
+      <div className="mt-6 space-y-4">
+        <FilterRow
+          label="引擎"
+          options={[
+            { key: "all", label: "全部", count: methods.length },
+            ...engines.map((e) => ({
+              key: e.key as string,
+              label: e.cn,
+              code: e.code,
+              count: methods.filter((m) => m.engine === e.key).length,
+            })),
+          ]}
+          active={engine}
+          onSelect={(k) => setEngine(k as EngineKey | "all")}
+        />
+        <FilterRow
+          label="层级"
+          options={[
+            { key: "all", label: "全部" },
+            ...layers.map((l) => ({
+              key: l.id as string,
+              label: l.name,
+              code: l.id,
+              count: methods.filter((m) => m.layer === l.id).length,
+            })),
+          ]}
+          active={layer}
+          onSelect={(k) => setLayer(k as LayerKey | "all")}
+        />
+        {hasActive && (
           <button
             type="button"
             onClick={() => {
@@ -117,30 +93,27 @@ export function MethodsExplorer({ methods }: { methods: Method[] }) {
               setLayer("all");
               setQ("");
             }}
-            className="text-xs text-cobalt hover:underline"
+            className="text-xs text-volt hover:underline"
           >
             ✕ 清空所有筛选
           </button>
         )}
       </div>
 
-      {/* ============ 结果数 ============ */}
-      <div className="mt-8 flex items-baseline justify-between border-b border-mist pb-3 text-sm">
-        <span className="text-ink/60">
-          <b className="text-ink">{filtered.length}</b> / {methods.length} 个方法
+      {/* —— 计数 —— */}
+      <div className="mt-10 flex items-baseline justify-between border-b border-fog-2 pb-3 text-sm">
+        <span className="text-ash">
+          <b className="text-bone">{filtered.length}</b>
+          <span className="text-dust"> / {methods.length}</span> 个方法
         </span>
-        <span className="text-xs text-ink/40">
-          按 ID 排序
-        </span>
+        <span className="numeral text-xs text-dust">按 ID 排序</span>
       </div>
 
-      {/* ============ 卡片墙 ============ */}
+      {/* —— 卡片墙 —— */}
       {filtered.length === 0 ? (
-        <div className="mt-12 rounded-2xl border border-dashed border-mist bg-white p-12 text-center">
-          <p className="text-lg font-medium">没找到匹配的方法</p>
-          <p className="mt-2 text-sm text-ink/60">
-            试试清空筛选，或者换个关键词。
-          </p>
+        <div className="mt-12 rounded-lg border border-dashed border-fog-2 bg-soot p-12 text-center">
+          <p className="text-base font-medium text-bone">没找到匹配的方法</p>
+          <p className="mt-2 text-sm text-ash">试试清空筛选，或换个关键词。</p>
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,46 +126,50 @@ export function MethodsExplorer({ methods }: { methods: Method[] }) {
   );
 }
 
-function FilterChip({
-  active,
-  onClick,
+function FilterRow({
   label,
-  color,
-  count,
+  options,
+  active,
+  onSelect,
 }: {
-  active: boolean;
-  onClick: () => void;
-  label: React.ReactNode;
-  color?: string;
-  count?: number;
+  label: string;
+  options: { key: string; label: string; code?: string; count?: number }[];
+  active: string;
+  onSelect: (key: string) => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={
-        active && color ? { backgroundColor: color, color: "#fff" } : undefined
-      }
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition",
-        active
-          ? color
-            ? "border-transparent"
-            : "border-ink bg-ink text-paper"
-          : "border-mist bg-white hover:border-ink/40",
-      )}
-    >
-      <span>{label}</span>
-      {typeof count === "number" && (
-        <span
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-xs uppercase tracking-widest text-dust">
+        {label}
+      </span>
+      {options.map((o) => (
+        <button
+          key={o.key}
+          type="button"
+          onClick={() => onSelect(o.key)}
           className={cn(
-            "rounded-full px-1.5 text-[10px] tabular-nums",
-            active ? "bg-white/20" : "bg-mist text-ink/60",
+            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition",
+            active === o.key
+              ? "border-volt bg-volt text-ink font-medium"
+              : "border-fog-2 text-ash hover:border-fog-3 hover:text-bone",
           )}
         >
-          {count}
-        </span>
-      )}
-    </button>
+          {o.code && (
+            <span className="numeral text-[10px] opacity-70">{o.code}</span>
+          )}
+          <span>{o.label}</span>
+          {typeof o.count === "number" && (
+            <span
+              className={cn(
+                "numeral text-[10px]",
+                active === o.key ? "text-ink/60" : "text-dust",
+              )}
+            >
+              {o.count}
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
   );
 }

@@ -1,37 +1,28 @@
 import { cn } from "@/lib/utils";
 
+type Variant = "solid" | "outline" | "soft" | "ghost";
+
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "solid" | "soft" | "outline";
-  color?: string; // CSS color (hex / oklch / var())
+  variant?: Variant;
 }
 
+const styles: Record<Variant, string> = {
+  solid: "bg-volt text-ink",
+  soft: "bg-volt/15 text-volt",
+  outline: "border border-fog-2 text-ash",
+  ghost: "text-ash",
+};
+
 export function Badge({
-  variant = "soft",
-  color,
+  variant = "outline",
   className,
-  style,
   ...props
 }: BadgeProps) {
-  const styles: React.CSSProperties = { ...style };
-  if (color) {
-    if (variant === "solid") {
-      styles.backgroundColor = color;
-      styles.color = "#fff";
-    } else if (variant === "soft") {
-      styles.backgroundColor = `${color}15`;
-      styles.color = color;
-    } else if (variant === "outline") {
-      styles.borderColor = color;
-      styles.color = color;
-    }
-  }
-
   return (
     <span
-      style={styles}
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-        variant === "outline" && "border",
+        "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium tracking-wide",
+        styles[variant],
         className,
       )}
       {...props}

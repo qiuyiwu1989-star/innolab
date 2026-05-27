@@ -1,18 +1,29 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Noto_Sans_SC } from "next/font/google";
 import { SiteNav } from "@/components/site/nav";
+import { CommandMenu } from "@/components/site/command-menu";
+import { getSearchIndex } from "@/lib/search";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const notoSC = Noto_Sans_SC({
+  variable: "--font-noto-sc",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500"],
 });
 
 const SITE_URL =
@@ -21,18 +32,18 @@ const SITE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "InnoLab · 邱懿武的创新实验室",
-    template: "%s · InnoLab",
+    default: "InnoLab — AI 创新战略咨询师",
+    template: "%s — InnoLab",
   },
   description:
-    "集成 74 个战略、产品、认知方法论的智能分析系统。从认知到产品化的生产引擎。",
+    "用 74 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。",
   keywords: [
+    "AI 战略咨询",
     "创新方法论",
     "战略分析",
     "产品设计",
-    "认知升级",
-    "邱懿武",
     "InnoLab",
+    "邱懿武",
   ],
   authors: [{ name: "邱懿武" }],
   openGraph: {
@@ -47,14 +58,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const searchIndex = getSearchIndex();
   return (
     <html
       lang="zh-CN"
-      className={`${inter.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoSC.variable} ${jetbrains.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink">
+      <body className="min-h-screen flex flex-col bg-ink text-bone">
         <SiteNav />
         {children}
+        <CommandMenu items={searchIndex} />
       </body>
     </html>
   );

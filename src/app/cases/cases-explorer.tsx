@@ -40,58 +40,57 @@ export function CasesExplorer({
 
   return (
     <>
-      <div className="space-y-4">
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-ink/40" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="搜索案例标题、标签、关联方法 ID…  例如：教育、ST06、灵魂对话"
-            className="w-full rounded-full border border-mist bg-white py-3 pl-11 pr-11 text-sm outline-none transition focus:border-cobalt"
-          />
-          {q && (
-            <button
-              type="button"
-              onClick={() => setQ("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-ink/40 hover:bg-mist hover:text-ink"
-              aria-label="清空"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-ink/40">领域</span>
-          <DomainChip
-            active={domain === "all"}
-            onClick={() => setDomain("all")}
-            label="全部"
-            count={cases.length}
-          />
-          {domains.map((d) => (
-            <DomainChip
-              key={d}
-              active={domain === d}
-              onClick={() => setDomain(d)}
-              label={d}
-              count={cases.filter((c) => (c.domain ?? []).includes(d)).length}
-            />
-          ))}
-        </div>
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-dust" />
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="搜索案例标题 · 标签 · 方法 ID    例：教育、ST06、灵魂对话"
+          className="w-full rounded-lg border border-fog-2 bg-soot py-3 pl-11 pr-11 text-sm outline-none transition focus:border-volt"
+        />
+        {q && (
+          <button
+            type="button"
+            onClick={() => setQ("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-dust hover:bg-graphite hover:text-bone"
+            aria-label="清空"
+          >
+            <X className="size-4" />
+          </button>
+        )}
       </div>
 
-      <div className="mt-8 flex items-baseline justify-between border-b border-mist pb-3 text-sm">
-        <span className="text-ink/60">
-          <b className="text-ink">{filtered.length}</b> / {cases.length} 个案例
+      <div className="mt-6 flex flex-wrap items-center gap-2">
+        <span className="text-xs uppercase tracking-widest text-dust">领域</span>
+        <DomainChip
+          active={domain === "all"}
+          onClick={() => setDomain("all")}
+          label="全部"
+          count={cases.length}
+        />
+        {domains.map((d) => (
+          <DomainChip
+            key={d}
+            active={domain === d}
+            onClick={() => setDomain(d)}
+            label={d}
+            count={cases.filter((c) => (c.domain ?? []).includes(d)).length}
+          />
+        ))}
+      </div>
+
+      <div className="mt-10 flex items-baseline justify-between border-b border-fog-2 pb-3 text-sm">
+        <span className="text-ash">
+          <b className="text-bone">{filtered.length}</b>
+          <span className="text-dust"> / {cases.length}</span> 个案例
         </span>
-        <span className="text-xs text-ink/40">按收录时间倒序</span>
+        <span className="numeral text-xs text-dust">按收录时间倒序</span>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="mt-12 rounded-2xl border border-dashed border-mist bg-white p-12 text-center">
-          <p className="text-lg font-medium">没找到匹配的案例</p>
-          <p className="mt-2 text-sm text-ink/60">试试清空筛选。</p>
+        <div className="mt-12 rounded-lg border border-dashed border-fog-2 bg-soot p-12 text-center">
+          <p className="text-base font-medium text-bone">没找到匹配的案例</p>
+          <p className="mt-2 text-sm text-ash">试试清空筛选。</p>
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -120,18 +119,18 @@ function DomainChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition",
         active
-          ? "border-ink bg-ink text-paper"
-          : "border-mist bg-white hover:border-ink/40",
+          ? "border-volt bg-volt text-ink font-medium"
+          : "border-fog-2 text-ash hover:border-fog-3 hover:text-bone",
       )}
     >
       <span>{label}</span>
       {typeof count === "number" && (
         <span
           className={cn(
-            "rounded-full px-1.5 text-[10px] tabular-nums",
-            active ? "bg-white/20" : "bg-mist text-ink/60",
+            "numeral text-[10px]",
+            active ? "text-ink/60" : "text-dust",
           )}
         >
           {count}
@@ -144,55 +143,45 @@ function DomainChip({
 function CaseCard({ c }: { c: CaseDetail }) {
   const hasDetail = c.file !== null;
   const body = (
-    <div className="group relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border border-mist bg-white p-6 transition hover:-translate-y-0.5 hover:border-ink hover:shadow-lg">
-      {/* 装饰：右上角 gradient blur */}
-      <div className="absolute -right-12 -top-12 size-32 rounded-full bg-flare/10 blur-2xl transition group-hover:bg-flare/20" />
-
-      <div className="relative flex items-center justify-between">
-        <span className="font-mono text-xs text-ink/40">{c.id}</span>
-        <span className="text-xs text-ink/40">{c.added_date}</span>
+    <div className="group relative flex h-full flex-col gap-3 rounded-lg border border-fog-2 bg-soot p-6 transition hover:-translate-y-0.5 hover:border-volt hover:bg-graphite">
+      <div className="flex items-center justify-between">
+        <span className="numeral text-xs text-volt">{c.id}</span>
+        <span className="numeral text-xs text-dust">{c.added_date}</span>
       </div>
-
-      <h3 className="relative text-lg font-semibold leading-snug">
+      <h3 className="text-lg font-semibold leading-snug text-bone">
         {c.title}
       </h3>
-
-      <p className="relative line-clamp-2 text-sm leading-relaxed text-ink/70">
+      <p className="line-clamp-2 text-sm leading-relaxed text-ash">
         {c.summary}
       </p>
-
-      <div className="relative flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5">
         {(c.domain ?? []).slice(0, 4).map((d) => (
-          <Badge key={d} variant="outline" className="border-ink/15 text-ink/60">
+          <Badge key={d} variant="outline">
             {d}
           </Badge>
         ))}
       </div>
-
-      <div className="relative mt-auto flex items-center justify-between border-t border-mist pt-3">
-        <span className="text-xs text-ink/50">
-          关联方法：
-          <span className="font-mono text-cobalt">
-            {(c.related_methods ?? []).slice(0, 3).join("  ")}
+      <div className="mt-auto flex items-center justify-between border-t border-fog-1 pt-3">
+        <span className="text-xs text-dust">
+          关联方法{" "}
+          <span className="numeral text-volt">
+            {(c.related_methods ?? []).slice(0, 3).join(" · ")}
           </span>
           {(c.related_methods ?? []).length > 3 && (
-            <span className="text-ink/40">
+            <span className="text-dust">
               {" "}
               +{c.related_methods.length - 3}
             </span>
           )}
         </span>
         {hasDetail && (
-          <ArrowUpRight className="size-4 text-ink/30 transition group-hover:text-ink" />
+          <ArrowUpRight className="size-4 text-dust opacity-0 transition group-hover:opacity-100 group-hover:text-volt" />
         )}
       </div>
     </div>
   );
 
-  if (!hasDetail) {
-    // 没详情文件的案例：渲染为不可点击卡（淡化）
-    return <div className="opacity-75">{body}</div>;
-  }
+  if (!hasDetail) return <div className="opacity-50">{body}</div>;
   return (
     <Link href={`/cases/${c.id}`} className="block h-full">
       {body}

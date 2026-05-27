@@ -1,48 +1,45 @@
 @import "tailwindcss";
 
 /*
- * InnoLab Design Tokens (v0.1)
- * 创新实验室风：明亮主色 + 大量留白 + 几何感
+ * InnoLab v0.2 · Design Tokens
+ * 气质：Stripe Sigma / Apple TV+ — 黑底 · 单一主色 · 大面积几何
  */
 
 @theme {
-  /* 主色板 */
-  --color-cobalt: #2d5bff; /* 钴蓝 - 认知 / 主品牌 */
-  --color-flare: #ff6b35; /* 活力橙 - 战略 */
-  --color-acid: #b4e60e; /* 酸性绿 - 生成 */
-  --color-acid-ink: #4a6b00; /* 酸性绿在浅底上的可读色 */
-  --color-violet: #8b5cf6; /* 紫 - 决策 */
-  --color-rose: #ff3b7f; /* 玫红 - 产品 */
-  --color-cyan: #06b6d4; /* 青 - 进化 */
+  /* —— 中性 —— */
+  --color-ink: #0a0a0a;        /* 主背景 */
+  --color-soot: #111111;        /* 卡片底（微抬高） */
+  --color-graphite: #1a1a1a;    /* hover / second elevation */
+  --color-fog-1: rgba(255, 255, 255, 0.06); /* 极淡分隔 */
+  --color-fog-2: rgba(255, 255, 255, 0.10); /* 标准 border */
+  --color-fog-3: rgba(255, 255, 255, 0.18); /* 强调 border */
+  --color-bone: #fafafa;        /* 主文字 */
+  --color-ash: #a3a3a3;         /* 次文字 */
+  --color-dust: #525252;        /* 极次文字 */
 
-  /* 中性 */
-  --color-ink: #0a0a0a;
-  --color-paper: #fafaf9;
-  --color-mist: #e7e5e4;
+  /* —— 主色（唯一一个） —— */
+  --color-volt: #b3ff39;        /* 电压绿 — 唯一的视觉重音 */
+  --color-volt-dim: #6f9e23;    /* volt 在白底/卡片上的可读色 */
 
-  /* 字体 */
+  /* —— 字体栈 —— */
   --font-sans:
-    "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
+    "Inter", "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei",
     sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  --font-display:
+    "Inter", "Noto Sans SC", -apple-system, "PingFang SC", sans-serif;
+  --font-mono:
+    "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
 
-  /* 圆角 */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  /* —— 圆角（普遍偏小，硬朗为主） —— */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
 }
 
 :root {
-  --background: #fafaf9;
-  --foreground: #0a0a0a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #fafaf9;
-  }
+  --background: #0a0a0a;
+  --foreground: #fafafa;
 }
 
 @theme inline {
@@ -53,24 +50,161 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
+  color: var(--foreground);
+  scroll-behavior: smooth;
+}
+
+/* iOS Safari: 防止地址栏挤压 */
+@supports (-webkit-touch-callout: none) {
+  body {
+    min-height: -webkit-fill-available;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 几何装饰：网格背景 */
+::selection {
+  background: var(--color-volt);
+  color: var(--color-ink);
+}
+
+/* —— 装饰 utility：网格 —— */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgb(0 0 0 / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(0 0 0 / 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
 
-/* 几何装饰：噪点 */
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+.bg-grid-dense {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* —— 装饰 utility：网点 —— */
+.bg-dots {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+/* —— 装饰 utility：渐隐遮罩 —— */
+.mask-fade-b {
+  mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
+}
+.mask-fade-t {
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 100%);
+}
+.mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
+/* —— 字体细节：display 标题 razor tight —— */
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  line-height: 0.95;
+}
+
+/* —— 数字大字 —— */
+.numeral {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+
+/* —— input/textarea 默认色 —— */
+input,
+textarea {
+  color: var(--color-bone);
+  caret-color: var(--color-volt);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-dust);
+}
+
+/* —— 焦点环（统一） —— */
+*:focus-visible {
+  outline: 2px solid var(--color-volt);
+  outline-offset: 2px;
+}
+
+/* —— appear 动画（demo runner、stepcard 用） —— */
+@keyframes innolab-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: innolab-appear 0.4s ease-out both;
+}
+
+.animate-in.duration-300 {
+  animation-duration: 0.3s;
+}
+.animate-in.duration-400 {
+  animation-duration: 0.4s;
+}
+
+/* fade-in 和 slide-in-from-bottom-* / -1 / -2 是 tailwindcss-animate 风格 alias,
+   我们这里统一映射到上面的 keyframe — 不需要插件 */
+.fade-in,
+.slide-in-from-bottom-1,
+.slide-in-from-bottom-2 {
+  animation: innolab-appear 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .fade-in,
+  .slide-in-from-bottom-1,
+  .slide-in-from-bottom-2 {
+    animation: none;
+  }
+}
+
+/* —— marquee（滚动条文） —— */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee-x 28s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
 }

@@ -1,380 +1,340 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Beaker,
-  Sparkles,
-  Brain,
-  Target,
-  Lightbulb,
-  Scale,
-  Puzzle,
-  RotateCw,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { engines, layers } from "@/lib/engines";
-import { getAllMethods } from "@/lib/methods";
-import { getAllCases } from "@/lib/cases";
+import { getAllMethods, type Method } from "@/lib/methods";
+import { getAllCases, type CaseDetail } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
 
-// 引擎对应的 lucide icon
-const engineIcons = {
-  cognition: Brain,
-  strategy: Target,
-  generation: Lightbulb,
-  decision: Scale,
-  product: Puzzle,
-  evolution: RotateCw,
-} as const;
+// 首页 demo 三案例（用真实案例作为"看一眼能做什么"的演示）
+const HOMEPAGE_DEMO_CASE_IDS = ["case-002", "case-006", "case-007"];
 
-// 精选 6 个方法（每个引擎挑 1 个有代表性的）
-const FEATURED_METHOD_IDS = ["CG01", "ST06", "GN04", "DC02", "PD01", "EV01"];
+// 三个 hero suggestion chips（演示性，点击滚到 demo 段）
+const SUGGESTIONS = [
+  "我该做 IP 产品吗？",
+  "AI 转型该从哪里开始？",
+  "怎么搭建双轨人才体系？",
+];
 
 export default function Home() {
   const methods = getAllMethods();
-  const cases = getAllCases().filter((c) => c.file !== null);
+  const cases = getAllCases();
   const totalMethods = methods.length;
+  const demoCases = HOMEPAGE_DEMO_CASE_IDS.map((id) =>
+    cases.find((c) => c.id === id),
+  ).filter((c): c is CaseDetail => !!c);
   const countsByEngine = engines.map((e) => ({
     ...e,
     count: methods.filter((m) => m.engine === e.key).length,
   }));
-  const featured = FEATURED_METHOD_IDS.map((id) =>
-    methods.find((m) => m.id === id),
-  ).filter((m): m is NonNullable<typeof m> => !!m);
-  const featuredCases = cases.slice(0, 3);
+
+  // 拿 6 个 method ID 做 hero 底部 marquee
+  const heroIds = ["CG14", "ST06", "ST10", "GN02", "PD10", "EV02", "DC02"];
 
   return (
     <main className="flex-1">
-      {/* ============ HERO ============ */}
-      <section className="relative overflow-hidden border-b border-mist">
+      {/* ════════════════ 1 · HERO ════════════════ */}
+      <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-60" />
-        <div className="absolute -right-32 -top-32 size-96 rounded-full bg-cobalt/10 blur-3xl" />
-        <div className="absolute -left-32 bottom-0 size-96 rounded-full bg-flare/10 blur-3xl" />
+        {/* 巨型几何 - 右下角半圆 */}
+        <div
+          aria-hidden
+          className="absolute -right-40 -bottom-40 size-[700px] rounded-full border border-volt/30"
+        />
+        <div
+          aria-hidden
+          className="absolute -right-32 -bottom-32 size-[560px] rounded-full border border-fog-2"
+        />
+        {/* 左上小圆点 */}
+        <div className="absolute left-6 top-24 hidden gap-2 text-[11px] font-medium uppercase tracking-widest text-ash sm:flex">
+          <span className="size-1.5 translate-y-1 rounded-full bg-volt" />
+          <span>Live · v0.1</span>
+          <span className="text-dust">·</span>
+          <span>{totalMethods} methods loaded</span>
+        </div>
 
-        <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-32 sm:pt-32 sm:pb-40">
-          <div className="inline-flex items-center gap-2 rounded-full border border-mist bg-paper/80 px-3 py-1.5 text-xs font-medium backdrop-blur">
-            <Beaker className="size-3.5 text-cobalt" />
-            <span>
-              v0.1 · {totalMethods} 个方法论 · 6 大引擎 · 5 层认知 ·{" "}
-              {cases.length} 个真实案例
-            </span>
-          </div>
-
-          <h1 className="mt-8 text-5xl font-bold tracking-tight sm:text-7xl">
-            从<span className="text-cobalt">认知</span>到
-            <span className="text-flare">产品化</span>
+        <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-24 sm:pb-40 sm:pt-36">
+          {/* 主标题 — clamp 全适配 */}
+          <h1
+            className="display text-bone"
+            style={{ fontSize: "clamp(3.25rem, 11vw, 9rem)" }}
+          >
+            AI <span className="text-volt">创新</span>
             <br />
-            的生产系统
+            战略咨询师
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">
-            InnoLab 不是方法论的清单，而是一台编排引擎。
-            问题重构 → 方法编排 → 多方案生成 → 决策筛选 → 产品定义 → 进化反馈。
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ash sm:text-xl">
+            把你的真实商业问题，用 <b className="font-semibold text-bone">74 个方法论</b>
+            编排成一套战略推演。
+            <br className="hidden sm:block" />
+            从认知到产品化，一次完整的判断、方案、决策、定义。
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          {/* 模拟输入框（v1.0 入口占位） */}
+          <div className="mt-12 max-w-2xl">
             <Link
-              href="/methods"
-              className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition hover:bg-cobalt"
+              href="#waitlist"
+              className="group flex items-center justify-between gap-3 rounded-lg border border-fog-2 bg-soot/60 px-5 py-4 transition hover:border-volt hover:bg-soot"
             >
-              浏览 {totalMethods} 个方法
-              <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href="/cases"
-              className="inline-flex items-center gap-2 rounded-full border border-ink/20 px-6 py-3 text-sm font-medium transition hover:border-ink"
-            >
-              看真实案例
-            </Link>
-            <span className="text-sm text-ink/50">
-              即将开放：AI 分析入口 →
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 六大引擎 时间线 ============ */}
-      <section className="border-b border-mist py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-12 flex items-end justify-between gap-4">
-            <div>
-              <div className="text-sm font-medium text-ink/50">
-                Six Engines · 一条生产线
+              <div className="flex flex-1 items-center gap-3">
+                <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-volt" />
+                <span className="text-base text-dust">
+                  试试问 InnoLab：我该做 IP 产品吗？
+                </span>
               </div>
-              <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                六大引擎串成一个流程
-              </h2>
-              <p className="mt-3 max-w-2xl text-ink/70">
-                每个引擎解决生产链上的一个环节。 你卡在哪一环，就调哪一环的方法。
-              </p>
-            </div>
-            <Link
-              href="/methods"
-              className="hidden whitespace-nowrap text-sm font-medium text-cobalt hover:underline sm:inline"
-            >
-              查看全部方法 →
+              <span className="flex items-center gap-2 text-xs text-ash">
+                <span className="hidden sm:inline">v1.0 候补</span>
+                <ArrowRight className="size-4 transition group-hover:translate-x-1 group-hover:text-volt" />
+              </span>
             </Link>
-          </div>
-
-          {/* 桌面端：水平时间线 / 移动端：垂直 */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {countsByEngine.map((e, i) => {
-              const Icon = engineIcons[e.key];
-              return (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {SUGGESTIONS.map((s) => (
                 <Link
-                  key={e.key}
-                  href={`/methods?engine=${e.key}`}
-                  className="group relative overflow-hidden rounded-2xl border border-mist bg-white p-6 transition hover:-translate-y-0.5 hover:border-ink hover:shadow-lg"
+                  key={s}
+                  href="#demos"
+                  className="rounded-full border border-fog-2 px-3 py-1 text-xs text-ash transition hover:border-fog-3 hover:text-bone"
                 >
-                  <div
-                    className="absolute right-0 top-0 size-24 rounded-bl-full opacity-15 transition group-hover:opacity-30"
-                    style={{ backgroundColor: e.colorHex }}
-                  />
-                  <div className="relative">
-                    <div className="flex items-center justify-between">
-                      <div
-                        className="flex size-12 items-center justify-center rounded-xl"
-                        style={{ backgroundColor: `${e.colorHex}15` }}
-                      >
-                        <Icon
-                          className="size-6"
-                          style={{ color: e.colorHex }}
-                          strokeWidth={1.75}
-                        />
-                      </div>
-                      <span
-                        className="rounded-full px-2.5 py-1 text-xs font-medium"
-                        style={{
-                          backgroundColor: `${e.colorHex}15`,
-                          color: e.colorHex,
-                        }}
-                      >
-                        {e.count} 个方法
-                      </span>
-                    </div>
-                    <div className="mt-5 flex items-baseline gap-2">
-                      <span className="font-mono text-xs text-ink/40">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3 className="text-xl font-semibold">{e.cn}</h3>
-                    </div>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-ink/40">
-                      {e.en}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-ink/70">
-                      {e.oneliner}
-                    </p>
-                  </div>
+                  {s}
                 </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 精选方法 ============ */}
-      <section className="border-b border-mist py-24">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-12 max-w-2xl">
-            <div className="text-sm font-medium text-ink/50">Featured</div>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              如果只看 6 张方法卡，看这 6 张
-            </h2>
-            <p className="mt-3 text-ink/70">
-              每个引擎挑一张最常被引用、最能体现"层级感"的方法。
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((m) => {
-              const eng = engines.find((e) => e.key === m.engine);
-              const color = eng?.colorHex ?? "#000";
-              return (
-                <Link
-                  key={m.slug}
-                  href={`/methods/${m.slug}`}
-                  className="group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-mist bg-white p-6 transition hover:-translate-y-0.5 hover:border-ink hover:shadow-lg"
-                >
-                  <div
-                    className="absolute inset-x-0 top-0 h-1"
-                    style={{ backgroundColor: color }}
-                  />
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="font-mono text-xs font-semibold"
-                      style={{ color }}
-                    >
-                      {m.id}
-                    </span>
-                    <Badge color={color}>{eng?.cn}</Badge>
-                    {m.layer !== "—" && (
-                      <Badge
-                        variant="outline"
-                        className="border-ink/15 text-ink/60"
-                      >
-                        {m.layer}
-                      </Badge>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-semibold leading-snug">
-                    {m.titleCn}
-                  </h3>
-                  <p className="line-clamp-3 text-sm leading-relaxed text-ink/70">
-                    {m.oneliner || "—"}
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 五层认知 ============ */}
-      <section className="border-b border-mist bg-ink py-24 text-paper">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="max-w-2xl">
-            <div className="text-sm font-medium text-paper/50">
-              Five Layers of Cognition
+              ))}
             </div>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              五层认知深度模型
-            </h2>
-            <p className="mt-4 text-paper/70">
-              每个方法都标注了它工作的认知层级。
-              做产品决策时，知道你在哪一层比知道哪个方法更重要。
-            </p>
           </div>
-          <ol className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-5">
+        </div>
+
+        {/* 底部 marquee */}
+        <div className="relative border-y border-fog-1 bg-ink/60 py-4 mask-fade-x">
+          <div className="flex gap-12 marquee whitespace-nowrap font-mono text-xs text-dust">
+            {[...heroIds, ...heroIds, ...heroIds, ...heroIds].map((id, i) => (
+              <span key={i} className="flex items-center gap-2">
+                <span className="size-1 rounded-full bg-volt/60" />
+                {id}
+                <span className="text-fog-3">
+                  {methods.find((m) => m.id === id)?.titleCn ?? "—"}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 2 · DEMOS（看一眼能做什么） ════════════════ */}
+      <section id="demos" className="border-b border-fog-1 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHead
+            kicker="02 · 看一眼能做什么"
+            title="它会怎么帮你想？"
+            sub="3 个真实问题，看 InnoLab 调用的方法链和它给出的结论。这些已经在 v0.1 的弹药库里。"
+          />
+          <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {demoCases.map((c, idx) => (
+              <DemoCard key={c.id} c={c} index={idx} methods={methods} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 3 · 弹药库 巨型数据 ════════════════ */}
+      <section className="relative border-b border-fog-1 py-24 sm:py-32">
+        <div className="absolute inset-0 bg-dots opacity-50" />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <SectionHead
+            kicker="03 · 弹药库"
+            title="不是空话。这是支撑 AI 推演的体系。"
+            sub="74 个方法论按六大引擎组织，每个方法标注它工作的认知层级。AI 调度它们，你也可以手动浏览。"
+          />
+          <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
+            <Stat n={totalMethods} l="方法卡" highlight />
+            <Stat n={engines.length} l="引擎" />
+            <Stat n={5} l="认知层级" />
+            <Stat n={cases.length} l="真实案例" />
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 4 · 六大引擎 ════════════════ */}
+      <section className="border-b border-fog-1 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHead
+            kicker="04 · Six Engines"
+            title="六大引擎，串成一条生产线"
+            sub="每个引擎解决生产链上一个环节。你卡在哪一环，就调哪一环的方法。"
+            link={{ href: "/methods", text: "全部 74 个方法" }}
+          />
+          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-2 lg:grid-cols-3">
+            {countsByEngine.map((e, i) => (
+              <Link
+                key={e.key}
+                href={`/methods/engine/${e.key}`}
+                className="group relative flex flex-col gap-3 bg-ink p-8 transition hover:bg-soot"
+              >
+                <div className="flex items-baseline justify-between">
+                  <span className="numeral text-5xl text-bone transition group-hover:text-volt">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="numeral text-xs text-dust">
+                    {e.code} · {e.count}
+                  </span>
+                </div>
+                <div className="mt-4">
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-2xl font-semibold tracking-tight text-bone">
+                      {e.cn}
+                    </h3>
+                    <span className="text-xs uppercase tracking-widest text-dust">
+                      {e.en}
+                    </span>
+                  </div>
+                  <div className="mt-1 text-sm text-ash">{e.oneliner}</div>
+                </div>
+                <div className="mt-auto text-sm text-dust">{e.role}</div>
+                <ArrowUpRight className="absolute right-6 top-6 size-4 text-dust opacity-0 transition group-hover:opacity-100 group-hover:text-volt" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 5 · 五层认知 ════════════════ */}
+      <section className="border-b border-fog-1 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHead
+            kicker="05 · Five Layers"
+            title="同一个问题，你在哪一层回答？"
+            sub="L1 看现象，L5 改世界观。每个方法都标注它工作的层级 — 知道层级比记住方法更重要。"
+          />
+          <ol className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-5">
             {layers.map((l, i) => (
               <li
                 key={l.id}
-                className="relative rounded-xl border border-paper/10 bg-paper/[0.03] p-5 transition hover:border-acid/50 hover:bg-paper/[0.06]"
+                className="flex flex-col gap-3 bg-ink p-6 transition hover:bg-soot"
               >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-mono text-2xl font-bold text-acid">
-                    {l.id}
-                  </span>
-                  <span className="text-xs text-paper/40">Layer {i + 1}</span>
+                <span
+                  className={`numeral text-6xl ${i === 4 ? "text-volt" : "text-bone"}`}
+                >
+                  {l.id}
+                </span>
+                <div>
+                  <div className="text-sm font-semibold text-bone">{l.name}</div>
+                  <div className="mt-1 text-xs text-dust">{l.desc}</div>
                 </div>
-                <div className="mt-2 text-lg font-semibold">{l.name}</div>
-                <div className="mt-1 text-sm text-paper/60">{l.desc}</div>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* ============ 精选案例 ============ */}
-      {featuredCases.length > 0 && (
-        <section className="border-b border-mist py-24">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="mb-12 flex items-end justify-between gap-4">
-              <div className="max-w-2xl">
-                <div className="text-sm font-medium text-ink/50">
-                  Cases · 真实案例
-                </div>
-                <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                  方法的价值在于被用过
-                </h2>
-                <p className="mt-3 text-ink/70">
-                  从教育产品到企业 AI 转型，每个案例都标注了它用了哪几个方法。
-                </p>
-              </div>
-              <Link
-                href="/cases"
-                className="hidden whitespace-nowrap text-sm font-medium text-cobalt hover:underline sm:inline"
-              >
-                查看全部 {cases.length} 个案例 →
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {featuredCases.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/cases/${c.id}`}
-                  className="group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-mist bg-white p-6 transition hover:-translate-y-0.5 hover:border-ink hover:shadow-lg"
-                >
-                  <div className="absolute -right-12 -top-12 size-32 rounded-full bg-flare/10 blur-2xl transition group-hover:bg-flare/20" />
-                  <div className="relative flex items-center justify-between">
-                    <span className="font-mono text-xs text-ink/40">
-                      {c.id}
-                    </span>
-                    <span className="text-xs text-ink/40">{c.added_date}</span>
-                  </div>
-                  <h3 className="relative text-lg font-semibold leading-snug">
-                    {c.title}
-                  </h3>
-                  <p className="relative line-clamp-3 flex-1 text-sm leading-relaxed text-ink/70">
-                    {c.summary}
-                  </p>
-                  <div className="relative flex flex-wrap gap-1.5">
-                    {(c.domain ?? []).slice(0, 3).map((d) => (
-                      <Badge
-                        key={d}
-                        variant="outline"
-                        className="border-ink/15 text-ink/60"
-                      >
-                        {d}
-                      </Badge>
-                    ))}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ════════════════ 6 · Roadmap ════════════════ */}
+      <section className="border-b border-fog-1 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionHead
+            kicker="06 · Roadmap"
+            title="从弹药库走向 AI 战略咨询师"
+            sub="v0.1 已经上线 — 一个能浏览的方法论体系。下一步是把 AI 接进去。"
+          />
+          <ol className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <RoadmapCard
+              v="v0.1"
+              status="live"
+              title="弹药库"
+              when="Now"
+              items={[
+                "74 方法卡 + 10 案例",
+                "六大引擎、五层认知导航",
+                "方法 ↔ 案例双向联动",
+              ]}
+            />
+            <RoadmapCard
+              v="v0.5"
+              status="next"
+              title="方法地图"
+              when="2026 Q3"
+              items={[
+                "方法关系图谱可视化",
+                "CMD+K 全局搜索",
+                "案例库扩充至 50+",
+              ]}
+            />
+            <RoadmapCard
+              v="v1.0"
+              status="vision"
+              title="AI 战略咨询师"
+              when="2026 Q4"
+              items={[
+                "输入问题 → 自动编排方法",
+                "多方案 + 决策 + 产品定义",
+                "你的私有分析记忆库",
+              ]}
+            />
+          </ol>
+        </div>
+      </section>
 
-      {/* ============ 下一步 / 候补 ============ */}
-      <section className="py-24">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <Sparkles className="mx-auto size-8 text-flare" />
-          <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-            v1.0 是一个 AI 分析师
+      {/* ════════════════ 7 · Waitlist ════════════════ */}
+      <section
+        id="waitlist"
+        className="relative border-b border-fog-1 py-24 sm:py-32"
+      >
+        <div className="absolute inset-0 bg-grid-dense opacity-40 mask-fade-b" />
+        <div className="relative mx-auto max-w-2xl px-6 text-center">
+          <span className="numeral text-xs uppercase tracking-widest text-volt">
+            07 · Waitlist
+          </span>
+          <h2 className="display mt-4 text-4xl text-bone sm:text-6xl">
+            等 v1.0 开放，
+            <br />
+            我会通知你。
           </h2>
-          <p className="mt-4 text-ink/70">
-            输入一个真实问题，InnoLab 会自动编排方法、生成多套方案、给出决策建议，
-            并把这次分析沉淀进你的私有记忆库。预计今夏开放。
+          <p className="mt-6 text-base text-ash sm:text-lg">
+            AI 战略咨询师正在训练。
+            <br className="sm:hidden" />
+            Beta 名额限定 100 人。
           </p>
-          <form action="/api/waitlist" method="post" className="mx-auto mt-8 flex max-w-md gap-2">
+          <form
+            action="/api/waitlist"
+            method="post"
+            className="mx-auto mt-10 flex max-w-md flex-col gap-2 sm:flex-row"
+          >
             <input
               type="email"
               name="email"
               required
               placeholder="your@email.com"
-              className="flex-1 rounded-full border border-mist bg-white px-5 py-3 text-sm outline-none transition focus:border-cobalt"
+              className="flex-1 rounded-md border border-fog-2 bg-soot px-4 py-3 text-sm outline-none transition focus:border-volt"
             />
             <button
               type="submit"
-              className="rounded-full bg-cobalt px-5 py-3 text-sm font-medium text-paper transition hover:bg-ink"
+              className="rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110"
             >
               加入候补
             </button>
           </form>
-          <p className="mt-3 text-xs text-ink/40">
-            候补名单优先获得早期试用名额
+          <p className="mt-4 text-xs text-dust">
+            只发开放通知。不发别的。
           </p>
         </div>
       </section>
 
-      {/* ============ Footer ============ */}
-      <footer className="border-t border-mist py-12">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-          <div className="flex items-center gap-2 text-sm">
-            <div className="size-5 rounded-md bg-gradient-to-br from-cobalt via-violet to-flare" />
-            <span className="font-semibold">InnoLab</span>
-            <span className="text-ink/40">© 2026 邱懿武</span>
+      {/* ════════════════ Footer ════════════════ */}
+      <footer className="py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
+          <div className="flex items-baseline gap-1.5 text-sm text-ash">
+            <span className="font-semibold text-bone">InnoLab</span>
+            <span className="size-1.5 translate-y-[-1px] rounded-full bg-volt" />
+            <span className="ml-2 text-dust">© 2026</span>
           </div>
-          <div className="flex gap-6 text-sm text-ink/60">
-            <Link href="/methods" className="hover:text-ink">
+          <div className="flex gap-6 text-sm text-ash">
+            <Link href="/methods" className="hover:text-bone">
               方法
             </Link>
-            <Link href="/cases" className="hover:text-ink">
+            <Link href="/cases" className="hover:text-bone">
               案例
             </Link>
-            <Link href="/about" className="hover:text-ink">
+            <Link href="/about" className="hover:text-bone">
               关于
             </Link>
             <a
               href="https://github.com/qiuyiwu1989-star/innolab"
-              className="hover:text-ink"
+              className="hover:text-bone"
               target="_blank"
               rel="noopener"
             >
@@ -384,5 +344,176 @@ export default function Home() {
         </div>
       </footer>
     </main>
+  );
+}
+
+/* ───────── 子组件 ───────── */
+
+function SectionHead({
+  kicker,
+  title,
+  sub,
+  link,
+}: {
+  kicker: string;
+  title: string;
+  sub?: string;
+  link?: { href: string; text: string };
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
+      <div className="max-w-2xl">
+        <div className="numeral text-xs uppercase tracking-widest text-volt">
+          {kicker}
+        </div>
+        <h2 className="display mt-3 text-3xl text-bone sm:text-5xl">{title}</h2>
+        {sub && <p className="mt-4 text-base text-ash sm:text-lg">{sub}</p>}
+      </div>
+      {link && (
+        <Link
+          href={link.href}
+          className="group inline-flex items-center gap-1 whitespace-nowrap text-sm font-medium text-volt hover:underline"
+        >
+          {link.text} <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+        </Link>
+      )}
+    </div>
+  );
+}
+
+function Stat({
+  n,
+  l,
+  highlight = false,
+}: {
+  n: number;
+  l: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="flex flex-col gap-2 bg-ink p-8 sm:p-12">
+      <span
+        className={`numeral text-6xl sm:text-7xl ${highlight ? "text-volt" : "text-bone"}`}
+      >
+        {n}
+      </span>
+      <span className="text-xs uppercase tracking-widest text-dust">{l}</span>
+    </div>
+  );
+}
+
+function RoadmapCard({
+  v,
+  status,
+  title,
+  when,
+  items,
+}: {
+  v: string;
+  status: "live" | "next" | "vision";
+  title: string;
+  when: string;
+  items: string[];
+}) {
+  return (
+    <li
+      className={`flex flex-col gap-4 rounded-xl border bg-soot p-7 ${
+        status === "live"
+          ? "border-volt"
+          : status === "next"
+            ? "border-fog-3"
+            : "border-fog-2"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span className="numeral text-4xl text-bone">{v}</span>
+        <Badge variant={status === "live" ? "solid" : "outline"}>
+          {status === "live" && "已上线"}
+          {status === "next" && "进行中"}
+          {status === "vision" && "规划中"}
+        </Badge>
+      </div>
+      <div className="flex items-baseline gap-2">
+        <h3 className="text-xl font-semibold text-bone">{title}</h3>
+        <span className="numeral text-xs text-dust">{when}</span>
+      </div>
+      <ul className="mt-2 space-y-2 text-sm text-ash">
+        {items.map((it, i) => (
+          <li key={i} className="flex gap-2">
+            <span className="text-dust">→</span>
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
+
+function DemoCard({
+  c,
+  index,
+  methods,
+}: {
+  c: CaseDetail;
+  index: number;
+  methods: Method[];
+}) {
+  // 把 related_methods 转成方法对象
+  const chain = (c.related_methods ?? [])
+    .slice(0, 4)
+    .map((id) => methods.find((m) => m.id === id))
+    .filter((m): m is Method => !!m);
+
+  return (
+    <Link
+      href={c.file ? `/cases/${c.id}` : "/cases"}
+      className="group flex flex-col gap-4 rounded-xl border border-fog-2 bg-soot p-7 transition hover:border-volt hover:bg-graphite"
+    >
+      <div className="flex items-baseline justify-between">
+        <span className="numeral text-sm text-volt">Q.0{index + 1}</span>
+        <span className="numeral text-xs text-dust">{c.id}</span>
+      </div>
+
+      {/* 问题 */}
+      <div>
+        <div className="text-xs uppercase tracking-widest text-dust">问题</div>
+        <h3 className="mt-2 text-lg font-semibold leading-snug text-bone">
+          {c.title}
+        </h3>
+      </div>
+
+      {/* 方法链 */}
+      <div>
+        <div className="text-xs uppercase tracking-widest text-dust">
+          调用方法
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {chain.map((m, i) => (
+            <span
+              key={m.id}
+              className="numeral inline-flex items-center gap-1 rounded border border-fog-2 px-2 py-1 text-[11px] text-bone"
+            >
+              {m.id}
+              {i < chain.length - 1 && (
+                <span className="ml-1 text-dust">→</span>
+              )}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* 结论 */}
+      <div>
+        <div className="text-xs uppercase tracking-widest text-dust">结论</div>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ash">
+          {c.insight ?? c.summary}
+        </p>
+      </div>
+
+      <div className="mt-auto flex items-center gap-1 pt-2 text-sm text-volt">
+        看完整推演
+        <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+      </div>
+    </Link>
   );
 }
