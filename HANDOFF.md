@@ -2,13 +2,63 @@
 
 > 自动模式下我把所有能做的都做了。你睡醒后这页帮你 5 分钟内进入状态。
 
+## 🚀 一键唤醒（推荐第一件事就跑这个）
+
+```bash
+cd /Users/qiu/Documents/innolab-repo
+bash scripts/wake-up.sh
+```
+
+它会：① 显示 git/commit 状态  ② 自动启 dev server（如未启）  ③ 打印下一步要跑的命令。
+
 ## 现在的状态
 
 ✅ **代码完成**：v0.3 全套上线就绪，本地 + 生产 build 都通过
 ✅ **本地可访问**：`npm run dev` → http://localhost:3000
-✅ **已 commit**：3 个 commit 在本地 master，待 push
-⚠ **未 push 到 GitHub**：等你决定（我没有自动 push，避免推错东西）
-⚠ **未部署到 Vercel**：需要你在 Vercel 完成 OAuth + Import（约 3 分钟）
+✅ **已 commit**：**3 个 commit 在本地 master，等 push**
+⚠ **未 push 到 GitHub**：我试了，但没有 GitHub auth（HTTPS PAT 过期/未存、SSH key 未配、gh CLI 未装）
+⚠ **未部署到 Vercel**：需要 push 后你在 Vercel OAuth + Import（约 3 分钟）
+
+## ⚡ 最快上线路径（按你的 auth 方式选一条）
+
+### A. 用 GitHub CLI（推荐 — 最简单，gh 我已经装好）
+
+我已经把 gh CLI（v2.92.0）下载并解压到了 `~/.local/bin/gh`。你只需要：
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+gh auth login    # 选 GitHub.com → HTTPS → 浏览器登录
+git push origin master
+```
+
+把 `export PATH=...` 那行加到 `~/.zshrc` 让以后都能用：
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+```
+
+### B. 用 SSH（如果你已有 GitHub SSH key 在别的机器）
+
+```bash
+# 复制你的 SSH 公钥到 GitHub Settings → SSH and GPG keys
+# 然后：
+git remote set-url origin git@github.com:qiuyiwu1989-star/innolab.git
+git push origin master
+```
+
+### C. 用 PAT（Personal Access Token）
+
+```bash
+# 1. 去 https://github.com/settings/tokens 创建一个 classic token
+#    勾选 repo scope
+# 2. 触发推送：
+git push origin master
+# 3. 提示 username 时输 GitHub 用户名（qiuyiwu1989-star）
+# 4. 提示 password 时粘贴 PAT（不是 GitHub 密码！）
+# 5. macOS Keychain 会记住，下次不用再输
+```
+
+push 成功后，**继续看下面 Vercel 部署**。
 
 ## 你睡前看到的是 v0.2，醒来后的是 v0.3
 
