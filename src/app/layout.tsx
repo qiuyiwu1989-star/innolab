@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNav } from "@/components/site/nav";
 import { CommandMenu } from "@/components/site/command-menu";
 import { getSearchIndex } from "@/lib/search";
@@ -68,6 +70,9 @@ export default function RootLayout({
         <SiteNav />
         {children}
         <CommandMenu items={searchIndex} />
+        {/* Vercel 部署后自动收集，本地无副作用 */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
