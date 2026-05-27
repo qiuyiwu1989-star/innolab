@@ -9,15 +9,16 @@ cd /Users/qiu/Documents/innolab-repo
 bash scripts/wake-up.sh
 ```
 
-它会：① 显示 git/commit 状态  ② 自动启 dev server（如未启）  ③ 打印下一步要跑的命令。
+它会：① 显示 git/commit 状态  ② 自动启 dev server  ③ 打印下一步要跑的命令。
 
 ## 现在的状态
 
 ✅ **代码完成**：v0.3 全套上线就绪，本地 + 生产 build 都通过
 ✅ **本地可访问**：`npm run dev` → http://localhost:3000
-✅ **已 commit**：**3 个 commit 在本地 master，等 push**
-⚠ **未 push 到 GitHub**：我试了，但没有 GitHub auth（HTTPS PAT 过期/未存、SSH key 未配、gh CLI 未装）
-⚠ **未部署到 Vercel**：需要 push 后你在 Vercel OAuth + Import（约 3 分钟）
+✅ **已 commit**：**5 个 commit 在本地 master，等 push**
+✅ **工具链就绪**：`gh` CLI 已装到 `~/.local/bin/gh`，`vercel` CLI 已装到 `~/.local/bin/vercel`
+⚠ **未 push 到 GitHub**：我试了，但没有 GitHub auth（HTTPS PAT 过期/未存、SSH key 未配）— 你登录后一行命令搞定
+⚠ **未部署到 Vercel**：需要你 OAuth + Import（用 CLI 1 分钟 / 用 Web 3 分钟）
 
 ## ⚡ 最快上线路径（按你的 auth 方式选一条）
 
@@ -98,17 +99,26 @@ git push origin master
 
 push 到的是你自己的 `github.com/qiuyiwu1989-star/innolab`。
 
-### 3. 部署到 Vercel（3 分钟）
+### 3. 部署到 Vercel（最快 1 分钟 — 用 CLI）
+
+**方法 1（推荐）：CLI 一行**
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+cd /Users/qiu/Documents/innolab-repo
+vercel              # 第一次会问 link 项目（选 link / create），登录浏览器
+vercel --prod       # 部署到生产
+```
+
+预期：约 90 秒拿到 `https://innolab-xxx.vercel.app`。
+
+**方法 2：Web Dashboard**
 
 详见 `DEPLOY.md`。简版：
-
 1. push 完代码
-2. 打开 https://vercel.com/new
-3. Import `qiuyiwu1989-star/innolab`
-4. 加环境变量 `NEXT_PUBLIC_SITE_URL=https://innolab-xxx.vercel.app`
-5. Deploy
-6. ~2 分钟拿到生产 URL
-7. （可选）接自定义域名
+2. https://vercel.com/new → Import `qiuyiwu1989-star/innolab`
+3. 加环境变量 `NEXT_PUBLIC_SITE_URL=https://innolab-xxx.vercel.app`
+4. Deploy → 2 分钟拿 URL → 接自定义域名
 
 ## 知道这些坑（让你不踩）
 
