@@ -1,5 +1,11 @@
 # DC08 谈判准备框架
 
+## Meta
+- ID: DC08
+- Engine: Decision
+- Layer: L3
+- Origin: adapted
+
 > 归属：⚖️ 决策引擎 · L3（执行层）
 > 来源：Communication Coach 技能 · 谈判框架
 > 触发词：谈判准备、怎么谈、帮我准备谈判、议价策略、BATNA

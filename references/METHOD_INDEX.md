@@ -110,7 +110,7 @@
 | PD07 | Hook Model | Hook钩子模型 | L3 | classic | 触发→行动→酬赏→投入的习惯养成循环 | product/hook.md |
 | PD08 | Brand Equity Analysis | 品牌资产分析 | L3 | classic | 评估品牌认知/联想/忠诚度/感知质量 | product/brand-equity.md |
 | PD09 | Brand Resonance Model | 品牌共鸣模型 | L3 | classic | 从品牌认知到品牌共鸣的建设路径（CBBE） | product/brand-resonance.md |
-| PD10 | Product Definition Nine-Grid | 产品定义九宫格 | L4 | original | 围绕动机-场景-功能-形态-体验-成本的九维产品定义方法 | product/product-definition/nine-grid.md |
+| PD10 | Product Definition Nine-Grid | 产品定义九宫格 | L4 | original | 围绕动机-场景-功能-形态-体验-成本的九维产品定义方法 | product/product-definition-nine-grid.md |
 | PD11 | Ten Types of Innovation | 创新十环分析法 | L4 | classic | 把创新切碎成10个环节找被忽视的创新维度 | product/ten-types-innovation.md |
 | PD12 | Value Opportunity Analysis | 价值机会分析 | L3 | classic | 五维度评估产品情感价值与差异化机会 | product/value-opportunity-analysis.md |
 | PD13 | Business Origami | 商业折纸 | L3 | classic | 用纸质标志建立商业系统模型 | product/business-origami.md |

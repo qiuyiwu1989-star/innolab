@@ -1,5 +1,11 @@
 # ST17 系统基模分析
 
+## Meta
+- ID: ST17
+- Engine: Strategy
+- Layer: L4
+- Origin: adapted
+
 > 归属：🧠 认知引擎 · L4（系统层）
 > 来源：Systems Thinking 技能 · 系统基模参考库
 > 触发词：系统分析、基模匹配、这个问题是什么模式、为什么反复出现

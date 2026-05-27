@@ -1,5 +1,11 @@
 # DC09 非暴力沟通框架
 
+## Meta
+- ID: DC09
+- Engine: Decision
+- Layer: L3
+- Origin: adapted
+
 > 归属：⚖️ 决策引擎 · L3（执行层）
 > 来源：Communication Coach 技能 · 非暴力沟通
 > 触发词：沟通困难、怎么沟通、冲突处理、非暴力沟通、NVC、怎么说对方才听

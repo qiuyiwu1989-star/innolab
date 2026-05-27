@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/*
+ * InnoLab Design Tokens (v0.1)
+ * 创新实验室风：明亮主色 + 大量留白 + 几何感
+ */
+
+@theme {
+  /* 主色板 */
+  --color-cobalt: #2d5bff; /* 钴蓝 - 认知 / 主品牌 */
+  --color-flare: #ff6b35; /* 活力橙 - 战略 */
+  --color-acid: #b4e60e; /* 酸性绿 - 生成 */
+  --color-acid-ink: #4a6b00; /* 酸性绿在浅底上的可读色 */
+  --color-violet: #8b5cf6; /* 紫 - 决策 */
+  --color-rose: #ff3b7f; /* 玫红 - 产品 */
+  --color-cyan: #06b6d4; /* 青 - 进化 */
+
+  /* 中性 */
+  --color-ink: #0a0a0a;
+  --color-paper: #fafaf9;
+  --color-mist: #e7e5e4;
+
+  /* 字体 */
+  --font-sans:
+    "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
+    sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+  /* 圆角 */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+:root {
+  --background: #fafaf9;
+  --foreground: #0a0a0a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #fafaf9;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* 几何装饰：网格背景 */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(0 0 0 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 几何装饰：噪点 */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}

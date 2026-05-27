@@ -1,5 +1,11 @@
 # ST18 系统因果回路分析
 
+## Meta
+- ID: ST18
+- Engine: Strategy
+- Layer: L4
+- Origin: adapted
+
 > 归属：🧠 认知引擎 · L4（系统层）
 > 来源：Systems Thinking 技能 · 因果回路图模板
 > 触发词：因果分析、画连接、反馈循环、找根因、系统怎么运转
