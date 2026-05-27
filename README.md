@@ -1,22 +1,63 @@
-# InnoLab · 邱懿武的创新实验室
+# InnoLab — AI 创新战略咨询师
 
-> 集成 74 个战略、产品、认知方法论的智能分析系统。
+> 用 74 个方法论分析你的真实商业问题。
+> 从认知到产品化，一次完整的战略推演。
 
-## 🌐 网站版（v0.1）
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fqiuyiwu1989-star%2Finnolab&env=NEXT_PUBLIC_SITE_URL&envDescription=站点根%20URL%2C%20生产环境填你的域名&project-name=innolab&repository-name=innolab)
+
+## 🌐 网站（v0.3）
 
 ```bash
 npm install
-npm run dev   # 本地预览：http://localhost:3000
-npm run build # 生产构建
+npm run dev   # 本地预览 → http://localhost:3000
+npm run build # 生产构建（102 静态页 + 1 动态 API + 1 edge OG）
 ```
 
-- **首页**：六大引擎 · 五层认知 · 精选方法 · 精选案例
-- **方法库**：74 张卡，引擎/层级双重筛选 + 全文搜索
-- **方法详情**：markdown 渲染 + 相关方法 + 用过此方法的案例
-- **案例库**：10 个真实案例，方法 ↔ 案例双向联动
-- **关于**：邱懿武 + 五部著作 + v0.1 → v1.0 路线图
+### 在线功能
 
-技术栈：Next.js 16 + React 19 + Tailwind 4 + Turbopack。Vercel 一键部署。
+| 页面 | 做什么 |
+|---|---|
+| `/` | Hero · 看一眼能做什么 · 弹药库 · 六引擎 · 五层认知 · Roadmap · 候补 |
+| **`/demo`** | **v1.0 模拟分析流：5 个真实问题 × 流式推演动画** |
+| `/methods` | 74 张方法卡，引擎 / 层级双筛选 + 全文搜索 |
+| `/methods/[slug]` | 详情页：markdown 渲染 + 同引擎方法 + 用过此方法的案例 |
+| `/methods/engine/[key]` | 6 个引擎落地页（深描 + 推荐起步 + 按层分组） |
+| `/cases` | 10 个真实案例，领域筛选 |
+| `/cases/[id]` | 详情页：核心洞察 + 关键事实 + 关联方法 |
+| `/about` | 邱懿武 + 五部著作 + v0.1 → v1.0 路线图 |
+| **⌘K** | **全局命令面板**：搜方法 · 案例 · 页面 · 引擎 |
+
+### 视觉
+
+黑底 + 单一主色 `#B3FF39` + 大面积几何 + Inter / Noto Sans SC / JetBrains Mono。  
+Stripe Sigma / Apple TV+ 风。
+
+### 技术栈
+
+- **Next.js 16** (App Router, Turbopack)
+- **React 19** · **Tailwind CSS 4**
+- 内容：仓库 `methods/**.md` + `cases/**.json` 直接当数据源（无 CMS）
+- 搜索：`cmdk`
+- Markdown：`react-markdown` + `remark-gfm` + `rehype-slug`
+- 部署：Vercel
+
+### 部署
+
+详见 [DEPLOY.md](./DEPLOY.md)。一键 Deploy 按钮在顶部。
+
+### 开发
+
+```bash
+git clone https://github.com/qiuyiwu1989-star/innolab
+cd innolab
+npm install
+cp .env.example .env.local  # 默认值即可本地运行
+npm run dev
+```
+
+加方法：在 `methods/<engine>/<slug>.md` 写 markdown（参考已有方法的 `## Meta` 块格式）。  
+加案例：在 `cases/<domain>/<slug>.json` 写 JSON + 登记到 `cases/case-index.json`。  
+push 后 Vercel 自动重新构建。
 
 ## 这是什么
 
