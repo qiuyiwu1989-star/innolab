@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 33,
+  "total_cases": 36,
   "cases": [
     {
       "id": "case-001",
@@ -760,6 +760,39 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "product/enterprise-community-stall.json"
+    },
+    {
+      "id": "case-034",
+      "title": "连锁餐饮数字化「全面铺开」：50 家门店上了 12 个系统，但翻台率和人效都没变",
+      "domain": ["餐饮", "零售", "数字化", "战略"],
+      "tags": ["连锁餐饮", "数字化转型", "SaaS采购", "门店运营", "翻台率"],
+      "related_methods": ["ST19", "ST17", "DC07", "CG06", "EV03"],
+      "summary": "餐饮数字化最普遍的陷阱：买了 12 个工具但没有改变一个核心流程，约束点分析揭示真正的瓶颈",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "restaurant/chain-digitization-trap.json"
+    },
+    {
+      "id": "case-035",
+      "title": "初创团队 4 个产品想法都「很有机会」：选哪个先做，还是全做试试看？",
+      "domain": ["产品", "创业", "战略", "决策"],
+      "tags": ["创业决策", "产品选择", "初创公司", "MVP", "机会判断", "资源聚焦"],
+      "related_methods": ["DC07", "PD06", "PD01", "CG07", "ST06"],
+      "summary": "早期创业团队最普遍的错误：用「市场规模」选方向，而不是用「18 个月内能验证的最小假设」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/startup-product-focus.json"
+    },
+    {
+      "id": "case-036",
+      "title": "职业培训平台完课率 12%：学员付了钱但不学，问题出在课程还是动机？",
+      "domain": ["教育", "产品", "增长", "运营"],
+      "tags": ["职业教育", "在线培训", "完课率", "学习动机", "EdTech", "用户留存"],
+      "related_methods": ["PD07", "EV01", "CG01", "PD05", "ST17"],
+      "summary": "职业培训平台最常见的错误：用课程质量解释学员不学，真正原因是动机结构从入学那刻就坏了",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "education/vocational-edtech-completion.json"
     }
   ]
 }
