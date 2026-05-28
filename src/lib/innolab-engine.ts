@@ -1,4 +1,4 @@
-// InnoLab Engine — 把用户问题 + SYSTEM_PROMPT.md + 75 个方法 + 10 个案例
+// InnoLab Engine — 把用户问题 + SYSTEM_PROMPT.md + 77 个方法 + 30 个案例
 // 拼成系统提示，调小米 MiMo（OpenAI 兼容协议）流式返回。
 //
 // 切其他 OpenAI 兼容供应商只需要换 env：MIMO_BASE_URL / MIMO_API_KEY / MIMO_MODEL
@@ -183,43 +183,80 @@ export type AnalyzeEvent =
 
 /** 领域 → 案例领域关键词映射（用于动态注入最相关案例） */
 const DOMAIN_KEYWORDS: Record<string, string[]> = {
-  "ai-transform": ["AI转型", "企业AI转型", "AI工具"],
-  "product": ["AI产品", "产品设计", "产品"],
-  "ip-content": ["IP商业化", "文创", "内容"],
-  "org": ["人才", "组织", "管理"],
-  "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式", "企业服务", "消费品", "品牌", "新消费", "零售"],
+  "ai-transform": ["AI转型", "企业AI转型", "AI工具", "AI教育", "AI产品"],
+  "product": ["AI产品", "产品设计", "产品", "SaaS", "金融科技", "电商"],
+  "ip-content": ["IP商业化", "文创", "内容", "IP"],
+  "org": ["人才", "组织", "管理", "销售"],
+  "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式", "企业服务", "消费品", "品牌", "新消费", "零售", "医疗", "B2B", "电商", "金融科技", "教育"],
 };
 
+/** 提取用户 prompt 里的关键词，用于 prompt-level 案例匹配 */
+function extractPromptKeywords(prompt: string): string[] {
+  // 取 prompt 里出现的短词（2字以上），与案例 title/tags/summary 做 overlap 匹配
+  const stopWords = new Set(["一个", "我们", "是否", "怎么", "应该", "如何", "有没有", "问题", "什么", "还是", "已经", "但是", "都是", "这个", "那个", "可以", "不是", "需要"]);
+  const tokens = prompt.match(/[一-龥a-zA-Z0-9]{2,8}/g) ?? [];
+  return tokens.filter((t) => !stopWords.has(t));
+}
+
 /**
- * 根据领域找最相关的 2 个案例，返回简短的"参考案例"文本。
+ * 根据领域 + 用户 prompt 找最相关的 3 个案例，返回简短的"参考案例"文本。
  * 注入到 userMessage 前，让缓存的 system prompt 不变。
  */
-function buildDomainContext(domain: string | undefined): string {
-  if (!domain || domain === "all") return "";
-  const keywords = DOMAIN_KEYWORDS[domain];
-  if (!keywords) return "";
+function buildDomainContext(domain: string | undefined, prompt?: string): string {
   const cases = getAllCases();
-  const matched = cases.filter((c) =>
-    (c.domain ?? []).some((d: string) => keywords.some((k) => d.includes(k))),
-  );
-  if (matched.length === 0) return "";
-  // 按关键词命中数量降序排（命中越多越相关），保证最相关案例排在最前
-  const scored = matched.map((c) => ({
-    case: c,
-    score: (c.domain ?? []).filter((d: string) =>
-      keywords.some((k) => d.includes(k)),
-    ).length,
-  }));
-  scored.sort((a, b) => b.score - a.score);
-  const top = scored.slice(0, 2).map((s) => s.case);
+
+  // 方法 1: 基于选定领域关键词匹配
+  let domainMatched: typeof cases = [];
+  if (domain && domain !== "all") {
+    const keywords = DOMAIN_KEYWORDS[domain];
+    if (keywords) {
+      domainMatched = cases.filter((c) =>
+        (c.domain ?? []).some((d: string) => keywords.some((k) => d.includes(k))),
+      );
+    }
+  }
+
+  // 方法 2: 基于 prompt 关键词匹配（title + tags + summary 全文搜索）
+  let promptMatched: typeof cases = [];
+  if (prompt) {
+    const kwds = extractPromptKeywords(prompt);
+    promptMatched = cases.filter((c) => {
+      const corpus = [
+        c.title ?? "",
+        ...(c.tags ?? []),
+        c.summary ?? "",
+      ].join(" ");
+      return kwds.some((k) => corpus.includes(k));
+    });
+  }
+
+  // 合并 + 去重，domain 匹配优先，然后 prompt 匹配补充
+  const seen = new Set<string>();
+  const merged: typeof cases = [];
+  for (const c of [...domainMatched, ...promptMatched]) {
+    if (!seen.has(c.id)) { seen.add(c.id); merged.push(c); }
+  }
+
+  if (merged.length === 0) return "";
+
+  // 按「两个来源都命中」的案例优先排序
+  const domainIds = new Set(domainMatched.map((c) => c.id));
+  const promptIds = new Set(promptMatched.map((c) => c.id));
+  merged.sort((a, b) => {
+    const sa = (domainIds.has(a.id) ? 2 : 0) + (promptIds.has(a.id) ? 1 : 0);
+    const sb = (domainIds.has(b.id) ? 2 : 0) + (promptIds.has(b.id) ? 1 : 0);
+    return sb - sa;
+  });
+
+  const top = merged.slice(0, 3);
   const lines = top.map((c) => {
     const flow = c.analysis_flow;
     const chain = flow
       ? flow.method_chain.map((m: { id: string }) => m.id).join("→")
       : (c.related_methods ?? []).join("→");
-    return `- ${c.title}（方法链：${chain}）：${c.summary}${flow?.key_judgment ? `。核心判断：${flow.key_judgment.slice(0, 80)}…` : ""}`;
+    return `- ${c.title}（方法链：${chain}）：${c.summary}${flow?.key_judgment ? `。核心判断：${flow.key_judgment.slice(0, 100)}…` : ""}`;
   });
-  return `【本次领域相关案例参考】\n${lines.join("\n")}\n\n`;
+  return `【本次问题相关案例参考】\n${lines.join("\n")}\n\n`;
 }
 
 /**
@@ -252,7 +289,7 @@ export async function* analyzeStream({
   // 1. 可选：领域案例参考（动态注入，system prompt 不变→缓存复用）
   // 2. 可选：thread 续问前文精要
   // 3. 用户实际问题
-  const domainCtx = buildDomainContext(domain);
+  const domainCtx = buildDomainContext(domain, prompt);
   const userMessage = priorSummary?.trim()
     ? `${domainCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
     : `${domainCtx}${prompt}`;
