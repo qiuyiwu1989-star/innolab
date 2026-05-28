@@ -11,9 +11,9 @@
       "tags": ["自我诊断", "方法论评估", "质量分级"],
       "related_methods": ["CG14", "CG07", "PD05"],
       "wiki_obj_token": "XTy2dPlcZozqzbxfiJIc648Znhd",
-      "summary": "51个方法论的质量体检：从5星到2星，识别出7个需要补强的方法",
+      "summary": "74个方法论的质量体检：识别出12个需要补强的方法，找到弹药库的覆盖盲区",
       "added_date": "2026-04-05",
-      "file": null
+      "file": "product/innolab-self-diagnosis.json"
     },
     {
       "id": "case-002",
