@@ -17,6 +17,18 @@ export function CasesExplorer({
   const [domain, setDomain] = useState<string | "all">("all");
   const [q, setQ] = useState("");
 
+  // 只展示覆盖 3 个及以上案例的领域标签，按案例数降序 — 避免 filter chip 墙
+  const displayDomains = useMemo(() => {
+    return domains
+      .map((d) => ({
+        d,
+        count: cases.filter((c) => (c.domain ?? []).includes(d)).length,
+      }))
+      .filter(({ count }) => count >= 3)
+      .sort((a, b) => b.count - a.count)
+      .map(({ d }) => d);
+  }, [domains, cases]);
+
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return cases.filter((c) => {
@@ -68,7 +80,7 @@ export function CasesExplorer({
           label="全部"
           count={cases.length}
         />
-        {domains.map((d) => (
+        {displayDomains.map((d) => (
           <DomainChip
             key={d}
             active={domain === d}
