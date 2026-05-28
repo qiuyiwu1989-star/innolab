@@ -231,6 +231,8 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
   const [exampleVisible, setExampleVisible] = useState(true);
   /** 累计已探索的方法 ID（跨 session 持久化） */
   const [seenMethodIds, setSeenMethodIds] = useState<Set<string>>(new Set());
+  /** 方法探索地图面板是否展开 */
+  const [showMethodMap, setShowMethodMap] = useState(false);
 
   const visibleSuggestions =
     activeDomain === "all"
@@ -971,9 +973,14 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                     </span>
                   )}
                   {seenMethodIds.size > 0 && (
-                    <span className="ml-2 text-volt/70">
-                      · 你已探索 {seenMethodIds.size} 个方法
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setShowMethodMap((v) => !v)}
+                      className="ml-2 text-volt/70 hover:text-volt transition underline-offset-2 hover:underline"
+                      title="查看方法探索地图"
+                    >
+                      · 已探索 {seenMethodIds.size} / 74 个方法
+                    </button>
                   )}
                 </span>
                 <button
@@ -990,6 +997,15 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               </div>
             </div>
           </form>
+
+          {/* 方法探索地图 — 点击"已探索 N 个方法"后展开 */}
+          {showMethodMap && seenMethodIds.size > 0 && (
+            <MethodMap
+              methodsIndex={methodsIndex}
+              seenMethodIds={seenMethodIds}
+              onClose={() => setShowMethodMap(false)}
+            />
+          )}
 
           {/* 历史栏 — 仅当本地有过往分析时显示 */}
           {history.length > 0 && (
@@ -1711,6 +1727,98 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
           )}
         </section>
       )}
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   方法探索地图 — 显示 74 个方法 ID，已探索的亮 volt 色
+   ────────────────────────────────────────────────────────────────────────── */
+
+const ENGINE_META: { prefix: string; label: string; color: string }[] = [
+  { prefix: "CG", label: "认知", color: "text-amber-400" },
+  { prefix: "ST", label: "战略", color: "text-sky-400" },
+  { prefix: "GN", label: "生成", color: "text-emerald-400" },
+  { prefix: "DC", label: "决策", color: "text-rose-400" },
+  { prefix: "PD", label: "产品", color: "text-purple-400" },
+  { prefix: "EV", label: "进化", color: "text-orange-400" },
+];
+
+function MethodMap({
+  methodsIndex,
+  seenMethodIds,
+  onClose,
+}: {
+  methodsIndex: Record<string, MethodMeta>;
+  seenMethodIds: Set<string>;
+  onClose: () => void;
+}) {
+  const allIds = Object.keys(methodsIndex).sort();
+  const pct = Math.round((seenMethodIds.size / allIds.length) * 100);
+
+  return (
+    <div className="mt-3 rounded-xl border border-volt/30 bg-soot p-4">
+      <div className="mb-3 flex items-center gap-2">
+        <span className="text-[11px] uppercase tracking-widest text-volt">
+          方法探索地图
+        </span>
+        <span className="numeral text-[11px] text-dust">
+          {seenMethodIds.size} / {allIds.length} · {pct}%
+        </span>
+        {/* 进度条 */}
+        <div className="flex-1 h-1 rounded-full bg-fog-2 overflow-hidden">
+          <div
+            className="h-full rounded-full bg-volt transition-all"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-[11px] text-dust hover:text-ash transition"
+        >
+          收起
+        </button>
+      </div>
+      <div className="space-y-2">
+        {ENGINE_META.map(({ prefix, label, color }) => {
+          const group = allIds.filter((id) => id.startsWith(prefix));
+          if (group.length === 0) return null;
+          return (
+            <div key={prefix} className="flex items-start gap-2">
+              <span
+                className={`w-8 shrink-0 pt-0.5 text-[10px] font-medium uppercase tracking-widest ${color}`}
+              >
+                {label}
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {group.map((id) => {
+                  const seen = seenMethodIds.has(id);
+                  const meta = methodsIndex[id];
+                  return (
+                    <Link
+                      key={id}
+                      href={meta?.slug ? `/methods/${meta.slug}` : "#"}
+                      title={meta?.titleCn ?? id}
+                      className={cn(
+                        "numeral rounded px-1.5 py-0.5 text-[10px] transition hover:scale-110",
+                        seen
+                          ? "border border-volt/60 bg-volt/10 text-volt font-bold"
+                          : "border border-fog-2 bg-ink text-dust",
+                      )}
+                    >
+                      {id}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-3 text-[10px] text-dust">
+        亮色 = 本次推演里出现过的方法 · 点击 ID 看方法详情
+      </p>
     </div>
   );
 }
