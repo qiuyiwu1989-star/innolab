@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     template: "%s — InnoLab",
   },
   description:
-    "用 74 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。/demo 限免使用。",
+    "用 75 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。/demo 限免使用。",
   keywords: [
     "AI 战略咨询",
     "创新方法论",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "InnoLab — AI 创新战略咨询师",
-    description: "74 个方法论分析你的真实商业问题。/demo 限免使用。",
+    description: "75 个方法论分析你的真实商业问题。/demo 限免使用。",
   },
   robots: {
     index: true,

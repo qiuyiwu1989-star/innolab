@@ -1,4 +1,4 @@
-# ST17 系统基模分析
+# 系统基模分析（System Archetypes）
 
 ## Meta
 - ID: ST17

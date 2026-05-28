@@ -82,7 +82,7 @@ export default function Home() {
 
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ash sm:text-xl">
             把你的真实商业问题，用{" "}
-            <b className="font-semibold text-bone">74 个方法框架</b>
+            <b className="font-semibold text-bone">75 个方法框架</b>
             系统性推演。
             <br className="hidden sm:block" />
             多轮追问 · 方法链可视化 · 越用越懂你的场景。
@@ -158,7 +158,7 @@ export default function Home() {
           <SectionHead
             kicker="03 · 弹药库"
             title="不是空话。这是支撑 AI 推演的体系。"
-            sub="74 个方法论按六大引擎组织，每个方法标注它工作的认知层级。AI 调度它们，你也可以手动浏览。"
+            sub="75 个方法论按六大引擎组织，每个方法标注它工作的认知层级。AI 调度它们，你也可以手动浏览。"
           />
           <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
             <Stat n={totalMethods} l="方法卡" highlight />
@@ -176,7 +176,7 @@ export default function Home() {
             kicker="04 · Six Engines"
             title="六大引擎，串成一条生产线"
             sub="每个引擎解决生产链上一个环节。你卡在哪一环，就调哪一环的方法。"
-            link={{ href: "/methods", text: "全部 74 个方法" }}
+            link={{ href: "/methods", text: "全部 75 个方法" }}
           />
           <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-2 lg:grid-cols-3">
             {countsByEngine.map((e, i) => (

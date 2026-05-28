@@ -1,4 +1,4 @@
-# DC08 谈判准备框架
+# 谈判准备框架（Negotiation Preparation）
 
 ## Meta
 - ID: DC08

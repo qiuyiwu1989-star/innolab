@@ -1,4 +1,4 @@
-# DC09 非暴力沟通框架
+# 非暴力沟通框架（Nonviolent Communication）
 
 ## Meta
 - ID: DC09

@@ -51,7 +51,7 @@ const STATIC_PAGES: SearchItem[] = [
     type: "page",
     id: "methods-index",
     title: "方法库",
-    sub: "74 个方法 · 筛选 · 搜索",
+    sub: "75 个方法 · 筛选 · 搜索",
     href: "/methods",
     keywords: "methods 方法库 全部方法",
   },

@@ -1,4 +1,4 @@
-// InnoLab Engine — 把用户问题 + SYSTEM_PROMPT.md + 74 个方法 + 10 个案例
+// InnoLab Engine — 把用户问题 + SYSTEM_PROMPT.md + 75 个方法 + 10 个案例
 // 拼成系统提示，调小米 MiMo（OpenAI 兼容协议）流式返回。
 //
 // 切其他 OpenAI 兼容供应商只需要换 env：MIMO_BASE_URL / MIMO_API_KEY / MIMO_MODEL

@@ -1,4 +1,4 @@
-# ST18 系统因果回路分析
+# 系统因果回路分析（Causal Loop Analysis）
 
 ## Meta
 - ID: ST18
