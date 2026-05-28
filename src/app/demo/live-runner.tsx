@@ -36,6 +36,8 @@ import {
   type ThreadMessage,
 } from "@/lib/threads";
 import { ChevronDown, ChevronUp, MessageSquarePlus, RefreshCw, Microscope } from "lucide-react";
+import { MethodChainViz, type MethodMeta } from "@/components/demo/method-chain-viz";
+import { OnboardTour } from "@/components/demo/onboard-tour";
 
 type Phase = "idle" | "streaming" | "done" | "error";
 
@@ -125,7 +127,12 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
   },
 ];
 
-export function LiveRunner() {
+interface LiveRunnerProps {
+  /** Server-side built methods index for method chain visualization */
+  methodsIndex?: Record<string, MethodMeta>;
+}
+
+export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [prompt, setPrompt] = useState("");
   const [submittedPrompt, setSubmittedPrompt] = useState("");
@@ -747,6 +754,9 @@ export function LiveRunner() {
       )}
 
       {/* —— 运行 / 完成 / 错误：共用输出区 —— */}
+      {/* 首次访客引导（localStorage 控制，仅新用户看到） */}
+      <OnboardTour />
+
       {phase !== "idle" && (
         <section ref={outputRef}>
           {/* Thread 历史：本会话之前的 Q/A，折叠展示
@@ -900,6 +910,14 @@ export function LiveRunner() {
                 <span className="ml-1 inline-block size-2 translate-y-0.5 animate-pulse rounded-sm bg-volt" />
               )}
             </article>
+          )}
+
+          {/* 方法调用链可视化 — 推演完成后显示 */}
+          {phase === "done" && citedMethodIds.length > 0 && (
+            <MethodChainViz
+              methodIds={citedMethodIds}
+              methodsIndex={methodsIndex}
+            />
           )}
 
           {/* 错误态 */}

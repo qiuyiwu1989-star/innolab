@@ -5,14 +5,34 @@ import { demoScripts } from "@/lib/demo-scripts";
 import { getAllMethods } from "@/lib/methods";
 import { DemoRunner } from "./demo-runner";
 import { LiveRunner } from "./live-runner";
+import type { MethodMeta } from "@/components/demo/method-chain-viz";
 
 export const metadata: Metadata = {
   title: "Demo · 试用 InnoLab 引擎",
   description:
-    "把真实商业问题输入 InnoLab — Claude Sonnet 4.6 用 74 个方法编排出战略推演。v0.1 限免使用。",
+    "把真实商业问题输入 InnoLab — 74 个方法框架编排出战略推演。v0.1 限免使用。",
 };
 
 export default function DemoPage() {
+  // Build methods index on server — passed to client LiveRunner as plain data
+  const allMethods = getAllMethods();
+  const methodsIndex: Record<string, MethodMeta> = Object.fromEntries(
+    allMethods.map((m) => [
+      m.id,
+      {
+        id: m.id,
+        titleCn: m.titleCn,
+        titleEn: m.titleEn,
+        engine: m.engine,
+        layer: m.layer,
+        oneliner: m.oneliner,
+        slug: m.slug,
+        engineDir: m.engineDir,
+      } satisfies MethodMeta,
+    ]),
+  );
+  const idToSlug = Object.fromEntries(allMethods.map((m) => [m.id, m.slug]));
+
   return (
     <main className="relative isolate flex-1">
       <div className="absolute inset-0 bg-grid opacity-40" />
@@ -55,7 +75,7 @@ export default function DemoPage() {
 
         {/* 主体：实时分析（LiveRunner） */}
         <div className="mt-12">
-          <LiveRunner />
+          <LiveRunner methodsIndex={methodsIndex} />
         </div>
 
         {/* —— 分隔 —— */}
@@ -78,12 +98,7 @@ export default function DemoPage() {
             </p>
           </div>
 
-          <DemoRunner
-            scripts={demoScripts}
-            idToSlug={Object.fromEntries(
-              getAllMethods().map((m) => [m.id, m.slug]),
-            )}
-          />
+          <DemoRunner scripts={demoScripts} idToSlug={idToSlug} />
         </section>
 
         {/* 底部小提示 */}
