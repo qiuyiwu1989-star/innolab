@@ -104,7 +104,7 @@ export function MethodChainViz({ methodIds, methodsIndex }: Props) {
               {/* 方法卡 */}
               {m ? (
                 <Link
-                  href={`/methods/${m.engineDir}/${m.slug}`}
+                  href={`/methods/${m.slug}`}
                   className={cn(
                     "group flex flex-col gap-1.5 rounded-lg border bg-ink px-3 py-2.5 transition",
                     style.card,
