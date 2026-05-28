@@ -182,6 +182,14 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   /** 复制 / 分享 状态 */
   const [copied, setCopied] = useState<null | "result" | "link">(null);
 
+  /* —— 用户背景记忆（分析记忆库简化版）—— */
+  /** 用户在"你的背景"框里保存的内容 */
+  const [userContext, setUserContext] = useState("");
+  /** 编辑中的临时草稿（未保存时和 userContext 不同步） */
+  const [userContextDraft, setUserContextDraft] = useState("");
+  /** "你的背景"输入框是否展开 */
+  const [contextOpen, setContextOpen] = useState(false);
+
   /* —— Thread 会话化状态 —— */
   /** 当前 thread（null = 还没开始或重置后） */
   const [currentThread, setCurrentThread] = useState<Thread | null>(null);
@@ -207,7 +215,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   // 卸载时取消请求
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  // 加载时恢复上次选择的领域 + 历史 + 上一次完成的 thread
+  // 加载时恢复上次选择的领域 + 历史 + 上一次完成的 thread + 用户背景
   useEffect(() => {
     try {
       const saved = localStorage.getItem("innolab.demo.domain");
@@ -218,6 +226,17 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       /* localStorage 不可用就算了 */
     }
     setHistory(readHistory());
+
+    // 恢复用户背景
+    try {
+      const ctx = localStorage.getItem("innolab.userContext.v1");
+      if (ctx) {
+        setUserContext(ctx);
+        setUserContextDraft(ctx);
+      }
+    } catch {
+      /* noop */
+    }
 
     // 尝试恢复上次的 thread session（同一用户刷新后不丢失上下文）
     try {
@@ -283,6 +302,23 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       });
     }
   }, [output, phase]);
+
+  /** 保存用户背景到 state + localStorage */
+  const saveUserContext = useCallback((text: string) => {
+    const trimmed = text.trim();
+    setUserContext(trimmed);
+    setUserContextDraft(trimmed);
+    setContextOpen(false);
+    try {
+      if (trimmed) {
+        localStorage.setItem("innolab.userContext.v1", trimmed);
+      } else {
+        localStorage.removeItem("innolab.userContext.v1");
+      }
+    } catch {
+      /* noop */
+    }
+  }, []);
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
@@ -471,12 +507,19 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       const trimmed = text.trim();
       if (!trimmed || phase === "streaming") return;
 
+      // 用户背景注入：首轮时把背景信息拼入 prompt，后续轮次跳过（priorSummary 已含前文）
+      const kind = opts?.kind ?? null;
+      const isFirstTurn = !kind || threadHistory.length === 0;
+      const enrichedPrompt =
+        isFirstTurn && userContext
+          ? `【我的背景】${userContext}\n\n${trimmed}`
+          : trimmed;
+
       abortRef.current?.abort();
       const ctrl = new AbortController();
       abortRef.current = ctrl;
 
       // 续 thread：构建 prior_summary（前文压缩精要）
-      const kind = opts?.kind ?? null;
       const isFollowUp = !!kind && threadHistory.length > 0;
       const priorSummary = isFollowUp
         ? buildPriorSummary({
@@ -521,7 +564,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            prompt: trimmed,
+            // enrichedPrompt 在首轮时含【我的背景】前缀，后续轮次直接用 trimmed
+            prompt: enrichedPrompt,
             // 数据采集：用户走了哪个领域的入口
             source: pickedFromDomain,
             domain: effectiveDomain,
@@ -671,7 +715,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [phase, activeDomain, pickedFromDomain, currentThread, threadHistory],
+    [phase, activeDomain, pickedFromDomain, currentThread, threadHistory, userContext],
   );
 
   return (
@@ -679,6 +723,83 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       {/* —— 输入区（idle 时显示）—— */}
       {phase === "idle" && (
         <section>
+          {/* 用户背景记忆 — 存一次，每次分析自动带入 */}
+          <div className="mb-3">
+            {userContext && !contextOpen ? (
+              <button
+                type="button"
+                onClick={() => setContextOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-volt/30 bg-volt/[0.05] px-3 py-1 text-[11px] text-volt/80 transition hover:border-volt hover:text-volt"
+              >
+                <span className="size-1.5 rounded-full bg-volt/70" />
+                <span className="max-w-[240px] truncate">背景：{userContext}</span>
+                <span className="ml-1 text-dust">编辑</span>
+              </button>
+            ) : !contextOpen ? (
+              <button
+                type="button"
+                onClick={() => setContextOpen(true)}
+                className="inline-flex items-center gap-1.5 text-[11px] text-dust transition hover:text-ash"
+              >
+                <span className="text-volt/60">+</span>
+                告诉 InnoLab 你的背景，让分析更精准
+              </button>
+            ) : null}
+
+            {contextOpen && (
+              <div className="rounded-lg border border-volt/30 bg-volt/[0.03] p-3">
+                <div className="text-[11px] uppercase tracking-widest text-volt mb-2">
+                  你的背景（保存后自动加入每次分析）
+                </div>
+                <textarea
+                  value={userContextDraft}
+                  onChange={(e) => setUserContextDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      setContextOpen(false);
+                      setUserContextDraft(userContext);
+                    }
+                    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                      saveUserContext(userContextDraft);
+                    }
+                  }}
+                  placeholder="例：我是一家 50 人设计公司的 CEO，主营 IP 周边，年营收 2000 万，正在考虑 AI 转型"
+                  rows={3}
+                  className="w-full resize-none bg-transparent text-sm text-bone outline-none placeholder:text-dust/60"
+                  autoFocus
+                />
+                <div className="mt-2 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => saveUserContext(userContextDraft)}
+                    className="rounded bg-volt px-3 py-1 text-[11px] font-semibold text-ink hover:brightness-110"
+                  >
+                    保存
+                  </button>
+                  {userContext && (
+                    <button
+                      type="button"
+                      onClick={() => saveUserContext("")}
+                      className="text-[11px] text-dust hover:text-rose-400"
+                    >
+                      清除
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setContextOpen(false);
+                      setUserContextDraft(userContext);
+                    }}
+                    className="ml-auto text-[11px] text-dust hover:text-ash"
+                  >
+                    取消
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
