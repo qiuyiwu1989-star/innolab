@@ -28,12 +28,78 @@ interface ErrorState {
   reason?: "rate_limit" | "config" | "api" | "unknown";
 }
 
-const SUGGESTIONS = [
-  { label: "我该做 IP 产品吗？", tag: "IP 商业化" },
-  { label: "AI 转型该从哪里开始？", tag: "企业 AI" },
-  { label: "怎么搭建双轨人才体系？", tag: "组织" },
-  { label: "我的产品定位是什么？", tag: "产品定义" },
-  { label: "怎么判断一个赛道还有没有机会？", tag: "战略" },
+/** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
+const DOMAINS = [
+  { key: "all", label: "全部" },
+  { key: "ai-transform", label: "AI 转型" },
+  { key: "product", label: "产品" },
+  { key: "ip-content", label: "IP / 内容" },
+  { key: "org", label: "组织" },
+  { key: "strategy", label: "战略" },
+] as const;
+type DomainKey = (typeof DOMAINS)[number]["key"];
+
+const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
+  // AI 转型
+  { label: "AI 转型该从哪里开始？", tag: "企业 AI", domain: "ai-transform" },
+  {
+    label: "我们 AI 转型一年没效果，问题在哪？",
+    tag: "AI 自查",
+    domain: "ai-transform",
+  },
+  {
+    label: "每个环节加 AI vs 从零重设计流程？",
+    tag: "流程改造",
+    domain: "ai-transform",
+  },
+  // 产品
+  { label: "我的产品定位是什么？", tag: "产品定义", domain: "product" },
+  {
+    label: "怎么判断 MVP 已经被验证了？",
+    tag: "MVP",
+    domain: "product",
+  },
+  {
+    label: "我该不该砍掉这个功能？",
+    tag: "产品取舍",
+    domain: "product",
+  },
+  // IP / 内容
+  { label: "我该做 IP 产品吗？", tag: "IP 商业化", domain: "ip-content" },
+  {
+    label: "我的 IP 护城河该怎么建？",
+    tag: "IP 四层",
+    domain: "ip-content",
+  },
+  {
+    label: "文创爆款怎么持续生新的？",
+    tag: "老瓶新装",
+    domain: "ip-content",
+  },
+  // 组织
+  { label: "怎么搭建双轨人才体系？", tag: "人才", domain: "org" },
+  { label: "我团队卡在 L2 怎么办？", tag: "L2-L4", domain: "org" },
+  {
+    label: "招 AI 团队还是全员培训？",
+    tag: "组织选择",
+    domain: "org",
+  },
+  // 战略
+  {
+    label: "怎么判断一个赛道还有没有机会？",
+    tag: "赛道判断",
+    domain: "strategy",
+  },
+  {
+    label: "守线攻线资源该怎么分配？",
+    tag: "攻守矩阵",
+    domain: "strategy",
+  },
+  {
+    label: "现在该不该启动这次转型？",
+    tag: "决策时点",
+    domain: "strategy",
+  },
 ];
 
 export function LiveRunner() {
@@ -46,6 +112,15 @@ export function LiveRunner() {
   const [remaining, setRemaining] = useState<{ ip?: number; global?: number }>(
     {},
   );
+  const [activeDomain, setActiveDomain] = useState<DomainKey>("all");
+  const [pickedFromDomain, setPickedFromDomain] = useState<DomainKey | "free">(
+    "free",
+  );
+
+  const visibleSuggestions =
+    activeDomain === "all"
+      ? SUGGESTIONS
+      : SUGGESTIONS.filter((s) => s.domain === activeDomain);
 
   const abortRef = useRef<AbortController | null>(null);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -99,7 +174,12 @@ export function LiveRunner() {
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: trimmed }),
+          body: JSON.stringify({
+            prompt: trimmed,
+            // 数据采集：用户走了哪个领域的入口
+            source: pickedFromDomain,
+            domain: activeDomain,
+          }),
           signal: ctrl.signal,
         });
 
@@ -243,18 +323,42 @@ export function LiveRunner() {
             </div>
           </form>
 
-          {/* 建议问题 */}
-          <div className="mt-6">
-            <div className="text-xs uppercase tracking-widest text-dust">
-              试试这些问题
+          {/* 领域分流 + 建议问题 */}
+          <div className="mt-8">
+            <div className="flex items-baseline justify-between">
+              <div className="text-xs uppercase tracking-widest text-dust">
+                按领域选问题
+              </div>
+              <div className="numeral text-xs text-dust">
+                {visibleSuggestions.length} 个
+              </div>
             </div>
-            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {SUGGESTIONS.map((s) => (
+            {/* 领域 chips */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {DOMAINS.map((d) => (
+                <button
+                  key={d.key}
+                  type="button"
+                  onClick={() => setActiveDomain(d.key)}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-xs font-medium transition",
+                    activeDomain === d.key
+                      ? "border-volt bg-volt text-ink"
+                      : "border-fog-2 bg-soot text-ash hover:border-fog-3 hover:text-bone",
+                  )}
+                >
+                  {d.label}
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {visibleSuggestions.map((s) => (
                 <button
                   key={s.label}
                   type="button"
                   onClick={() => {
                     setPrompt(s.label);
+                    setPickedFromDomain(s.domain);
                     submit(s.label);
                   }}
                   className="group flex items-start gap-3 rounded-lg border border-fog-2 bg-soot p-4 text-left transition hover:border-volt hover:bg-graphite"
