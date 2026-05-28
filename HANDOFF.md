@@ -126,7 +126,26 @@ MIMO_MODEL        = mimo-v2.5-pro
 
 ---
 
-## 🌐 接子域 innolab.qiuyiwu.com
+## 🖥 备选：自建服务器部署（你说"未来可以部署在这"）
+
+```
+IP:        43.159.171.3
+Domain:    qiuyiwu.com
+Pass:      <在 1Password / 你那里>
+```
+
+Vercel 是当下最快路径（90 秒上线 + 全球 CDN + 自动 SSL）。但如果未来想自建（成本可控、数据不出境），步骤是：
+
+1. SSH 上服务器，装 Node 24 / nginx / pm2 / git
+2. `git clone` + `npm ci` + `npm run build`
+3. `pm2 start "npm start" --name innolab` 跑生产 server
+4. nginx 反代到 `:3000` + Certbot 签 SSL
+5. DNS `innolab.qiuyiwu.com` A 记录指向 43.159.171.3
+6. 设置 `pm2 startup` 让重启自动拉起
+
+要的时候我可以写一个 `scripts/deploy-vps.sh` 全自动跑这套。**当下先用 Vercel**，能上线就行。
+
+## 🌐 接子域 innolab.qiuyiwu.com（Vercel 路径）
 
 按计划，生产域名是 `innolab.qiuyiwu.com`（你 `qiuyiwu.com` 的独立子域）。
 

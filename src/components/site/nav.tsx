@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X, Search } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
 
 export function SiteNav() {
@@ -53,6 +54,7 @@ export function SiteNav() {
               ⌘K
             </kbd>
           </button>
+          <ThemeToggle className="ml-1" />
           <Link
             href="/#waitlist"
             className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-volt px-4 py-1.5 text-xs font-medium text-ink transition hover:brightness-110"
@@ -61,15 +63,18 @@ export function SiteNav() {
           </Link>
         </nav>
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="rounded-md p-1.5 text-bone md:hidden"
-          aria-label={open ? "关闭菜单" : "打开菜单"}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        {/* Mobile: theme toggle + hamburger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="rounded-md p-1.5 text-bone"
+            aria-label={open ? "关闭菜单" : "打开菜单"}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

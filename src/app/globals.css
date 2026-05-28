@@ -1,27 +1,70 @@
 @import "tailwindcss";
 
 /*
- * InnoLab v0.2 · Design Tokens
- * 气质：Stripe Sigma / Apple TV+ — 黑底 · 单一主色 · 大面积几何
+ * InnoLab v0.8 · Design Tokens — 双主题
+ * 暗色（默认）· Stripe Sigma / Apple TV+ 风
+ * 亮色 · Editorial / Stripe Press 风
+ *
+ * 策略：所有语义色名（ink/bone/soot/fog-N 等）通过 CSS 变量在主题间翻转。
+ * @theme 把 Tailwind 工具类映射到这些变量，组件代码不用动。
+ * volt 主色保持 #b3ff39（品牌色），亮色下作为 text 时通过 .light override 加深。
  */
 
+/* ── 主题变量定义 ────────────────────────────────── */
+
+:root {
+  /* 暗色默认 */
+  --c-ink: #0a0a0a;          /* 主背景 */
+  --c-soot: #111111;          /* 卡片底（微抬高） */
+  --c-graphite: #1a1a1a;      /* hover / 二级抬高 */
+  --c-fog-1: rgba(255, 255, 255, 0.06);
+  --c-fog-2: rgba(255, 255, 255, 0.10);
+  --c-fog-3: rgba(255, 255, 255, 0.18);
+  --c-bone: #fafafa;          /* 主文字 */
+  --c-ash: #a3a3a3;           /* 次文字 */
+  --c-dust: #525252;          /* 极次文字 */
+  --c-grid: rgba(255, 255, 255, 0.04);
+  --c-dot: rgba(255, 255, 255, 0.08);
+  /* 阅读体验 */
+  --c-prose: rgba(250, 250, 250, 0.85);
+}
+
+:root.light {
+  --c-ink: #fafaf8;           /* 主背景：温暖纸感 */
+  --c-soot: #ffffff;          /* 卡片底 */
+  --c-graphite: #f1f0eb;      /* hover */
+  --c-fog-1: rgba(10, 10, 10, 0.04);
+  --c-fog-2: rgba(10, 10, 10, 0.09);
+  --c-fog-3: rgba(10, 10, 10, 0.18);
+  --c-bone: #0a0a0a;          /* 主文字 */
+  --c-ash: #525252;           /* 次文字 */
+  --c-dust: #8a8a8a;          /* 极次文字（亮色下要更暗一些才看得见） */
+  --c-grid: rgba(10, 10, 10, 0.05);
+  --c-dot: rgba(10, 10, 10, 0.07);
+  --c-prose: rgba(10, 10, 10, 0.82);
+}
+
+/* ── Tailwind @theme：工具类引用 CSS 变量 ────────── */
+
 @theme {
-  /* —— 中性 —— */
-  --color-ink: #0a0a0a;        /* 主背景 */
-  --color-soot: #111111;        /* 卡片底（微抬高） */
-  --color-graphite: #1a1a1a;    /* hover / second elevation */
-  --color-fog-1: rgba(255, 255, 255, 0.06); /* 极淡分隔 */
-  --color-fog-2: rgba(255, 255, 255, 0.10); /* 标准 border */
-  --color-fog-3: rgba(255, 255, 255, 0.18); /* 强调 border */
-  --color-bone: #fafafa;        /* 主文字 */
-  --color-ash: #a3a3a3;         /* 次文字 */
-  --color-dust: #525252;        /* 极次文字 */
+  /* 中性（语义名不变，值跟随主题） */
+  --color-ink: var(--c-ink);
+  --color-soot: var(--c-soot);
+  --color-graphite: var(--c-graphite);
+  --color-fog-1: var(--c-fog-1);
+  --color-fog-2: var(--c-fog-2);
+  --color-fog-3: var(--c-fog-3);
+  --color-bone: var(--c-bone);
+  --color-ash: var(--c-ash);
+  --color-dust: var(--c-dust);
+  --color-prose: var(--c-prose);
 
-  /* —— 主色（唯一一个） —— */
-  --color-volt: #b3ff39;        /* 电压绿 — 唯一的视觉重音 */
-  --color-volt-dim: #6f9e23;    /* volt 在白底/卡片上的可读色 */
+  /* 主色（两个主题都保持 #b3ff39，作为品牌锚） */
+  --color-volt: #b3ff39;
+  --color-volt-dim: #6f9e23;
+  --color-volt-ink: #4a6b00;
 
-  /* —— 字体栈 —— */
+  /* 字体栈 */
   --font-sans:
     "Inter", "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei",
     sans-serif;
@@ -30,32 +73,30 @@
   --font-mono:
     "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
 
-  /* —— 圆角（普遍偏小，硬朗为主） —— */
+  /* 圆角 */
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
 }
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
+/* ── 基础 ──────────────────────────────────────── */
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--c-ink);
+  color: var(--c-bone);
   scroll-behavior: smooth;
+  /* 在主题切换时短暂禁用过渡以避免闪烁 */
+  color-scheme: dark;
 }
 
-/* iOS Safari: 防止地址栏挤压 */
+:root.light {
+  color-scheme: light;
+}
+
+/* iOS Safari */
 @supports (-webkit-touch-callout: none) {
   body {
     min-height: -webkit-fill-available;
@@ -63,43 +104,57 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--c-ink);
+  color: var(--c-bone);
   font-family: var(--font-sans);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
   -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
 ::selection {
   background: var(--color-volt);
-  color: var(--color-ink);
+  color: var(--c-ink);
 }
 
-/* —— 装饰 utility：网格 —— */
+/* ── 亮色模式的精修覆盖 ────────────────────────── */
+
+/* volt 作为文字色在亮底上太刺眼 / 对比不足 — 降到深绿 */
+:root.light .text-volt {
+  color: var(--color-volt-ink);
+}
+
+/* volt 装饰下划线在亮底也要降饱和 */
+:root.light .decoration-volt {
+  text-decoration-color: var(--color-volt-ink);
+}
+
+/* "已上线" 等小色块仍用 volt 填充 — 亮色下不变（CTA 醒目度需要这个） */
+
+/* ── 装饰 utility ───────────────────────────────── */
+
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--c-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-grid) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
 .bg-grid-dense {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, var(--c-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-grid) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* —— 装饰 utility：网点 —— */
 .bg-dots {
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.08) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(var(--c-dot) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
-/* —— 装饰 utility：渐隐遮罩 —— */
+/* 渐隐遮罩 */
 .mask-fade-b {
   mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
 }
@@ -116,7 +171,8 @@ body {
   );
 }
 
-/* —— 字体细节：display 标题 razor tight —— */
+/* ── 字体细节 ────────────────────────────────── */
+
 .display {
   font-family: var(--font-display);
   letter-spacing: -0.04em;
@@ -124,7 +180,6 @@ body {
   line-height: 0.95;
 }
 
-/* —— 数字大字 —— */
 .numeral {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -132,25 +187,24 @@ body {
   font-weight: 500;
 }
 
-/* —— input/textarea 默认色 —— */
+/* input / textarea */
 input,
 textarea {
-  color: var(--color-bone);
+  color: var(--c-bone);
   caret-color: var(--color-volt);
 }
-
 input::placeholder,
 textarea::placeholder {
-  color: var(--color-dust);
+  color: var(--c-dust);
 }
 
-/* —— 焦点环（统一） —— */
 *:focus-visible {
   outline: 2px solid var(--color-volt);
   outline-offset: 2px;
 }
 
-/* —— appear 动画（demo runner、stepcard 用） —— */
+/* ── appear 动画 ────────────────────────────────── */
+
 @keyframes innolab-appear {
   from {
     opacity: 0;
@@ -165,16 +219,12 @@ textarea::placeholder {
 .animate-in {
   animation: innolab-appear 0.4s ease-out both;
 }
-
 .animate-in.duration-300 {
   animation-duration: 0.3s;
 }
 .animate-in.duration-400 {
   animation-duration: 0.4s;
 }
-
-/* fade-in 和 slide-in-from-bottom-* / -1 / -2 是 tailwindcss-animate 风格 alias,
-   我们这里统一映射到上面的 keyframe — 不需要插件 */
 .fade-in,
 .slide-in-from-bottom-1,
 .slide-in-from-bottom-2 {
@@ -190,7 +240,8 @@ textarea::placeholder {
   }
 }
 
-/* —— marquee（滚动条文） —— */
+/* ── marquee ────────────────────────────────────── */
+
 @keyframes marquee-x {
   from {
     transform: translateX(0);

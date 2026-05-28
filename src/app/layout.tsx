@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNav } from "@/components/site/nav";
 import { CommandMenu } from "@/components/site/command-menu";
+import { ThemeProvider } from "@/components/site/theme-provider";
 import { getSearchIndex } from "@/lib/search";
 import "./globals.css";
 
@@ -66,11 +67,14 @@ export default function RootLayout({
       lang="zh-CN"
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${notoSC.variable} ${jetbrains.variable} antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-ink text-bone">
-        <SiteNav />
-        {children}
-        <CommandMenu items={searchIndex} />
+        <ThemeProvider>
+          <SiteNav />
+          {children}
+          <CommandMenu items={searchIndex} />
+        </ThemeProvider>
         {/* Vercel 部署后自动收集，本地无副作用 */}
         <Analytics />
         <SpeedInsights />
