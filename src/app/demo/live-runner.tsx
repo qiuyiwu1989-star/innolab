@@ -10,9 +10,23 @@ import {
   Sparkles,
   X,
   CornerDownLeft,
+  Copy,
+  Check,
+  Share2,
+  ThumbsUp,
+  ThumbsDown,
+  History,
+  Trash2,
 } from "lucide-react";
 import { Markdown } from "@/components/site/markdown";
 import { cn } from "@/lib/utils";
+import {
+  appendToHistory,
+  readHistory,
+  removeFromHistory,
+  buildShareUrl,
+  type HistoryItem,
+} from "@/lib/demo-history";
 
 type Phase = "idle" | "streaming" | "done" | "error";
 
@@ -118,6 +132,16 @@ export function LiveRunner() {
   );
   /** 等首个 delta 到达前的"思考中"状态 */
   const [waitingFirstChunk, setWaitingFirstChunk] = useState(false);
+  /** 本地分析历史（localStorage） */
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  /** 完成后的反馈（一次性） */
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  const [feedbackNote, setFeedbackNote] = useState("");
+  const [showNoteInput, setShowNoteInput] = useState(false);
+  /** 是否从历史回放（不发 API） */
+  const [fromReplay, setFromReplay] = useState(false);
+  /** 复制 / 分享 状态 */
+  const [copied, setCopied] = useState<null | "result" | "link">(null);
 
   const visibleSuggestions =
     activeDomain === "all"
@@ -130,7 +154,7 @@ export function LiveRunner() {
   // 卸载时取消请求
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  // 加载时恢复上次选择的领域
+  // 加载时恢复上次选择的领域 + 历史
   useEffect(() => {
     try {
       const saved = localStorage.getItem("innolab.demo.domain");
@@ -139,6 +163,24 @@ export function LiveRunner() {
       }
     } catch {
       /* localStorage 不可用就算了 */
+    }
+    setHistory(readHistory());
+  }, []);
+
+  // 解析 URL ?q= 分享链接：朋友点开时自动 prefill prompt
+  // 注意：不自动提交，避免意外消耗配额；只 prefill 让用户主动点
+  // 用 window.location 而非 useSearchParams，避免触发 SSG bailout
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    const d = params.get("d");
+    if (q) {
+      setPrompt(q);
+      if (d && DOMAINS.some((dd) => dd.key === d)) {
+        setActiveDomain(d as DomainKey);
+        setPickedFromDomain(d as DomainKey | "free");
+      }
     }
   }, []);
 
@@ -170,7 +212,110 @@ export function LiveRunner() {
     setSubmittedPrompt("");
     setUsage(null);
     setError(null);
+    setFeedback(null);
+    setFeedbackNote("");
+    setShowNoteInput(false);
+    setCopied(null);
+    setFromReplay(false);
+    // 刷新历史显示
+    setHistory(readHistory());
   }, []);
+
+  /** 从历史回放某次分析 — 不发 API */
+  const replayFromHistory = useCallback((item: HistoryItem) => {
+    abortRef.current?.abort();
+    setPhase("done");
+    setSubmittedPrompt(item.prompt);
+    setOutput(item.output);
+    setUsage(null);
+    setError(null);
+    setFeedback(null);
+    setCopied(null);
+    setFromReplay(true);
+    if (DOMAINS.some((d) => d.key === item.domain)) {
+      setPickedFromDomain(item.domain as DomainKey | "free");
+    }
+    setTimeout(() => {
+      outputRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 50);
+  }, []);
+
+  const removeHistoryItem = useCallback((id: string) => {
+    removeFromHistory(id);
+    setHistory(readHistory());
+  }, []);
+
+  /** 复制分析结果到剪贴板 */
+  const copyResult = useCallback(async () => {
+    try {
+      const text = `【问题】${submittedPrompt}\n\n${output}\n\n—— InnoLab 战略推演 · https://innolab.qiuyiwu.com/demo`;
+      await navigator.clipboard.writeText(text);
+      setCopied("result");
+      setTimeout(() => setCopied(null), 2200);
+    } catch {
+      /* 浏览器拒绝 — 忽略 */
+    }
+  }, [submittedPrompt, output]);
+
+  /** 复制分享链接 */
+  const copyShareLink = useCallback(async () => {
+    try {
+      const url = buildShareUrl(submittedPrompt, activeDomain);
+      await navigator.clipboard.writeText(url);
+      setCopied("link");
+      setTimeout(() => setCopied(null), 2200);
+    } catch {
+      /* noop */
+    }
+  }, [submittedPrompt, activeDomain]);
+
+  /** 提交反馈 */
+  const sendFeedback = useCallback(
+    async (kind: "up" | "down") => {
+      setFeedback(kind);
+      // 👎 打开备注输入；👍 直接发
+      if (kind === "down") {
+        setShowNoteInput(true);
+      }
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kind,
+            prompt: submittedPrompt,
+            domain: activeDomain,
+          }),
+        });
+      } catch {
+        /* 静默失败 — 不影响用户 */
+      }
+    },
+    [submittedPrompt, activeDomain],
+  );
+
+  const sendFeedbackNote = useCallback(async () => {
+    const note = feedbackNote.trim();
+    if (!note || !feedback) return;
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: feedback,
+          prompt: submittedPrompt,
+          domain: activeDomain,
+          note,
+        }),
+      });
+      setShowNoteInput(false);
+    } catch {
+      /* noop */
+    }
+  }, [feedback, feedbackNote, submittedPrompt, activeDomain]);
 
   const submit = useCallback(
     async (text: string) => {
@@ -235,6 +380,18 @@ export function LiveRunner() {
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
+        // 本地累积，用于完成时存历史（state 是异步的，不可靠）
+        let outputAccumulator = "";
+
+        const finalize = () => {
+          appendToHistory({
+            prompt: trimmed,
+            domain: activeDomain,
+            output: outputAccumulator,
+          });
+          setHistory(readHistory());
+          setPhase("done");
+        };
 
         while (true) {
           const { done, value } = await reader.read();
@@ -256,6 +413,7 @@ export function LiveRunner() {
                 const ev = JSON.parse(json);
                 if (ev.type === "delta") {
                   if (waitingFirstChunk) setWaitingFirstChunk(false);
+                  outputAccumulator += ev.text;
                   setOutput((prev) => prev + ev.text);
                 } else if (ev.type === "usage") {
                   setUsage({
@@ -269,7 +427,7 @@ export function LiveRunner() {
                   setPhase("error");
                   return;
                 } else if (ev.type === "done") {
-                  setPhase("done");
+                  if (outputAccumulator.trim()) finalize();
                   return;
                 }
               } catch {
@@ -280,7 +438,11 @@ export function LiveRunner() {
         }
 
         // 流自然结束（没有 done 事件 — 也算完成）
-        setPhase((p) => (p === "streaming" ? "done" : p));
+        if (outputAccumulator.trim()) {
+          finalize();
+        } else {
+          setPhase((p) => (p === "streaming" ? "done" : p));
+        }
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") {
           // 用户主动取消
@@ -348,6 +510,46 @@ export function LiveRunner() {
               </div>
             </div>
           </form>
+
+          {/* 历史栏 — 仅当本地有过往分析时显示 */}
+          {history.length > 0 && (
+            <div className="mt-6 rounded-lg border border-fog-2 bg-soot/60 p-3">
+              <div className="flex items-baseline justify-between">
+                <div className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-dust">
+                  <History className="size-3" />
+                  最近问过
+                </div>
+                <div className="numeral text-[10px] text-dust">
+                  {history.length} 个 · 本地存储
+                </div>
+              </div>
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {history.slice(0, 6).map((h) => (
+                  <li key={h.id} className="group relative">
+                    <button
+                      type="button"
+                      onClick={() => replayFromHistory(h)}
+                      className="inline-flex items-center gap-1.5 rounded-md border border-fog-2 bg-ink px-2.5 py-1 text-[11px] text-ash transition hover:border-volt hover:text-bone"
+                      title={`回放：${h.prompt}`}
+                    >
+                      <span className="max-w-[180px] truncate">{h.prompt}</span>
+                      <span
+                        role="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeHistoryItem(h.id);
+                        }}
+                        className="ml-1 inline-flex shrink-0 items-center justify-center rounded p-0.5 opacity-0 transition hover:bg-fog-2 group-hover:opacity-60 hover:!opacity-100"
+                        aria-label="删除这条历史"
+                      >
+                        <Trash2 className="size-3" />
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* 领域分流 + 建议问题 */}
           <div className="mt-8">
@@ -562,50 +764,171 @@ export function LiveRunner() {
             </div>
           )}
 
-          {/* 完成态 — CTA */}
+          {/* 完成态 — 反馈 + 分享 + CTA */}
           {phase === "done" && (
-            <div className="mt-12 rounded-xl border border-volt bg-volt/[0.04] p-8">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <div className="numeral text-xs uppercase tracking-widest text-volt">
-                    Live · v0.1
+            <div className="mt-10 space-y-4">
+              {/* 反馈条 + 分享条（紧凑、并排） */}
+              {!fromReplay && (
+                <div className="rounded-lg border border-fog-2 bg-soot p-4">
+                  <div className="flex flex-wrap items-center gap-3 text-xs">
+                    {/* 反馈打分 */}
+                    <span className="text-dust">这次分析：</span>
+                    <button
+                      type="button"
+                      onClick={() => sendFeedback("up")}
+                      disabled={feedback !== null}
+                      className={cn(
+                        "inline-flex items-center gap-1 rounded-md border px-2.5 py-1 transition",
+                        feedback === "up"
+                          ? "border-volt bg-volt/15 text-volt"
+                          : "border-fog-2 text-ash hover:border-fog-3 hover:text-bone",
+                        feedback !== null &&
+                          feedback !== "up" &&
+                          "opacity-40",
+                      )}
+                    >
+                      <ThumbsUp className="size-3" />
+                      <span>有用</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => sendFeedback("down")}
+                      disabled={feedback !== null}
+                      className={cn(
+                        "inline-flex items-center gap-1 rounded-md border px-2.5 py-1 transition",
+                        feedback === "down"
+                          ? "border-rose-400/60 bg-rose-400/10 text-rose-300"
+                          : "border-fog-2 text-ash hover:border-fog-3 hover:text-bone",
+                        feedback !== null &&
+                          feedback !== "down" &&
+                          "opacity-40",
+                      )}
+                    >
+                      <ThumbsDown className="size-3" />
+                      <span>不准</span>
+                    </button>
+
+                    <span className="mx-1 hidden h-4 w-px bg-fog-2 sm:inline-block" />
+
+                    {/* 分享 */}
+                    <button
+                      type="button"
+                      onClick={copyResult}
+                      className="inline-flex items-center gap-1 rounded-md border border-fog-2 px-2.5 py-1 text-ash transition hover:border-fog-3 hover:text-bone"
+                    >
+                      {copied === "result" ? (
+                        <Check className="size-3 text-volt" />
+                      ) : (
+                        <Copy className="size-3" />
+                      )}
+                      <span>{copied === "result" ? "已复制" : "复制结果"}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={copyShareLink}
+                      className="inline-flex items-center gap-1 rounded-md border border-fog-2 px-2.5 py-1 text-ash transition hover:border-fog-3 hover:text-bone"
+                    >
+                      {copied === "link" ? (
+                        <Check className="size-3 text-volt" />
+                      ) : (
+                        <Share2 className="size-3" />
+                      )}
+                      <span>
+                        {copied === "link" ? "已复制" : "分享给朋友"}
+                      </span>
+                    </button>
+
+                    {feedback && !showNoteInput && (
+                      <span className="ml-auto text-[11px] text-dust">
+                        谢谢反馈
+                      </span>
+                    )}
                   </div>
-                  <h3 className="display mt-2 text-2xl text-bone sm:text-3xl">
-                    再问一个？或者预约 v1.0。
-                  </h3>
-                  <p className="mt-3 text-sm text-ash">
-                    今天还剩 {remaining.ip ?? "?"} 次。v1.0 上线后会有私有记忆库、自定义引擎、批量分析等能力。
-                  </p>
+
+                  {/* 👎 之后的备注输入 */}
+                  {showNoteInput && (
+                    <div className="mt-3 flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={feedbackNote}
+                        onChange={(e) => setFeedbackNote(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") sendFeedbackNote();
+                        }}
+                        placeholder="说一句哪里不准（可选）"
+                        className="flex-1 rounded border border-fog-2 bg-ink px-3 py-1.5 text-xs text-bone outline-none focus:border-volt"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={sendFeedbackNote}
+                        disabled={!feedbackNote.trim()}
+                        className="rounded bg-volt px-3 py-1.5 text-xs font-medium text-ink disabled:opacity-40"
+                      >
+                        发送
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowNoteInput(false)}
+                        className="rounded border border-fog-2 px-2 py-1.5 text-[11px] text-ash hover:text-bone"
+                      >
+                        跳过
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <Link
-                  href="/#waitlist"
-                  className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
-                >
-                  加入候补
-                  <ArrowRight className="size-4" />
-                </Link>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-2 border-t border-fog-2 pt-6">
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
-                >
-                  <RotateCcw className="size-3" />
-                  再问一个
-                </button>
-                <Link
-                  href="/methods"
-                  className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
-                >
-                  浏览方法库
-                </Link>
-                <Link
-                  href="/cases"
-                  className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
-                >
-                  看真实案例
-                </Link>
+              )}
+
+              {/* 主 CTA */}
+              <div className="rounded-xl border border-volt bg-volt/[0.04] p-6 sm:p-8">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div className="numeral text-xs uppercase tracking-widest text-volt">
+                      {fromReplay ? "Replay · 历史回放" : "Done · v0.1"}
+                    </div>
+                    <h3 className="display mt-2 text-2xl text-bone sm:text-3xl">
+                      {fromReplay
+                        ? "这次是从历史调出来的"
+                        : "再问一个？或者预约付费版。"}
+                    </h3>
+                    <p className="mt-3 text-sm text-ash">
+                      {fromReplay
+                        ? "没有重新调用 AI，没扣配额。"
+                        : `今天还剩 ${remaining.ip ?? "?"} 次。订阅 / 团队版上线时会有私有记忆库、自定义引擎、批量分析等能力。`}
+                    </p>
+                  </div>
+                  {!fromReplay && (
+                    <Link
+                      href="/#waitlist"
+                      className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
+                    >
+                      加入候补
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  )}
+                </div>
+                <div className="mt-6 flex flex-wrap gap-2 border-t border-fog-2 pt-6">
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
+                  >
+                    <RotateCcw className="size-3" />
+                    再问一个
+                  </button>
+                  <Link
+                    href="/methods"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
+                  >
+                    浏览方法库
+                  </Link>
+                  <Link
+                    href="/cases"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-fog-3 px-3 py-1.5 text-xs text-bone hover:border-volt"
+                  >
+                    看真实案例
+                  </Link>
+                </div>
               </div>
             </div>
           )}

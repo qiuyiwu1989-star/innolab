@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Noto_Sans_SC } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteNav } from "@/components/site/nav";
+import { SiteFooter } from "@/components/site/footer";
 import { CommandMenu } from "@/components/site/command-menu";
 import { ThemeProvider } from "@/components/site/theme-provider";
 import { getSearchIndex } from "@/lib/search";
@@ -98,6 +99,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SiteNav />
           {children}
+          <SiteFooter />
           <CommandMenu items={searchIndex} />
         </ThemeProvider>
         {/* Vercel 部署后自动收集，本地无副作用 */}

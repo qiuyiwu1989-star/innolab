@@ -314,35 +314,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════════ Footer ════════════════ */}
-      <footer className="py-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
-          <div className="flex items-baseline gap-1.5 text-sm text-ash">
-            <span className="font-semibold text-bone">InnoLab</span>
-            <span className="size-1.5 translate-y-[-1px] rounded-full bg-volt" />
-            <span className="ml-2 text-dust">© 2026</span>
-          </div>
-          <div className="flex gap-6 text-sm text-ash">
-            <Link href="/methods" className="hover:text-bone">
-              方法
-            </Link>
-            <Link href="/cases" className="hover:text-bone">
-              案例
-            </Link>
-            <Link href="/about" className="hover:text-bone">
-              关于
-            </Link>
-            <a
-              href="https://github.com/qiuyiwu1989-star/innolab"
-              className="hover:text-bone"
-              target="_blank"
-              rel="noopener"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
-      </footer>
+      {/* Footer 已由全站 layout.tsx 的 <SiteFooter /> 提供 */}
     </main>
   );
 }
