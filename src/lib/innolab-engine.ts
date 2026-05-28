@@ -148,8 +148,8 @@ const DOMAIN_KEYWORDS: Record<string, string[]> = {
   "ai-transform": ["AI转型", "企业AI转型", "AI工具"],
   "product": ["AI产品", "产品设计", "产品"],
   "ip-content": ["IP商业化", "文创", "内容"],
-  "org": ["人才", "组织", "企业服务"],
-  "strategy": ["战略", "企业服务", "设计"],
+  "org": ["人才", "组织", "管理"],
+  "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式"],
 };
 
 /**
@@ -165,7 +165,15 @@ function buildDomainContext(domain: string | undefined): string {
     (c.domain ?? []).some((d: string) => keywords.some((k) => d.includes(k))),
   );
   if (matched.length === 0) return "";
-  const top = matched.slice(0, 2);
+  // 按关键词命中数量降序排（命中越多越相关），保证最相关案例排在最前
+  const scored = matched.map((c) => ({
+    case: c,
+    score: (c.domain ?? []).filter((d: string) =>
+      keywords.some((k) => d.includes(k)),
+    ).length,
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 2).map((s) => s.case);
   const lines = top.map((c) => {
     const flow = c.analysis_flow;
     const chain = flow

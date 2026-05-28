@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 13,
+  "total_cases": 15,
   "cases": [
     {
       "id": "case-001",
@@ -134,6 +134,26 @@
       "summary": "50 万粉的生活方式达人，广告变现触到天花板——靠接单养不大，靠品牌太重。四层 IP 模型把她从「网红」重新定位成「生活方式解决方案」，找到第三条路。",
       "added_date": "2026-05-29",
       "file": "product/ip-creator-monetization.json"
+    },
+    {
+      "id": "case-014",
+      "title": "OKR 失效诊断：150 人公司为什么越推越像 KPI",
+      "domain": ["组织", "人才", "管理"],
+      "tags": ["OKR失效", "认知层级", "L2-L4跃迁", "组织变革", "目标管理"],
+      "related_methods": ["CG06", "ST09", "EV03", "DC07", "ST10"],
+      "summary": "150 人互联网公司推 OKR 8 个月，Q3 全员达标 96% 但业绩下滑 15%——真正的问题是管理层用 L2 认知在运营一个 L4 工具。",
+      "added_date": "2026-05-29",
+      "file": "enterprise/okr-failure-diagnosis.json"
+    },
+    {
+      "id": "case-015",
+      "title": "中国 SaaS 出海：为什么不该先去「最容易」的东南亚",
+      "domain": ["战略", "SaaS", "出海", "竞争"],
+      "tags": ["护城河迁移", "波特五力", "市场进入", "出海战略", "评估矩阵"],
+      "related_methods": ["ST02", "ST11", "ST03", "DC07", "ST15"],
+      "summary": "年收入 3000 万的中国 SaaS 三选一出海目的地：东南亚看起来最简单，但对中国 SaaS 来说反而最难——护城河全部失效。",
+      "added_date": "2026-05-29",
+      "file": "strategy/saas-overseas-market-entry.json"
     }
   ]
 }
