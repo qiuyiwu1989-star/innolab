@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 15,
+  "total_cases": 16,
   "cases": [
     {
       "id": "case-001",
@@ -154,6 +154,16 @@
       "summary": "年收入 3000 万的中国 SaaS 三选一出海目的地：东南亚看起来最简单，但对中国 SaaS 来说反而最难——护城河全部失效。",
       "added_date": "2026-05-29",
       "file": "strategy/saas-overseas-market-entry.json"
+    },
+    {
+      "id": "case-016",
+      "title": "DTC 品牌定价困境：提价流失用户，不提毛利倒挂",
+      "domain": ["战略", "消费品", "商业模式", "品牌"],
+      "tags": ["定价策略", "护城河", "消费分层", "毛利管理", "品牌溢价"],
+      "related_methods": ["ST04", "CG14", "ST06", "DC07", "ST03"],
+      "summary": "中高端 DTC 家居品牌，定价 800-1500 元区间，毛利率 35%，但成本上涨后面临「提价用户跑、不提活不了」的典型困境。",
+      "added_date": "2026-05-29",
+      "file": "strategy/dtc-brand-pricing-dilemma.json"
     }
   ]
 }

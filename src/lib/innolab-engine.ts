@@ -149,7 +149,7 @@ const DOMAIN_KEYWORDS: Record<string, string[]> = {
   "product": ["AI产品", "产品设计", "产品"],
   "ip-content": ["IP商业化", "文创", "内容"],
   "org": ["人才", "组织", "管理"],
-  "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式"],
+  "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式", "企业服务"],
 };
 
 /**

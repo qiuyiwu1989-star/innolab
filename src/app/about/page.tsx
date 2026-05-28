@@ -194,7 +194,7 @@ export default function AboutPage() {
             title="推演引擎 + 多轮会话"
             status="live"
             when="2026 Q2 · 当前"
-            note="74 方法 + 15 案例 / 多轮追问 / 方法链可视化 / 首次访客引导"
+            note="74 方法 + 16 案例 / 多轮追问 / 方法链可视化 / 首次访客引导"
           />
           <Phase
             v="β"

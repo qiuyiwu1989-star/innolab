@@ -458,7 +458,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
       "product": ["AI产品", "产品设计", "产品"],
       "ip-content": ["IP商业化", "文创", "内容"],
       "org": ["人才", "组织", "管理"],
-      "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式"],
+      "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式", "企业服务"],
     };
     const kws = KWS[dom] ?? [];
     if (kws.length === 0) return [];
@@ -944,7 +944,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 15 案例
+                  MiMo v2.5 Pro · 74 方法 + 16 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1219,7 +1219,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
                 {waitingFirstChunk ? (
-                  <span>InnoLab 正在装填弹药库 · 74 方法 + 15 案例进入上下文…</span>
+                  <span>InnoLab 正在装填弹药库 · 74 方法 + 16 案例进入上下文…</span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <span>InnoLab 推演中</span>
