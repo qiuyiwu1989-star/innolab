@@ -5,8 +5,8 @@ import { getAllMethods, type Method } from "@/lib/methods";
 import { getAllCases, type CaseDetail } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
 
-// 首页 demo 三案例（用真实案例作为"看一眼能做什么"的演示）
-const HOMEPAGE_DEMO_CASE_IDS = ["case-002", "case-006", "case-007"];
+// 首页 demo 三案例 — 选最能体现 InnoLab 深度的近期案例（覆盖战略/组织/产品三领域）
+const HOMEPAGE_DEMO_CASE_IDS = ["case-016", "case-018", "case-019"];
 
 // Hero suggestion chips — 点击直通 /demo 并预填问题 + 领域
 const SUGGESTIONS: { label: string; q: string; domain: string }[] = [
@@ -24,6 +24,11 @@ const SUGGESTIONS: { label: string; q: string; domain: string }[] = [
     label: "人才组织",
     q: "怎么搭建双轨人才体系？全员 AI 化推了半年，没什么实质进展。",
     domain: "org",
+  },
+  {
+    label: "战略决策",
+    q: "守线业务还能赚钱，但攻线新产品没人用——资源该怎么分配，怎么判断要不要继续？",
+    domain: "strategy",
   },
 ];
 
@@ -491,7 +496,7 @@ function DemoCard({
       <div>
         <div className="text-xs uppercase tracking-widest text-dust">结论</div>
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ash">
-          {c.insight ?? c.summary}
+          {c.analysis_flow?.key_judgment ?? c.insight ?? c.summary}
         </p>
       </div>
 
