@@ -39,21 +39,46 @@ export const metadata: Metadata = {
     template: "%s — InnoLab",
   },
   description:
-    "用 74 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。",
+    "用 74 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。/demo 限免使用。",
   keywords: [
     "AI 战略咨询",
     "创新方法论",
     "战略分析",
     "产品设计",
+    "认知升级",
+    "AI 转型",
     "InnoLab",
     "邱懿武",
+    "蓝海战略",
+    "第一性原理",
+    "范式转移",
   ],
-  authors: [{ name: "邱懿武" }],
+  authors: [{ name: "邱懿武", url: "https://qiuyiwu.com" }],
+  creator: "邱懿武",
+  publisher: "InnoLab",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "InnoLab",
     locale: "zh_CN",
+    url: SITE_URL,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "InnoLab — AI 创新战略咨询师",
+    description: "74 个方法论分析你的真实商业问题。/demo 限免使用。",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({

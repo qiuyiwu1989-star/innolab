@@ -27,9 +27,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const m = getMethodBySlug(slug);
   if (!m) return { title: "未找到" };
+  const desc = m.oneliner || `${m.titleCn} — InnoLab 方法卡`;
   return {
     title: `${m.titleCn}（${m.id}）`,
-    description: m.oneliner || `${m.titleCn} — InnoLab 方法卡`,
+    description: desc,
+    keywords: [m.titleCn, m.titleEn, m.id, m.engineLabel, "InnoLab", "方法论"]
+      .filter(Boolean)
+      .join(","),
+    openGraph: {
+      title: `${m.titleCn} · ${m.id}`,
+      description: desc,
+      type: "article",
+    },
+    twitter: {
+      card: "summary",
+      title: `${m.titleCn} · ${m.id}`,
+      description: desc,
+    },
   };
 }
 

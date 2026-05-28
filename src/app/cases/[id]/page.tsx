@@ -29,7 +29,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const c = getCaseById(id);
   if (!c) return { title: "未找到案例" };
-  return { title: c.title, description: c.summary };
+  return {
+    title: c.title,
+    description: c.summary,
+    keywords: [
+      ...(c.tags ?? []),
+      ...(c.domain ?? []),
+      "InnoLab",
+      "战略分析",
+      "案例研究",
+    ],
+    openGraph: {
+      title: c.title,
+      description: c.summary,
+      type: "article",
+      publishedTime: c.added_date,
+      authors: c.added_by ? [c.added_by] : undefined,
+      tags: [...(c.tags ?? []), ...(c.domain ?? [])],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: c.title,
+      description: c.summary,
+    },
+  };
 }
 
 export default async function CaseDetailPage({ params }: Props) {
@@ -58,8 +81,39 @@ export default async function CaseDetailPage({ params }: Props) {
 
   const hasFlow = !!c.analysis_flow;
 
+  // JSON-LD：让搜索引擎理解这是一篇分析文章
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: c.title,
+    description: c.summary,
+    datePublished: c.added_date,
+    author: {
+      "@type": "Person",
+      name: c.added_by ?? "邱懿武",
+      url: "https://qiuyiwu.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "InnoLab",
+      url: siteUrl,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/cases/${c.id}`,
+    },
+    keywords: [...(c.tags ?? []), ...(c.domain ?? [])].join(", "),
+    articleSection: c.domain?.[0],
+  };
+
   return (
     <article className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 面包屑 */}
       <nav className="mb-8">
         <Link
