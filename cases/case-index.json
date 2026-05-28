@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "created": "2026-04-05",
-  "last_updated": "2026-05-30",
-  "total_cases": 20,
+  "last_updated": "2026-05-29",
+  "total_cases": 21,
   "cases": [
     {
       "id": "case-001",
@@ -204,6 +204,16 @@
       "summary": "AI 效率工具月活 5000，50+ 功能，10 多种不同类型用户在用——用户说「挺好用的」但流失率 60%，投资人说「市场太小」。根本问题不是定位模糊，而是还没找到「非你不可」的那个用户群。",
       "added_date": "2026-05-30",
       "file": "product/product-positioning-blur.json"
+    },
+    {
+      "id": "case-021",
+      "title": "从 0 到 1：产品做出来了，第一个付费用户在哪里",
+      "domain": ["战略", "产品", "商业模式"],
+      "tags": ["冷启动", "第一付费用户", "种子客户", "产品验证", "早期增长", "PMF"],
+      "related_methods": ["GN02", "PD05", "ST06", "DC07", "EV01"],
+      "summary": "ToB SaaS 工具完成 MVP，免费试用 3 个月获得 12 家种子用户，一个都没有转付费——根本问题不是功能不够好，而是种子用户选错了：选的是「愿意试」的人，而不是「没有就痛」的人。",
+      "added_date": "2026-05-29",
+      "file": "strategy/first-paying-customer.json"
     }
   ]
 }
