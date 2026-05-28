@@ -5,7 +5,7 @@ import { CasesExplorer } from "./cases-explorer";
 export const metadata: Metadata = {
   title: "案例库",
   description:
-    "InnoLab 27 个真实商业案例 — B2B SaaS 出海选市场、K12 AI 转型、SaaS 定价 Freemium 困局、销售激励失效、OKR 诊断、播客变现、DTC 定价、制造业 AI 停摆。每个案例完整复原分析流程与关键判断。",
+    "InnoLab 30 个真实商业案例 — 医疗 SaaS 采购政治、跨境电商品类扩张、消费金融增长停滞、K12 AI 转型、SaaS 定价 Freemium 困局、制造业 AI 停摆。每个案例完整复原分析流程与关键判断。",
 };
 
 export default function CasesPage() {

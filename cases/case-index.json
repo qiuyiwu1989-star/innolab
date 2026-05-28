@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 27,
+  "total_cases": 30,
   "cases": [
     {
       "id": "case-001",
@@ -17,12 +17,12 @@
         "质量分级"
       ],
       "related_methods": [
-        "CG14",
+        "CG16",
         "CG07",
         "PD05"
       ],
       "wiki_obj_token": "XTy2dPlcZozqzbxfiJIc648Znhd",
-      "summary": "74个方法论的质量体检：识别出12个需要补强的方法，找到弹药库的覆盖盲区",
+      "summary": "75个方法论的质量体检：识别出覆盖盲区，找到弹药库的薄弱环节",
       "added_date": "2026-04-05",
       "file": "product/innolab-self-diagnosis.json"
     },
@@ -694,6 +694,39 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "education/k12-ai-tutoring-transformation.json"
+    },
+    {
+      "id": "case-028",
+      "title": "医疗 SaaS 死在「采购流程」：产品 POC 三次验证通过，三甲医院合同两年签不下来",
+      "domain": ["医疗", "B2B", "战略", "销售"],
+      "tags": ["医疗SaaS", "医院采购", "B2B销售", "政治地图", "多方决策", "集成商渠道"],
+      "related_methods": ["CG07", "ST11", "DC08", "DC07", "ST12"],
+      "summary": "医疗 SaaS 最常见的死法：产品没问题，死在采购政治上",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "healthcare/medical-saas-hospital-procurement.json"
+    },
+    {
+      "id": "case-029",
+      "title": "跨境电商品类扩张的陷阱：从家居爆款到「什么都卖」，SKU 翻了 10 倍利润腰斩",
+      "domain": ["电商", "战略", "产品", "运营"],
+      "tags": ["跨境电商", "品类扩张", "Amazon", "选品", "SKU管理", "品牌定位"],
+      "related_methods": ["ST13", "ST06", "DC07", "PD05", "ST17"],
+      "summary": "跨境电商最典型的增长陷阱：用「加 SKU」代替「做品牌」，最终陷入低价竞争泥潭",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "ecommerce/cross-border-category-expansion.json"
+    },
+    {
+      "id": "case-030",
+      "title": "消费金融 App 增长停滞：注册用户 50 万，月活 8%——是产品问题还是用户质量问题",
+      "domain": ["金融科技", "产品", "增长", "战略"],
+      "tags": ["消费金融", "Fintech", "用户增长", "月活", "留存", "用户分层"],
+      "related_methods": ["EV01", "PD07", "ST17", "CG06", "DC05"],
+      "summary": "消费金融 App 最常见的增长幻觉：注册用户多但月活低，原来是用户质量分层的问题",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "fintech/fintech-app-growth-stall.json"
     }
   ]
 }

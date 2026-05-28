@@ -92,6 +92,9 @@ const EXAMPLE_PROMPTS = [
   "国货美妆品牌同时测 TikTok 东南亚和亚马逊美国，6 个月两头没跑通——该怎么选？",
   "B2B SaaS 免费用户 8000，付费率 1.2%，499 元/月太贵了吗？还是 Freemium 模式本身选错了？",
   "K12 教培花 30 万买了 AI 出题系统，学生分数没变——工具问题还是使用策略问题？",
+  "医疗 SaaS 产品 POC 三次通过，三甲医院合同谈了 2 年签不下来——卡在哪里？",
+  "跨境电商家居爆款 SKU 从 15 扩到 180，GMV 翻倍但利润腰斩——怎么办？",
+  "消费金融 App 注册 50 万，月活 8%，投资人要 DAU 翻倍——追数字还是追质量？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1012,7 +1015,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 75 方法 + 27 案例
+                  MiMo v2.5 Pro · 75 方法 + 30 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1308,7 +1311,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 75 方法 + 27 案例</span>
+                    <span className="text-dust">· 75 方法 + 30 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">

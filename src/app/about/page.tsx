@@ -8,7 +8,7 @@ import { engines } from "@/lib/engines";
 export const metadata: Metadata = {
   title: "关于",
   description:
-    "InnoLab 由邱懿武创建——75 个方法论 + 27 个真实案例的战略推演引擎。多轮追问、方法链可视化、越用越懂你。",
+    "InnoLab 由邱懿武创建——75 个方法论 + 30 个真实案例的战略推演引擎。多轮追问、方法链可视化、越用越懂你。",
 };
 
 // 方法论的源头（来自 SKILL.md 中的体系）— 比假书名诚实
@@ -194,7 +194,7 @@ export default function AboutPage() {
             title="推演引擎 + 多轮会话"
             status="live"
             when="2026 Q2 · 当前"
-            note="75 方法 + 27 案例 / 多轮追问 / 方法链可视化 / 首次访客引导"
+            note="75 方法 + 30 案例 / 多轮追问 / 方法链可视化 / 首次访客引导"
           />
           <Phase
             v="β"
