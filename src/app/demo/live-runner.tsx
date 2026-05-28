@@ -601,7 +601,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
         });
       }
     },
-    [phase],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [phase, activeDomain, pickedFromDomain, currentThread, threadHistory],
   );
 
   return (
