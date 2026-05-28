@@ -142,6 +142,7 @@ function DomainChip({
 
 function CaseCard({ c }: { c: CaseDetail }) {
   const hasDetail = c.file !== null;
+  const keyJudgment = c.analysis_flow?.key_judgment;
   const body = (
     <div className="group relative flex h-full flex-col gap-3 rounded-lg border border-fog-2 bg-soot p-6 transition hover:-translate-y-0.5 hover:border-volt hover:bg-graphite">
       <div className="flex items-center justify-between">
@@ -154,6 +155,18 @@ function CaseCard({ c }: { c: CaseDetail }) {
       <p className="line-clamp-2 text-sm leading-relaxed text-ash">
         {c.summary}
       </p>
+      {keyJudgment && (
+        <div className="rounded-md border border-volt/20 bg-volt/[0.03] px-3 py-2">
+          <div className="mb-1 text-[9px] uppercase tracking-widest text-volt/70">
+            核心判断
+          </div>
+          <p className="line-clamp-2 text-[11px] leading-relaxed text-ash/80">
+            {keyJudgment.length > 100
+              ? `${keyJudgment.slice(0, 100)}…`
+              : keyJudgment}
+          </p>
+        </div>
+      )}
       <div className="flex flex-wrap gap-1.5">
         {(c.domain ?? []).slice(0, 4).map((d) => (
           <Badge key={d} variant="outline">
