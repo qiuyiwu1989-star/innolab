@@ -21,9 +21,10 @@ git push origin master
    - **Build Command**: `npm run build`（自动）
    - **Output Directory**: `.next`（默认）
    - **Install Command**: `npm install`（自动）
-5. **Environment Variables**：
-   - 第一次先填 `NEXT_PUBLIC_SITE_URL` = `https://innolab.vercel.app`（占位 vercel.app 域）
-   - 等子域挂好后改成 `https://innolab.qiuyiwu.com` → Redeploy
+5. **Environment Variables**（必填两个）：
+   - `NEXT_PUBLIC_SITE_URL` = `https://innolab.vercel.app`（占位；等子域挂好后改 `https://innolab.qiuyiwu.com`）
+   - **`ANTHROPIC_API_KEY` = `sk-ant-...`** — `/demo` 实时分析必需。在 https://console.anthropic.com/settings/keys 创建。
+   - 可选：`INNOLAB_DAILY_QUOTA_GLOBAL`（默认 50）、`INNOLAB_DAILY_QUOTA_PER_IP`（默认 5）
 6. 点 **Deploy**
 
 部署约 2-3 分钟。完成后你会得到一个 `https://innolab-xxx.vercel.app` 的临时 URL。

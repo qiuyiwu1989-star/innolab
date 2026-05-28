@@ -13,12 +13,13 @@ bash scripts/wake-up.sh
 
 ## 现在的状态
 
-✅ **代码完成**：v0.3 全套上线就绪，本地 + 生产 build 都通过
-✅ **本地可访问**：`npm run dev` → http://localhost:3000
-✅ **已 commit**：**5 个 commit 在本地 master，等 push**
+✅ **代码完成**：v0.5 全套上线就绪（含真 AI 引擎），本地 + 生产 build 都通过
+✅ **本地可访问**：`npm run dev -- --port 3001` → http://localhost:3001  ← **注意端口 3001**（你 `/Users/qiu/Documents/冷静/lengjing` 那个项目占了 3000）
+✅ **已 commit**：本地 master 等 push
 ✅ **工具链就绪**：`gh` CLI 已装到 `~/.local/bin/gh`，`vercel` CLI 已装到 `~/.local/bin/vercel`
-⚠ **未 push 到 GitHub**：我试了，但没有 GitHub auth（HTTPS PAT 过期/未存、SSH key 未配）— 你登录后一行命令搞定
+⚠ **未 push 到 GitHub**：等你 `gh auth login` 后一行命令搞定
 ⚠ **未部署到 Vercel**：需要你 OAuth + Import（用 CLI 1 分钟 / 用 Web 3 分钟）
+⚠ **/demo 实时分析需要 ANTHROPIC_API_KEY**：你已经有 Anthropic 账号，去 https://console.anthropic.com/settings/keys 建一个 key 就行
 
 ## ⚡ 最快上线路径（按你的 auth 方式选一条）
 
