@@ -88,6 +88,7 @@ const EXAMPLE_PROMPTS = [
   "SaaS 产品免费用户 5 万，加了半年功能转化率还是 1.5%，该怎么破？",
   "产品做出来了，免费试用 12 家无一转付费——第一个付费用户在哪里？",
   "小红书爆款月销 200 万，复购率只有 18%，三家竞品已经抄完了 SKU——品牌溢价怎么建起来？",
+  "产品有 800 用户、40 个付费，融资 3 轮全被拒「市场太小」——是 deck 问题还是数据问题？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1008,7 +1009,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 23 案例
+                  MiMo v2.5 Pro · 74 方法 + 24 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1304,7 +1305,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 74 方法 + 23 案例</span>
+                    <span className="text-dust">· 74 方法 + 24 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
