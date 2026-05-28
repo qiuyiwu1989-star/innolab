@@ -169,11 +169,11 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
 /** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
 const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
   "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03"],
-  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD02", "DC07"],
-  "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG14", "PD10"],
+  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07"],
+  "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10"],
   org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10"],
-  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "DC05", "ST03"],
-  all:            ["ST07", "CG06", "PD07", "GN02", "DC05", "ST09", "EV01", "PD05", "CG14", "ST06"],
+  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03"],
+  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06"],
 };
 
 interface CaseSnippet {
