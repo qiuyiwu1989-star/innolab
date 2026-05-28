@@ -245,13 +245,32 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
 
   // 加载时恢复上次选择的领域 + 历史 + 上一次完成的 thread + 用户背景
   useEffect(() => {
+    // 读取 URL 参数（案例页 → demo 直通时注入）；URL param 优先级高于 localStorage
+    let domainFromUrl = false;
     try {
-      const saved = localStorage.getItem("innolab.demo.domain");
-      if (saved && DOMAINS.some((d) => d.key === saved)) {
-        setActiveDomain(saved as DomainKey);
+      const sp = new URLSearchParams(window.location.search);
+      const domainParam = sp.get("domain");
+      const qParam = sp.get("q");
+      if (domainParam && DOMAINS.some((d) => d.key === domainParam)) {
+        setActiveDomain(domainParam as DomainKey);
+        domainFromUrl = true;
+      }
+      if (qParam) {
+        setPrompt(decodeURIComponent(qParam));
       }
     } catch {
-      /* localStorage 不可用就算了 */
+      /* noop */
+    }
+
+    if (!domainFromUrl) {
+      try {
+        const saved = localStorage.getItem("innolab.demo.domain");
+        if (saved && DOMAINS.some((d) => d.key === saved)) {
+          setActiveDomain(saved as DomainKey);
+        }
+      } catch {
+        /* localStorage 不可用就算了 */
+      }
     }
     setHistory(readHistory());
 

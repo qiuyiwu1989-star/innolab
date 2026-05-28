@@ -81,6 +81,31 @@ export default async function CaseDetailPage({ params }: Props) {
 
   const hasFlow = !!c.analysis_flow;
 
+  // 根据案例领域映射 demo 领域 key（让 CTA 直通到正确的领域分区）
+  const DOMAIN_KEYWORD_MAP: Array<{ keys: string[]; demo: string }> = [
+    { keys: ["AI转型", "企业AI转型", "AI工具"], demo: "ai-transform" },
+    { keys: ["IP商业化", "内容", "文创", "知识付费"], demo: "ip-content" },
+    { keys: ["组织", "人才", "管理"], demo: "org" },
+    { keys: ["AI产品", "产品设计"], demo: "product" },
+    { keys: ["战略", "SaaS", "竞争", "出海", "商业模式"], demo: "strategy" },
+  ];
+  const caseDomains = c.domain ?? [];
+  let demoDomain = "all";
+  for (const { keys, demo } of DOMAIN_KEYWORD_MAP) {
+    if (caseDomains.some((d) => keys.some((k) => d.includes(k)))) {
+      demoDomain = demo;
+      break;
+    }
+  }
+  // 从 applicable_to 生成简短的「参考问题」，限 60 字
+  const suggestedQ = c.applicable_to
+    ? `我也遇到类似问题：${c.applicable_to.split("、")[0]}，怎么分析？`
+    : "";
+  const demoUrl =
+    demoDomain !== "all"
+      ? `/demo?domain=${demoDomain}${suggestedQ ? `&q=${encodeURIComponent(suggestedQ)}` : ""}`
+      : "/demo";
+
   // JSON-LD：让搜索引擎理解这是一篇分析文章
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
@@ -194,20 +219,24 @@ export default async function CaseDetailPage({ params }: Props) {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="numeral text-xs uppercase tracking-widest text-volt">
-              Try It
+              Try It · 用你的问题跑一次
             </div>
             <h3 className="display mt-2 text-xl text-bone sm:text-2xl">
-              换你的问题，InnoLab 来跑一次
+              {c.applicable_to
+                ? `你也在做${caseDomains[0] ?? "同类"}决策？`
+                : "换你的问题，InnoLab 来跑一次"}
             </h3>
             <p className="mt-2 text-sm text-ash">
-              这是 InnoLab 在 v0.1 跑过的案例。你也可以把你的真实商业问题输进去。
+              {c.applicable_to
+                ? `适用场景：${c.applicable_to}。把你的真实情况输进去，引擎实时推演。`
+                : "这是 InnoLab 跑过的案例。你也可以把你的真实商业问题输进去。"}
             </p>
           </div>
           <Link
-            href="/demo"
+            href={demoUrl}
             className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
           >
-            打开 /demo
+            问一个类似问题
             <ArrowRight className="size-4" />
           </Link>
         </div>
