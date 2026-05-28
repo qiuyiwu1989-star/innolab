@@ -14,12 +14,40 @@ export interface CaseIndexEntry {
   wiki_obj_token?: string;
 }
 
+/** 分析流程节点：还原一次完整的 InnoLab 推演 */
+export interface CaseAnalysisFlow {
+  /** 这个分析的背景一句话 */
+  context?: string;
+  /** 问题重构 */
+  reframe: string;
+  /** 调用的方法链（按顺序） */
+  method_chain: {
+    id: string;
+    title: string;
+    /** 为什么调它 */
+    reasoning: string;
+    /** 它揭示了什么 */
+    reveals: string;
+  }[];
+  /** 综合判断 — 一段话 */
+  key_judgment: string;
+  /** 推演结论 — 行动项 */
+  verdict: {
+    kind: "do" | "dont";
+    text: string;
+  }[];
+  /** 建议下一步 */
+  next_step?: string;
+}
+
 export interface CaseDetail extends CaseIndexEntry {
   key_facts?: string[];
   insight?: string;
   applicable_to?: string;
   source?: string;
   added_by?: string;
+  /** 新：完整分析流程的可视化数据 */
+  analysis_flow?: CaseAnalysisFlow;
   // 允许其他扩展字段
   [key: string]: unknown;
 }
