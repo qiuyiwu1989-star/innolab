@@ -5,7 +5,7 @@ import { CasesExplorer } from "./cases-explorer";
 export const metadata: Metadata = {
   title: "案例库",
   description:
-    "InnoLab 收录的真实案例 — 教育、AI 产品、企业转型、IP 商业化。每个案例标注关联方法。",
+    "InnoLab 19 个真实商业案例 — B2B SaaS 出海、销售激励失效、OKR 诊断、Freemium 困局、播客变现、DTC 定价。每个案例完整复原分析流程与关键判断。",
 };
 
 export default function CasesPage() {
