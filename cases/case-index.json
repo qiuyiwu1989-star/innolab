@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "created": "2026-04-05",
-  "last_updated": "2026-05-29",
-  "total_cases": 16,
+  "last_updated": "2026-05-30",
+  "total_cases": 17,
   "cases": [
     {
       "id": "case-001",
@@ -164,6 +164,16 @@
       "summary": "中高端 DTC 家居品牌，定价 800-1500 元区间，毛利率 35%，但成本上涨后面临「提价用户跑、不提活不了」的典型困境。",
       "added_date": "2026-05-29",
       "file": "strategy/dtc-brand-pricing-dilemma.json"
+    },
+    {
+      "id": "case-017",
+      "title": "播客主理人：5万忠实听众，如何找到第一条真正跑通的变现路线",
+      "domain": ["IP商业化", "内容", "知识付费"],
+      "tags": ["知识付费", "创作者经济", "角色基因", "变现路线", "Hook模型", "内容IP"],
+      "related_methods": ["GN02", "CG14", "PD07", "ST06", "EV01"],
+      "summary": "商业访谈播客，3年5万订阅，三次变现失败（课程无复购、社群沉默、赞助嫌小）——根本问题不是听众太少，而是用「内容博主」框架对接了「商业决策者」听众。",
+      "added_date": "2026-05-30",
+      "file": "product/podcast-creator-monetization.json"
     }
   ]
 }

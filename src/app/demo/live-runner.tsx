@@ -63,7 +63,7 @@ function detectDomainFromPrompt(text: string): DomainKey | null {
   const t = text.toLowerCase();
   if (/ai转型|ai落地|ai工具|人工智能|企业ai|数字化转型|智能化/.test(t))
     return "ai-transform";
-  if (/ip[^v]|内容创作|文创|达人|网红|创作者|变现|粉丝|个人品牌|博主|up主/.test(t))
+  if (/ip[^v]|内容创作|文创|达人|网红|创作者|变现|粉丝|个人品牌|博主|up主|播客|知识付费/.test(t))
     return "ip-content";
   if (/组织|人才|团队|招聘|培训|绩效|kpi|oka|企业文化|离职|薪酬|管理/.test(t))
     return "org";
@@ -84,6 +84,7 @@ const EXAMPLE_PROMPTS = [
   "招一个 AI 负责人，还是让全员都学 AI？哪条路更值？",
   "我的 MVP 用户说「挺好的」但没有复购，问题出在哪里？",
   "文创 IP 内核已经验证，怎么快速拓展更多变现载体而不失去定位？",
+  "播客做了 3 年、5 万忠实听众，三次变现尝试全失败——怎么找到跑通的路？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -944,7 +945,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 16 案例
+                  MiMo v2.5 Pro · 74 方法 + 17 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1219,7 +1220,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
                 {waitingFirstChunk ? (
-                  <span>InnoLab 正在装填弹药库 · 74 方法 + 16 案例进入上下文…</span>
+                  <span>InnoLab 正在装填弹药库 · 74 方法 + 17 案例进入上下文…</span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <span>InnoLab 推演中</span>
