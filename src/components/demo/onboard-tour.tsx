@@ -96,18 +96,23 @@ const STEPS = [
     id: "thread",
     badge: "03 / 03",
     title: "越问越深 — 多轮对话才是精华",
-    subtitle: "InnoLab 记得你刚才说的",
+    subtitle: "分析完成后有四种继续方式",
     body: (
       <div className="space-y-3 text-sm text-ash leading-relaxed">
         <p>
-          第一轮分析完成后，InnoLab 会记住你的场景。你可以继续：
+          每次分析完成，InnoLab 带着前文判断继续你的问题——不是从头想：
         </p>
         <ul className="space-y-2">
           {[
             {
+              icon: <span className="text-volt font-bold text-[11px]">⚡</span>,
+              label: "一键追问",
+              desc: "InnoLab 会建议 3 个下一步问题，点击直接触发",
+            },
+            {
               icon: <MessageSquarePlus className="size-3.5 text-volt" />,
-              label: "继续追问",
-              desc: "补充细节，让判断更准",
+              label: "自由追问",
+              desc: "输入任何补充问题，引擎带着你的背景回答",
             },
             {
               icon: <span className="text-volt text-[11px]">↺</span>,
@@ -117,7 +122,7 @@ const STEPS = [
             {
               icon: <span className="text-volt text-[11px]">⊕</span>,
               label: "深入某方法",
-              desc: "选一个方法，要可执行的具体步骤",
+              desc: "点方法卡片，要该方法的具体执行步骤",
             },
           ].map((item) => (
             <li
@@ -132,9 +137,6 @@ const STEPS = [
             </li>
           ))}
         </ul>
-        <p className="text-[11px] text-dust">
-          每轮会话 InnoLab 携带前文精要，你不用重复说背景。
-        </p>
       </div>
     ),
     visual: null,
