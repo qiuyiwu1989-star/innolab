@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 24,
+  "total_cases": 25,
   "cases": [
     {
       "id": "case-001",
@@ -244,6 +244,16 @@
       "summary": "4 人团队做法律 AI 写作助手，800 注册用户、40 付费（月 99 元），融资 3 轮被拒：「市场太小」。根本问题不是 deck 写得不好，而是 40 个 B2C 用户的数据讲的是「好用工具」的故事，而 VC 要听的是「大市场切入点」——改变叙事需要先改变数据，90 天内做出 2-3 个 B2B 企业合同是唯一的快速路径。",
       "added_date": "2026-05-29",
       "file": "strategy/fundraising-narrative-gap.json"
+    },
+    {
+      "id": "case-025",
+      "title": "国货美妆出海：TikTok Shop 还是亚马逊，东南亚还是北美——选错了就是烧钱",
+      "domain": ["战略", "消费品", "出海", "品牌"],
+      "tags": ["出海", "美妆", "TikTok Shop", "亚马逊", "东南亚", "北美", "DTC", "渠道选择", "新消费", "跨境电商"],
+      "related_methods": ["ST06", "CG14", "DC07", "ST02", "PD02"],
+      "summary": "某国货护肤品牌同时测试 TikTok Shop 东南亚 + 亚马逊美国，6 个月后两头都没跑通。根本问题：东南亚和北美需要完全不同的品牌策略和运营能力，「两头试」是必败策略。用第一性原理+消费趋势画布+蓝海战略定位到「北美成分派」这个真正适合的切入点。",
+      "added_date": "2026-05-29",
+      "file": "strategy/consumer-brand-overseas.json"
     }
   ]
 }
