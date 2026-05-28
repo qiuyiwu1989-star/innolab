@@ -54,6 +54,25 @@ interface ErrorState {
   reason?: "rate_limit" | "config" | "api" | "unknown";
 }
 
+/**
+ * 从问题文本自动推断最相关领域（用于用户没有手动选 chip 的情况）。
+ * 返回 null 表示无法判断，传给 API 时回退到 "all"。
+ */
+function detectDomainFromPrompt(text: string): DomainKey | null {
+  const t = text.toLowerCase();
+  if (/ai转型|ai落地|ai工具|人工智能|企业ai|数字化转型|智能化/.test(t))
+    return "ai-transform";
+  if (/ip[^v]|内容创作|文创|达人|网红|创作者|变现|粉丝|个人品牌|博主|up主/.test(t))
+    return "ip-content";
+  if (/组织|人才|团队|招聘|培训|绩效|kpi|oka|企业文化|离职|薪酬|管理/.test(t))
+    return "org";
+  if (/产品|mvp|功能|需求|设计|用户增长|留存|转化率|产品经理/.test(t))
+    return "product";
+  if (/战略|转型|定位|赛道|竞争|护城河|商业模式|saas|b2b|创业|融资|市场|行业/.test(t))
+    return "strategy";
+  return null;
+}
+
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
 const DOMAINS = [
   { key: "all", label: "全部" },
@@ -457,6 +476,12 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       }, 50);
 
       try {
+        // 有效领域：用户手动选了就用手动的，否则从 prompt 文本自动推断
+        const effectiveDomain =
+          activeDomain !== "all"
+            ? activeDomain
+            : (detectDomainFromPrompt(trimmed) ?? "all");
+
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -464,7 +489,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
             prompt: trimmed,
             // 数据采集：用户走了哪个领域的入口
             source: pickedFromDomain,
-            domain: activeDomain,
+            domain: effectiveDomain,
             // 续 thread 时携带前文精要 + kind
             prior_summary: priorSummary || undefined,
             follow_up_kind: kind || undefined,
@@ -873,6 +898,18 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
           </div>
 
           {/* 状态条 */}
+          {(() => {
+            // 从当前流式输出推断正在生成哪个段落
+            const streamingSection = (() => {
+              if (!output) return null;
+              if (output.includes("## 追问方向")) return "追问方向";
+              if (output.includes("## 推演结论")) return "推演结论";
+              if (output.includes("## 关键判断")) return "关键判断";
+              if (output.includes("## 调用方法")) return "调用方法";
+              if (output.includes("## 问题重构")) return "问题重构";
+              return "分析中";
+            })();
+            return (
           <div className="mt-6 flex items-center gap-3 text-xs text-ash">
             {phase === "streaming" && (
               <>
@@ -880,11 +917,18 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                   <span className="absolute size-2 animate-ping rounded-full bg-volt opacity-75" />
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
-                <span>
-                  {waitingFirstChunk
-                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 13 案例进入上下文…"
-                    : "InnoLab 正在推演 · 流式输出中…"}
-                </span>
+                {waitingFirstChunk ? (
+                  <span>InnoLab 正在装填弹药库 · 74 方法 + 13 案例进入上下文…</span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <span>InnoLab 推演中</span>
+                    {streamingSection && (
+                      <span className="rounded border border-volt/30 bg-volt/[0.06] px-1.5 py-0.5 text-[10px] font-medium text-volt">
+                        → {streamingSection}
+                      </span>
+                    )}
+                  </span>
+                )}
               </>
             )}
             {phase === "done" && (
@@ -911,6 +955,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               </>
             )}
           </div>
+          );
+          })()}
 
           {/* 推演输出 */}
           {output && (
