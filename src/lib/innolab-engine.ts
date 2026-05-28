@@ -102,6 +102,8 @@ const DEFAULT_MODEL = "mimo-v2.5-pro";
 
 export interface AnalyzeOptions {
   prompt: string;
+  /** thread 续写时的前文精要（关键判断 + 推演结论） */
+  priorSummary?: string;
   /** 透传 abort 信号，方便客户端断开时停止生成 */
   signal?: AbortSignal;
 }
@@ -117,6 +119,7 @@ export type AnalyzeEvent =
  */
 export async function* analyzeStream({
   prompt,
+  priorSummary,
   signal,
 }: AnalyzeOptions): AsyncGenerator<AnalyzeEvent, void, unknown> {
   const apiKey = process.env.MIMO_API_KEY;
@@ -135,6 +138,11 @@ export async function* analyzeStream({
   const client = new OpenAI({ apiKey, baseURL });
   const system = buildSystemPrompt();
 
+  // 续 thread 时：用户消息前置 prior_summary，保留 system prompt 不变（让缓存复用）
+  const userMessage = priorSummary?.trim()
+    ? `${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
+    : prompt;
+
   try {
     const stream = await client.chat.completions.create(
       {
@@ -144,7 +152,7 @@ export async function* analyzeStream({
         max_tokens: 4096,
         messages: [
           { role: "system", content: system },
-          { role: "user", content: prompt },
+          { role: "user", content: userMessage },
         ],
       },
       {

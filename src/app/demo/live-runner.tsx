@@ -27,6 +27,15 @@ import {
   buildShareUrl,
   type HistoryItem,
 } from "@/lib/demo-history";
+import {
+  startThread,
+  appendToThread,
+  buildPriorSummary,
+  extractMethodIds,
+  type Thread,
+  type ThreadMessage,
+} from "@/lib/threads";
+import { ChevronDown, ChevronUp, MessageSquarePlus, RefreshCw, Microscope } from "lucide-react";
 
 type Phase = "idle" | "streaming" | "done" | "error";
 
@@ -143,6 +152,20 @@ export function LiveRunner() {
   /** 复制 / 分享 状态 */
   const [copied, setCopied] = useState<null | "result" | "link">(null);
 
+  /* —— Thread 会话化状态 —— */
+  /** 当前 thread（null = 还没开始或重置后） */
+  const [currentThread, setCurrentThread] = useState<Thread | null>(null);
+  /** 渲染用 — 所有历史 Q/A 对（包含当前刚完成的那条） */
+  const [threadHistory, setThreadHistory] = useState<ThreadMessage[]>([]);
+  /** 续 thread 时本次属于哪种 follow-up */
+  const [followUpKind, setFollowUpKind] = useState<
+    "deeper" | "angle" | "method" | null
+  >(null);
+  /** 折叠展开：哪些历史 Q/A 当前展开 */
+  const [expandedMsgIds, setExpandedMsgIds] = useState<Set<string>>(new Set());
+  /** "深入方法"打开的方法选择面板 */
+  const [methodDrillOpen, setMethodDrillOpen] = useState(false);
+
   const visibleSuggestions =
     activeDomain === "all"
       ? SUGGESTIONS
@@ -217,9 +240,70 @@ export function LiveRunner() {
     setShowNoteInput(false);
     setCopied(null);
     setFromReplay(false);
+    // 重置 thread —— 新问题就是新 thread
+    setCurrentThread(null);
+    setThreadHistory([]);
+    setFollowUpKind(null);
+    setExpandedMsgIds(new Set());
+    setMethodDrillOpen(false);
     // 刷新历史显示
     setHistory(readHistory());
   }, []);
+
+  /** 切换某条历史消息的展开 / 折叠 */
+  const toggleMsg = useCallback((id: string) => {
+    setExpandedMsgIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  /* —— 续 thread 的 3 类后续 —— */
+
+  /** 继续追问 — 用户填一个补充问题 */
+  const [deeperInput, setDeeperInput] = useState("");
+  const [deeperOpen, setDeeperOpen] = useState(false);
+  const submitDeeper = useCallback(() => {
+    const q = deeperInput.trim();
+    if (!q) return;
+    setDeeperInput("");
+    setDeeperOpen(false);
+    void submit(q, { kind: "deeper" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deeperInput]);
+
+  /** 换角度问 — 4 个标准角度 */
+  const ANGLES = [
+    { key: "user", label: "用户角度", template: "用「用户视角」重新看这个问题：他们真正想要的是什么？他们怎么感知这个事？" },
+    { key: "competitor", label: "竞品 / 已有玩家", template: "用「竞争对手 / 已有玩家」的视角看：他们已经在做什么？他们的盲点在哪？" },
+    { key: "risk", label: "风险 / 反向", template: "把这个问题反过来问：怎么做最容易失败？三大风险点是什么？" },
+    { key: "data", label: "数据 / 证据", template: "我需要哪些数据 / 证据来真正验证上面的判断？怎么用最低成本拿到？" },
+  ] as const;
+  const submitAngle = useCallback(
+    (template: string) => {
+      void submit(template, { kind: "angle" });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  /** 深入某方法 — 从最新输出抽取方法 ID */
+  const lastOutput =
+    threadHistory.length > 0 ? threadHistory[threadHistory.length - 1].output : output;
+  const citedMethodIds = extractMethodIds(lastOutput);
+  const submitMethodDrill = useCallback(
+    (methodId: string) => {
+      void submit(
+        `深入讲 ${methodId}：它在我刚才的场景下，具体怎么用？给我可执行的步骤和判断标准。`,
+        { kind: "method" },
+      );
+      setMethodDrillOpen(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   /** 从历史回放某次分析 — 不发 API */
   const replayFromHistory = useCallback((item: HistoryItem) => {
@@ -318,7 +402,10 @@ export function LiveRunner() {
   }, [feedback, feedbackNote, submittedPrompt, activeDomain]);
 
   const submit = useCallback(
-    async (text: string) => {
+    async (
+      text: string,
+      opts?: { kind?: "deeper" | "angle" | "method" },
+    ) => {
       const trimmed = text.trim();
       if (!trimmed || phase === "streaming") return;
 
@@ -326,10 +413,29 @@ export function LiveRunner() {
       const ctrl = new AbortController();
       abortRef.current = ctrl;
 
+      // 续 thread：构建 prior_summary（前文压缩精要）
+      const kind = opts?.kind ?? null;
+      const isFollowUp = !!kind && threadHistory.length > 0;
+      const priorSummary = isFollowUp
+        ? buildPriorSummary({
+            id: currentThread?.id ?? "transient",
+            domain: activeDomain,
+            rootPrompt: threadHistory[0]?.prompt ?? trimmed,
+            messages: threadHistory,
+            startedAt: currentThread?.startedAt ?? new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          })
+        : "";
+
+      setFollowUpKind(kind);
       setSubmittedPrompt(trimmed);
       setOutput("");
       setUsage(null);
       setError(null);
+      setFeedback(null);
+      setShowNoteInput(false);
+      setCopied(null);
+      setMethodDrillOpen(false);
       setPhase("streaming");
       setWaitingFirstChunk(true);
 
@@ -349,6 +455,9 @@ export function LiveRunner() {
             // 数据采集：用户走了哪个领域的入口
             source: pickedFromDomain,
             domain: activeDomain,
+            // 续 thread 时携带前文精要 + kind
+            prior_summary: priorSummary || undefined,
+            follow_up_kind: kind || undefined,
           }),
           signal: ctrl.signal,
         });
@@ -384,12 +493,33 @@ export function LiveRunner() {
         let outputAccumulator = "";
 
         const finalize = () => {
+          // 1) 老的"最近问过"历史也维持（用户视角友好）
           appendToHistory({
             prompt: trimmed,
             domain: activeDomain,
             output: outputAccumulator,
           });
           setHistory(readHistory());
+
+          // 2) Thread 更新 —— 续写 vs 新开
+          let updated: Thread | null = null;
+          if (kind && currentThread) {
+            updated = appendToThread(currentThread.id, {
+              prompt: trimmed,
+              output: outputAccumulator,
+              followUpKind: kind,
+            });
+          } else {
+            updated = startThread({
+              prompt: trimmed,
+              domain: activeDomain,
+              output: outputAccumulator,
+            });
+          }
+          if (updated) {
+            setCurrentThread(updated);
+            setThreadHistory(updated.messages);
+          }
           setPhase("done");
         };
 
@@ -619,6 +749,71 @@ export function LiveRunner() {
       {/* —— 运行 / 完成 / 错误：共用输出区 —— */}
       {phase !== "idle" && (
         <section ref={outputRef}>
+          {/* Thread 历史：本会话之前的 Q/A，折叠展示
+              done 时最后一条 = 当前显示的主 Q+A，去掉避免重复 */}
+          {(() => {
+            const past =
+              phase === "done" &&
+              threadHistory.length > 0 &&
+              threadHistory[threadHistory.length - 1].prompt === submittedPrompt
+                ? threadHistory.slice(0, -1)
+                : threadHistory;
+            if (past.length === 0) return null;
+            return (
+            <div className="mb-5 space-y-2">
+              <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-dust">
+                <MessageSquarePlus className="size-3" />
+                <span>本次会话 · 前 {past.length} 轮</span>
+              </div>
+              {past.map((m, i) => {
+                const isOpen = expandedMsgIds.has(m.id);
+                const kindBadge =
+                  m.followUpKind === "deeper"
+                    ? "继续追问"
+                    : m.followUpKind === "angle"
+                      ? "换角度"
+                      : m.followUpKind === "method"
+                        ? "深入方法"
+                        : null;
+                return (
+                  <article
+                    key={m.id}
+                    className="overflow-hidden rounded-lg border border-fog-2 bg-soot/60"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleMsg(m.id)}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-soot"
+                    >
+                      <span className="numeral text-[10px] text-volt">
+                        Q{i + 1}
+                      </span>
+                      {kindBadge && (
+                        <span className="rounded border border-fog-2 px-1.5 py-0.5 text-[10px] text-dust">
+                          {kindBadge}
+                        </span>
+                      )}
+                      <span className="min-w-0 flex-1 truncate text-sm text-ash">
+                        {m.prompt}
+                      </span>
+                      {isOpen ? (
+                        <ChevronUp className="size-3.5 shrink-0 text-dust" />
+                      ) : (
+                        <ChevronDown className="size-3.5 shrink-0 text-dust" />
+                      )}
+                    </button>
+                    {isOpen && (
+                      <div className="border-t border-fog-2 bg-ink px-4 py-3">
+                        <Markdown source={m.output} />
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+            );
+          })()}
+
           {/* 用户问题回显 */}
           <div className="rounded-xl border border-fog-2 bg-soot p-5">
             <div className="text-xs uppercase tracking-widest text-dust">
@@ -874,6 +1069,117 @@ export function LiveRunner() {
                       >
                         跳过
                       </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 续 thread — 让 agent 感真正出来 */}
+              {!fromReplay && (
+                <div className="rounded-xl border border-fog-3 bg-soot p-5">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-volt">
+                    <MessageSquarePlus className="size-3.5" />
+                    <span>继续这次会话</span>
+                  </div>
+                  <p className="mt-2 text-xs text-dust">
+                    InnoLab 会带着前面的判断回答你，不是从头开始想。
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDeeperOpen((v) => !v);
+                        setMethodDrillOpen(false);
+                      }}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-md border px-3 py-2 text-xs transition",
+                        deeperOpen
+                          ? "border-volt bg-volt/10 text-volt"
+                          : "border-fog-2 bg-ink text-bone hover:border-volt",
+                      )}
+                    >
+                      <MessageSquarePlus className="size-3.5" />
+                      继续追问
+                    </button>
+
+                    {/* 4 个角度按钮直接显示，省去二级菜单 */}
+                    {ANGLES.map((a) => (
+                      <button
+                        key={a.key}
+                        type="button"
+                        onClick={() => submitAngle(a.template)}
+                        className="inline-flex items-center gap-1.5 rounded-md border border-fog-2 bg-ink px-3 py-2 text-xs text-bone transition hover:border-volt"
+                      >
+                        <RefreshCw className="size-3.5" />
+                        换 · {a.label}
+                      </button>
+                    ))}
+
+                    {citedMethodIds.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMethodDrillOpen((v) => !v);
+                          setDeeperOpen(false);
+                        }}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-md border px-3 py-2 text-xs transition",
+                          methodDrillOpen
+                            ? "border-volt bg-volt/10 text-volt"
+                            : "border-fog-2 bg-ink text-bone hover:border-volt",
+                        )}
+                      >
+                        <Microscope className="size-3.5" />
+                        深入某方法
+                      </button>
+                    )}
+                  </div>
+
+                  {/* "继续追问"输入区 */}
+                  {deeperOpen && (
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                      <input
+                        type="text"
+                        value={deeperInput}
+                        onChange={(e) => setDeeperInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") submitDeeper();
+                        }}
+                        placeholder="进一步问什么？例：那 90 天具体怎么排？"
+                        className="flex-1 rounded border border-fog-2 bg-ink px-3 py-2 text-sm text-bone outline-none focus:border-volt"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={submitDeeper}
+                        disabled={!deeperInput.trim()}
+                        className="rounded bg-volt px-4 py-2 text-xs font-semibold text-ink transition hover:brightness-110 disabled:opacity-40"
+                      >
+                        发送
+                      </button>
+                    </div>
+                  )}
+
+                  {/* "深入方法"选择区 */}
+                  {methodDrillOpen && citedMethodIds.length > 0 && (
+                    <div className="mt-3">
+                      <div className="text-[11px] text-dust">
+                        InnoLab 刚才调用了这些方法 —— 点一个深入：
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {citedMethodIds.map((id) => (
+                          <button
+                            key={id}
+                            type="button"
+                            onClick={() => submitMethodDrill(id)}
+                            className="numeral inline-flex items-center gap-1 rounded border border-fog-2 bg-ink px-2.5 py-1 text-[11px] text-volt transition hover:border-volt"
+                          >
+                            <Microscope className="size-3" />
+                            {id}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

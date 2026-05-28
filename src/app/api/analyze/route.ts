@@ -41,6 +41,10 @@ interface AnalyzeBody {
   domain?: string;
   /** 用户是从领域预设点过来的还是自由输入（"free" 或某 domain key） */
   source?: string;
+  /** 续 thread 时：之前的对话精要（让 agent 有记忆） */
+  prior_summary?: string;
+  /** 续 thread 类型：deeper / angle / method —— 用于事件统计 */
+  follow_up_kind?: string;
 }
 
 /**
@@ -81,12 +85,15 @@ export async function POST(request: Request) {
   const limit = checkAndConsume(ip);
   const ipHash = hashIp(ip);
 
-  // 3. 事件日志（不含 prompt 内容，含哈希 IP + 领域 + 来源）
+  // 3. 事件日志（不含 prompt 内容，含哈希 IP + 领域 + 来源 + 是否续 thread）
   logEvent({
     event: "analyze.request",
     domain: body.domain ?? "unknown",
     source: body.source ?? "free",
+    follow_up_kind: body.follow_up_kind ?? null,
+    has_prior: !!body.prior_summary,
     prompt_length: prompt.length,
+    prior_length: body.prior_summary?.length ?? 0,
     ip_hash: ipHash,
     allowed: limit.allowed,
     reason: limit.reason,
@@ -129,6 +136,7 @@ export async function POST(request: Request) {
       try {
         for await (const event of analyzeStream({
           prompt,
+          priorSummary: body.prior_summary,
           signal: request.signal,
         })) {
           send(event);
