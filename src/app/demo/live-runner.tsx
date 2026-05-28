@@ -498,6 +498,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       setShowNoteInput(false);
       setCopied(null);
       setMethodDrillOpen(false);
+      setDeeperOpen(false);
+      setSessionRestored(false); // 新轮次开始，清除恢复标志
       setPhase("streaming");
       setWaitingFirstChunk(true);
 
@@ -900,8 +902,15 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
 
           {/* 用户问题回显 */}
           <div className="rounded-xl border border-fog-2 bg-soot p-5">
-            <div className="text-xs uppercase tracking-widest text-dust">
-              你问的
+            <div className="flex items-center gap-2">
+              <div className="text-xs uppercase tracking-widest text-dust">
+                你问的
+              </div>
+              {threadHistory.length > 1 && (
+                <span className="numeral rounded-full border border-volt/40 bg-volt/[0.06] px-2 py-0.5 text-[10px] text-volt">
+                  第 {threadHistory.length} 轮
+                </span>
+              )}
             </div>
             <div className="mt-2 flex items-start justify-between gap-4">
               <div className="text-lg font-semibold text-bone sm:text-xl">
