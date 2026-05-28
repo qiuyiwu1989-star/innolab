@@ -162,6 +162,16 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
   },
 ];
 
+/** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
+const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
+  "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03"],
+  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD02", "DC07"],
+  "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG14", "PD10"],
+  org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10"],
+  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "DC05", "ST03"],
+  all:            ["ST07", "CG06", "PD07", "GN02", "DC05", "ST09", "EV01", "PD05", "CG14", "ST06"],
+};
+
 interface CaseSnippet {
   id: string;
   title: string;
@@ -193,6 +203,8 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
   );
   /** 等首个 delta 到达前的"思考中"状态 */
   const [waitingFirstChunk, setWaitingFirstChunk] = useState(false);
+  /** 思考动画：循环展示方法 ID（纯视觉） */
+  const [thinkingMethodId, setThinkingMethodId] = useState("");
   /** 本地分析历史（localStorage） */
   const [history, setHistory] = useState<HistoryItem[]>([]);
   /** 完成后的反馈（一次性） */
@@ -242,6 +254,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
 
   const abortRef = useRef<AbortController | null>(null);
   const outputRef = useRef<HTMLDivElement>(null);
+  const thinkingTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 卸载时取消请求
   useEffect(() => () => abortRef.current?.abort(), []);
@@ -339,6 +352,32 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
     }, INTERVAL);
     return () => clearInterval(id);
   }, [phase, prompt]);
+
+  // 思考动画：waitingFirstChunk 时循环展示域内方法 ID
+  useEffect(() => {
+    if (!waitingFirstChunk) {
+      setThinkingMethodId("");
+      if (thinkingTimerRef.current !== null) {
+        clearInterval(thinkingTimerRef.current);
+        thinkingTimerRef.current = null;
+      }
+      return;
+    }
+    const pool =
+      DOMAIN_METHOD_CYCLE[pickedFromDomain] ?? DOMAIN_METHOD_CYCLE["all"];
+    let idx = 0;
+    setThinkingMethodId(pool[idx]);
+    thinkingTimerRef.current = setInterval(() => {
+      idx = (idx + 1) % pool.length;
+      setThinkingMethodId(pool[idx]);
+    }, 270);
+    return () => {
+      if (thinkingTimerRef.current !== null) {
+        clearInterval(thinkingTimerRef.current);
+        thinkingTimerRef.current = null;
+      }
+    };
+  }, [waitingFirstChunk, pickedFromDomain]);
 
   // 解析 URL ?q= 分享链接：朋友点开时自动 prefill prompt
   // 注意：不自动提交，避免意外消耗配额；只 prefill 让用户主动点
@@ -1256,7 +1295,15 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
                 {waitingFirstChunk ? (
-                  <span>InnoLab 正在装填弹药库 · 74 方法 + 20 案例进入上下文…</span>
+                  <span className="flex items-center gap-2">
+                    <span>装填弹药库</span>
+                    {thinkingMethodId && (
+                      <span className="numeral rounded border border-volt/25 bg-volt/[0.06] px-1.5 py-0.5 text-[10px] font-medium text-volt/80 tabular-nums transition-all duration-200">
+                        {thinkingMethodId}
+                      </span>
+                    )}
+                    <span className="text-dust">· 74 方法 + 20 案例</span>
+                  </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <span>InnoLab 推演中</span>
