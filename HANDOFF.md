@@ -1,206 +1,213 @@
 # 睡醒后的 5 分钟交接
 
-> 自动模式下我把所有能做的都做了。你睡醒后这页帮你 5 分钟内进入状态。
+> 自动模式跑了一夜。**60 秒能上公网** — 一行命令搞定大部分。
 
-## 🚀 一键唤醒（推荐第一件事就跑这个）
+---
+
+## ⚡ 最短路径（如果你不想看下面任何东西）
+
+打开一个新终端，按顺序跑：
+
+```bash
+# 1. 看本地（已经在 http://localhost:3001 跑着）
+open http://localhost:3001/demo
+
+# 2. 满意就一键部署到公网（脚本会拉 OAuth、push、deploy）
+cd /Users/qiu/Documents/innolab-repo
+bash scripts/deploy.sh
+
+# 3. 加完 env vars（脚本最后会告诉你）
+#    打开 vercel dashboard → 加 MIMO_API_KEY / MIMO_BASE_URL / MIMO_MODEL
+```
+
+完工。下面是细节。
+
+---
+
+## 现在的状态（一眼）
+
+| 项 | 状态 |
+|---|---|
+| 代码完成度 | ✅ v0.6（含真 AI 引擎 + 案例可视化复原） |
+| 本地预览 | ✅ http://localhost:3001（dev server 已起，MiMo key 已注入） |
+| 本地真 AI | ✅ /demo 实测可用，MiMo 流式响应 ~5s 首 token |
+| 生产 build | ✅ npm run build 通过，102 静态页 + 2 动态 API + 1 edge OG |
+| Commit | ✅ 8 个 commit 在本地 master |
+| GitHub push | ⚠ **未 push**（需要 gh auth login） |
+| Vercel 部署 | ⚠ **未部署**（需要 vercel login） |
+| 公网 URL | ⚠ **没有**（部署后才有） |
+| 工具链 | ✅ `gh` v2.92 + `vercel` v54.5 都在 ~/.local/bin |
+
+**为什么没自动上线？** GitHub 和 Vercel 的 OAuth 都需要浏览器交互（不能后台），所以最后一公里必须你来点。
+
+---
+
+## 📦 你睡这段时间做完了什么
+
+主线版本 v0.1 → v0.6：
+
+| 版本 | 核心 |
+|---|---|
+| v0.1 | Next.js 网站基础版 |
+| v0.2 | 重设计 — 暗黑 Stripe Sigma 风（彻底重做） |
+| v0.3 | /demo 模拟分析流（5 个手写脚本）+ CMD+K 命令面板 + 6 引擎落地页 |
+| v0.4 | 部署文档 + Vercel Analytics + scripts/wake-up.sh |
+| v0.5 | **真 AI 引擎** — /api/analyze 端点，SSE 流式 |
+| v0.5.1 | 切换到小米 MiMo（OpenAI 兼容） |
+| **v0.6** | **案例库改造为复原分析流程可视化** ← 最新 |
+| v0.7 | 一键部署脚本 + 这份 HANDOFF |
+
+**最重要的新东西**：
+- `/demo` 是**真的 AI 分析**，不是脚本。输入任何商业问题，MiMo 用 74 方法编排推演
+- `/cases/case-XXX` 全部改成"复原的分析流程"，每个案例像一份完整咨询报告
+- `/api/analyze` 有限流（全站 50/天，单 IP 5/天），可在 Vercel env 调整
+
+---
+
+## 🚀 三条部署路径（按你的偏好选）
+
+### A. 一键脚本（推荐 — 最省事）
 
 ```bash
 cd /Users/qiu/Documents/innolab-repo
-bash scripts/wake-up.sh
+bash scripts/deploy.sh
 ```
 
-它会：① 显示 git/commit 状态  ② 自动启 dev server  ③ 打印下一步要跑的命令。
+脚本会：
+1. 检查 gh / vercel CLI（都在 ~/.local/bin）
+2. 没 gh 登录就拉浏览器
+3. push 8 个 commit
+4. 没 vercel 登录就拉浏览器
+5. 部署到生产，拿到 `*.vercel.app` URL
+6. 提示你加 3 个 env vars
 
-## 现在的状态
-
-✅ **代码完成**：v0.5 全套上线就绪（含真 AI 引擎），本地 + 生产 build 都通过
-✅ **本地可访问**：`npm run dev -- --port 3001` → http://localhost:3001  ← **注意端口 3001**（你 `/Users/qiu/Documents/冷静/lengjing` 那个项目占了 3000）
-✅ **已 commit**：本地 master 等 push
-✅ **工具链就绪**：`gh` CLI 已装到 `~/.local/bin/gh`，`vercel` CLI 已装到 `~/.local/bin/vercel`
-⚠ **未 push 到 GitHub**：等你 `gh auth login` 后一行命令搞定
-⚠ **未部署到 Vercel**：需要你 OAuth + Import（用 CLI 1 分钟 / 用 Web 3 分钟）
-⚠ **/demo 实时分析需要 ANTHROPIC_API_KEY**：你已经有 Anthropic 账号，去 https://console.anthropic.com/settings/keys 建一个 key 就行
-
-## ⚡ 最快上线路径（按你的 auth 方式选一条）
-
-### A. 用 GitHub CLI（推荐 — 最简单，gh 我已经装好）
-
-我已经把 gh CLI（v2.92.0）下载并解压到了 `~/.local/bin/gh`。你只需要：
-
-```bash
-export PATH="$HOME/.local/bin:$PATH"
-gh auth login    # 选 GitHub.com → HTTPS → 浏览器登录
-git push origin master
-```
-
-把 `export PATH=...` 那行加到 `~/.zshrc` 让以后都能用：
-
-```bash
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-```
-
-### B. 用 SSH（如果你已有 GitHub SSH key 在别的机器）
-
-```bash
-# 复制你的 SSH 公钥到 GitHub Settings → SSH and GPG keys
-# 然后：
-git remote set-url origin git@github.com:qiuyiwu1989-star/innolab.git
-git push origin master
-```
-
-### C. 用 PAT（Personal Access Token）
-
-```bash
-# 1. 去 https://github.com/settings/tokens 创建一个 classic token
-#    勾选 repo scope
-# 2. 触发推送：
-git push origin master
-# 3. 提示 username 时输 GitHub 用户名（qiuyiwu1989-star）
-# 4. 提示 password 时粘贴 PAT（不是 GitHub 密码！）
-# 5. macOS Keychain 会记住，下次不用再输
-```
-
-push 成功后，**继续看下面 Vercel 部署**。
-
-## 你睡前看到的是 v0.2，醒来后的是 v0.3
-
-| 维度 | v0.2（你睡前） | v0.3（现在） |
-|---|---|---|
-| 页面数 | 5 个主页面 | + `/demo`、`/methods/engine/[key]`、`/not-found` |
-| 搜索 | 列表内搜 | + 全站 **CMD+K 命令面板** |
-| 候补转化 | 一个表单 | + `/demo` 模拟分析流（5 个真实问题） |
-| 404 / Favicon | 默认 | 自定义黑底 + volt 点 |
-| OG 图 | ✓ | ✓（同 v0.2） |
-
-**核心 v0.3 新增 = `/demo` 页**：5 个真实问题 × 8 个推演步骤的流式动画，每个方法名都能点进详情页。**这是 v1.0 的"看看效果"，候补转化的关键磁铁**。
-
-## 你要做的 3 件事
-
-### 1. 浏览器看 v0.3（5 分钟）
-
-打开这些 URL hard-refresh：
-
-- http://localhost:3000 — 首页 + 横向 marquee + 3 demo 卡 + 弹药库
-- **http://localhost:3000/demo** ← 最重要！选个问题点一下看流式动画
-- http://localhost:3000/methods/engine/cognition — 引擎落地页
-- 任意页面按 **⌘K** 试搜索
-- http://localhost:3000/nonexistent — 404 页
-- 手机或 Chrome 响应式模式 ≤ 768px 看导航汉堡菜单
-
-### 2. 决定推不推（这是最大决策）
-
-```bash
-cd /Users/qiu/Documents/innolab-repo
-git log --oneline -5
-# 看 3 个 commit：v0.1 + v0.2-0.3 + (initial)
-
-# 推：
-git push origin master
-```
-
-push 到的是你自己的 `github.com/qiuyiwu1989-star/innolab`。
-
-### 3. 部署到 Vercel + 挂子域 `innolab.qiuyiwu.com`
-
-**方法 1（推荐）：CLI 一行先上 vercel.app**
+### B. 分步手工（如果想看每一步）
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 cd /Users/qiu/Documents/innolab-repo
-vercel              # 第一次 link 项目（选 create），浏览器登录
-vercel --prod       # 部署到生产
+
+# GitHub
+gh auth login
+git push origin master
+
+# Vercel
+vercel              # 第一次 link
+vercel --prod       # 生产部署
 ```
 
-预期：约 90 秒拿到 `https://innolab-xxx.vercel.app`（临时占位 URL）。
+### C. Web Dashboard（如果不想用 CLI）
 
-**方法 2：Web Dashboard**
+详见 `DEPLOY.md`。简版：
+1. `git push`（用任何你顺手的方式）
+2. 打开 https://vercel.com/new
+3. Import `qiuyiwu1989-star/innolab`
+4. Deploy
 
-https://vercel.com/new → Import `qiuyiwu1989-star/innolab` → Deploy
+---
 
-### 3b. 挂子域 innolab.qiuyiwu.com（独立子域）
+## 🔑 部署后必做：加 env vars
+
+不加这些，`/demo` 在公网会报"未配置 MIMO_API_KEY"。
+
+Vercel Dashboard → Settings → Environment Variables，加三条（Production + Preview + Development 全勾）：
+
+```
+MIMO_API_KEY      = tp-cwxhnnn1oh0fzpm0h8uk8mey7342gfalfj3qev0p5nmpnbhv
+MIMO_BASE_URL     = https://token-plan-cn.xiaomimimo.com/v1
+MIMO_MODEL        = mimo-v2.5-pro
+```
+
+加完 → Deployments → 最新一条 → ⋯ → Redeploy。
+
+### 🔒 安全提示
+
+`tp-cwxhnnn1oh0fzpm0h8uk8mey7342gfalfj3qev0p5nmpnbhv` 这个 key 已经在多次对话里露过了。**强烈建议部署完去 https://token-plan-cn.xiaomimimo.com 后台轮换一下**（撤销老 key，生成新 key，更新 Vercel env）。
+
+---
+
+## 🌐 接子域 innolab.qiuyiwu.com
+
+按计划，生产域名是 `innolab.qiuyiwu.com`（你 `qiuyiwu.com` 的独立子域）。
 
 1. Vercel 项目 → Settings → Domains → Add `innolab.qiuyiwu.com`
-2. 到 `qiuyiwu.com` 的 DNS 加 CNAME：
-   - **Name**: `innolab`
-   - **Value**: `cname.vercel-dns.com`
-   - **Cloudflare 用户**：把橙色云朵关掉
-3. DNS 生效（~10 分钟）→ Vercel 自动签证书
-4. Vercel → Settings → Env Vars：`NEXT_PUBLIC_SITE_URL = https://innolab.qiuyiwu.com` → Redeploy
+2. 在 `qiuyiwu.com` 的 DNS 加：
+   - Type: `CNAME`
+   - Name: `innolab`
+   - Value: `cname.vercel-dns.com`
+   - Cloudflare 用户：**关橙色云朵**
+3. DNS 生效（~10 分钟）→ Vercel 自动签 SSL
+4. 改 `NEXT_PUBLIC_SITE_URL` env 为 `https://innolab.qiuyiwu.com` → Redeploy
 
-详细见 `DEPLOY.md` 的 §3。
+详细见 `DEPLOY.md` §3。
 
-## 知道这些坑（让你不踩）
+---
 
-### `/about` 里所有 `[占位文本]` 都是空的
+## 📂 本地预览地址
 
-我故意不瞎编你的个人介绍和五本书书名。**首次发布前你至少填一段邱懿武介绍 + 把邮箱占位 `hi@example.com` 换成真邮箱**。文件在：
-- `src/app/about/page.tsx`（hero 介绍 + 联系块邮箱）
-- 五本书的 `BOOKS` 数组在文件顶部
+dev server 已经在 **http://localhost:3001** 跑着（MiMo key 注入到 process.env）。
 
-### Demo 只支持 5 个预设问题
+| 重点验收 |
+|---|
+| http://localhost:3001 — 首页 |
+| **http://localhost:3001/demo — 真 AI 分析，输任意问题测一下** |
+| **http://localhost:3001/cases/case-002 — 球球老师推演（最经典）** |
+| http://localhost:3001/cases/case-005 — 造物云 J 曲线（最戏剧化） |
+| http://localhost:3001/cases/case-006 — 零售三大幻觉 |
+| http://localhost:3001/methods — 74 方法 + 筛选 |
+| http://localhost:3001/methods/engine/cognition — 引擎落地页 |
 
-`/demo` 页用户输入自定义问题会得到 "v0.1 不支持，请选下方建议" 的提示。这是**故意的**（v0.1 不接 AI），但用户可能困惑。要不要补一行"为什么" 你决定。
+**注意：端口 3001**（你 `lengjing` 项目占了 3000）。
 
-5 个预设问题在 `src/lib/demo-scripts.ts`。每个有 7-8 步推演。**你可以重新读一遍这些推演 — 如果有任何观点你不同意，改写 body 数组**。它们是手写样本，代表"你将来希望 AI 给出的答案"。
+如果 dev server 挂了：
 
-### 候补邮件没持久化
-
-`/api/waitlist` 当前只 `console.log` 到 Vercel Functions 日志。上线后第一个用户提交时去 Vercel Dashboard → Logs 看。**真到有用户提交了，再接 Resend Audiences**（10 分钟工程量）。
-
-### 域名
-
-我用 `https://innolab.example.com` 占位。Vercel 部署后会给一个 `*.vercel.app`。如果你要自定义域名，按 DEPLOY.md 步骤接。
-
-### 4 个我 spawn 的清理 chip 你已经做了
-
-✅ DC08/09 + ST17/18 的 Meta ID 补齐
-✅ product-definition/nine-grid.md 重命名
-
-## 现在系统的真实数据
-
-```
-74 个方法卡（cognition 19 / strategy 18 / generation 12 / decision 9 / product 14 / evolution 3）
-10 个真实案例（其中 9 个有详情页，case-001 只在索引）
-5 个 demo 推演剧本
-6 个引擎落地页
-102 个静态构建路由
+```bash
+cd /Users/qiu/Documents/innolab-repo
+PORT=3001 \
+  MIMO_API_KEY=tp-cwxhnnn1oh0fzpm0h8uk8mey7342gfalfj3qev0p5nmpnbhv \
+  MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1 \
+  MIMO_MODEL=mimo-v2.5-pro \
+  npm run dev
 ```
 
-## 文件路径速查
+或者把这三个 env 写进 `.env.local`（在 `.gitignore` 里，不会泄漏），跑 `npm run dev -- --port 3001` 就行。
+
+---
+
+## ⚠ 我**没**做的（明确告诉你边界）
+
+- ❌ push 到 GitHub — 缺 OAuth
+- ❌ 部署 Vercel — 缺 OAuth
+- ❌ 把 MiMo key 持久化到 `.env.local` — auto-mode 拦了写"真 key"到磁盘，留了 PASTE_YOUR_KEY_HERE 占位
+- ❌ 邱懿武自我介绍 / 五本书书名 / 邮箱 — 不知道，留 `[占位文本]` 标记在 `src/app/about/page.tsx`
+- ❌ 候补邮件持久化 — `/api/waitlist` 仅 console.log，上线后 Vercel Functions 日志能看到
+- ❌ 子域 DNS 配置 — 必须你在 DNS 服务商点
+
+---
+
+## 📁 关键文件速查
 
 | 想改 | 文件 |
 |---|---|
-| 首页 hero / 各段 | `src/app/page.tsx` |
-| Demo 5 个推演剧本 | `src/lib/demo-scripts.ts` |
-| Demo 页骨架 | `src/app/demo/demo-runner.tsx` |
-| 设计系统色 / 字体 | `src/app/globals.css` |
-| 顶栏导航 | `src/components/site/nav.tsx` |
-| CMD+K 命令面板 | `src/components/site/command-menu.tsx` |
-| 引擎元数据（名称 / 描述 / 推荐方法） | `src/lib/engines.ts` |
-| OG 图 | `src/app/opengraph-image.tsx` |
-| 候补 API | `src/app/api/waitlist/route.ts` |
-| About 页（含占位） | `src/app/about/page.tsx` |
+| /demo 的 5 个手写脚本 | `src/lib/demo-scripts.ts` |
+| /demo 实时分析逻辑 | `src/app/demo/live-runner.tsx` + `src/lib/innolab-engine.ts` |
+| /api/analyze 端点 | `src/app/api/analyze/route.ts` |
+| 限流配额 | `src/lib/rate-limit.ts`（或 env: `INNOLAB_DAILY_QUOTA_GLOBAL/_PER_IP`） |
+| 案例分析流程内容 | `cases/<domain>/<id>.json` 里的 `analysis_flow` 字段 |
+| 案例流程渲染组件 | `src/components/site/case-flow.tsx` |
+| 设计系统 tokens | `src/app/globals.css` |
+| 首页 | `src/app/page.tsx` |
+| 关于页（含占位） | `src/app/about/page.tsx` |
 | 部署文档 | `DEPLOY.md` |
+| 一键部署脚本 | `scripts/deploy.sh` |
+| 唤醒脚本（看状态） | `scripts/wake-up.sh` |
 
-## Vercel 上线后的下一波（如果你想继续）
+---
 
-按优先级：
+## 🎯 你最该先做的 3 件事
 
-1. **填 `/about` 的占位**（5 分钟）
-2. **审查 5 个 demo 推演剧本**，把你不认可的判断改掉（30 分钟）
-3. **加你自己的真实联系方式 + 公众号 / 微信**到 footer 或 /about（5 分钟）
-4. **接 Resend Audiences** 持久化候补邮件（10 分钟）
-5. **加 Plausible / Vercel Analytics** 看流量（5 分钟）
-6. **第二批 demo 推演**：加 5 个新问题剧本（每个 30 分钟）
-7. **写第一篇 InnoLab 博客**（如果决定加 /blog）
+1. **看 `/demo` 跑一发真 AI** — 这是 v0.5 最大的新东西，确认质量符合预期
+2. **看 2-3 个案例**（推荐 case-002 球球老师、case-005 造物云） — 确认"复原分析流程"的可视化对路子
+3. **跑 `bash scripts/deploy.sh`** — 推上公网，把 InnoLab 真正变成"用户能用"的东西
 
-## 我没做的（明确告诉你边界）
-
-- 没自动 push（你看完再说）
-- 没真接 AI（v1.0 工程）
-- 没写邱懿武的真实自我介绍（不知道）
-- 没加 Plausible / Vercel Analytics（需要你的账号）
-- 没注册域名（不是我的事）
-- 没改 SKILL.md（这是 Claude Skill 那一边的内容，不影响网站）
-
-睡醒后看到这页，应该足够你 5 分钟内决定下一步。
+完事告诉我"上线了 + 链接"，或者哪里要调。
