@@ -69,7 +69,7 @@ function detectDomainFromPrompt(text: string): DomainKey | null {
     return "org";
   if (/产品|mvp|功能|需求|设计|用户增长|留存|转化率|产品经理/.test(t))
     return "product";
-  if (/战略|转型|定位|赛道|竞争|护城河|商业模式|saas|b2b|创业|融资|市场|行业/.test(t))
+  if (/战略|转型|定位|赛道|竞争|护城河|商业模式|saas|b2b|创业|融资|市场|行业|品牌|复购|新消费|爆品|渠道|消费品|零售|下沉|出海/.test(t))
     return "strategy";
   return null;
 }
@@ -87,6 +87,7 @@ const EXAMPLE_PROMPTS = [
   "播客做了 3 年、5 万忠实听众，三次变现尝试全失败——怎么找到跑通的路？",
   "SaaS 产品免费用户 5 万，加了半年功能转化率还是 1.5%，该怎么破？",
   "产品做出来了，免费试用 12 家无一转付费——第一个付费用户在哪里？",
+  "小红书爆款月销 200 万，复购率只有 18%，三家竞品已经抄完了 SKU——品牌溢价怎么建起来？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1007,7 +1008,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 21 案例
+                  MiMo v2.5 Pro · 74 方法 + 22 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1303,7 +1304,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 74 方法 + 21 案例</span>
+                    <span className="text-dust">· 74 方法 + 22 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
