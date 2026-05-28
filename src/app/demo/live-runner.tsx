@@ -74,6 +74,18 @@ function detectDomainFromPrompt(text: string): DomainKey | null {
   return null;
 }
 
+/** 首屏「灵感」示例问题 — 展示 InnoLab 擅长回答的问题类型 */
+const EXAMPLE_PROMPTS = [
+  "我们 200 人制造业，AI 转型一年用了 5 个工具但都没跑起来——问题在哪？",
+  "小红书 50 万粉，广告收入触顶，该怎么找第三条变现路线？",
+  "公司推 OKR 8 个月，全员达标 96% 但业绩下滑 15%，是哪里出了问题？",
+  "我们 SaaS 想出海，东南亚、中东、日本三选一，该怎么判断？",
+  "守线业务还有钱赚，但攻线 AI 产品一直没人用——资源该怎么分配？",
+  "招一个 AI 负责人，还是让全员都学 AI？哪条路更值？",
+  "我的 MVP 用户说「挺好的」但没有复购，问题出在哪里？",
+  "文创 IP 内核已经验证，怎么快速拓展更多变现载体而不失去定位？",
+] as const;
+
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
 const DOMAINS = [
   { key: "all", label: "全部" },
@@ -203,6 +215,9 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   const [expandedMsgIds, setExpandedMsgIds] = useState<Set<string>>(new Set());
   /** "深入方法"打开的方法选择面板 */
   const [methodDrillOpen, setMethodDrillOpen] = useState(false);
+  /** 首屏灵感提示 — 循环展示示例问题 */
+  const [exampleIdx, setExampleIdx] = useState(0);
+  const [exampleVisible, setExampleVisible] = useState(true);
 
   const visibleSuggestions =
     activeDomain === "all"
@@ -265,6 +280,20 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       /* 恢复失败就算了，不影响正常使用 */
     }
   }, []);
+
+  // 首屏灵感示例：只在 idle 且 prompt 为空时循环切换
+  useEffect(() => {
+    if (phase !== "idle" || prompt) return;
+    const INTERVAL = 4500;
+    const id = setInterval(() => {
+      setExampleVisible(false);
+      setTimeout(() => {
+        setExampleIdx((i) => (i + 1) % EXAMPLE_PROMPTS.length);
+        setExampleVisible(true);
+      }, 300); // 等 fade-out 完成再换文字
+    }, INTERVAL);
+    return () => clearInterval(id);
+  }, [phase, prompt]);
 
   // 解析 URL ?q= 分享链接：朋友点开时自动 prefill prompt
   // 注意：不自动提交，避免意外消耗配额；只 prefill 让用户主动点
@@ -806,6 +835,28 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               submit(prompt);
             }}
           >
+            {/* 灵感示例：prompt 为空时显示，淡入淡出切换 */}
+            {!prompt && (
+              <div
+                className="mb-2 flex items-start gap-2 transition-opacity duration-300"
+                style={{ opacity: exampleVisible ? 1 : 0 }}
+              >
+                <span className="mt-0.5 shrink-0 text-[10px] uppercase tracking-widest text-dust">
+                  例如
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPrompt(EXAMPLE_PROMPTS[exampleIdx])}
+                  className="flex-1 text-left text-sm text-ash/70 transition hover:text-ash"
+                  title="点击填入这个问题"
+                >
+                  {EXAMPLE_PROMPTS[exampleIdx]}
+                </button>
+                <span className="mt-0.5 shrink-0 text-[10px] text-volt/50">
+                  ↗
+                </span>
+              </div>
+            )}
             <div className="rounded-xl border border-fog-2 bg-soot p-4 transition focus-within:border-volt">
               <textarea
                 value={prompt}
@@ -816,7 +867,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                     submit(prompt);
                   }
                 }}
-                placeholder="输入一个真实商业问题，例：我该做 IP 产品吗？"
+                placeholder="输入你的商业问题…"
                 rows={4}
                 className="w-full resize-none bg-transparent text-base text-bone outline-none placeholder:text-dust"
               />
