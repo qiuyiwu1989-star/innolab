@@ -64,10 +64,11 @@ export default function Home() {
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ash sm:text-xl">
-            把你的真实商业问题，用 <b className="font-semibold text-bone">74 个方法论</b>
-            编排成一套战略推演。
+            把你的真实商业问题，用{" "}
+            <b className="font-semibold text-bone">74 个方法框架</b>
+            系统性推演。
             <br className="hidden sm:block" />
-            从认知到产品化，一次完整的判断、方案、决策、定义。
+            多轮追问 · 方法链可视化 · 越用越懂你的场景。
           </p>
 
           {/* 直接通往 /demo（已限免上线） */}
@@ -227,42 +228,42 @@ export default function Home() {
       <section className="border-b border-fog-1 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <SectionHead
-            kicker="06 · Roadmap"
-            title="从弹药库走向 AI 战略咨询师"
-            sub="知识库 + 方法地图 + 真 AI 分析都已经上线。下一步是数据驱动迭代和付费版。"
+            kicker="06 · 演进路径"
+            title="从推演工具走向战略创新智能体"
+            sub="InnoLab 每一个版本都在让它更像一个持续陪你思考的伙伴，而不是一次性的问答工具。"
           />
           <ol className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">
             <RoadmapCard
-              v="v0.x"
+              v="v0.1"
               status="live"
-              title="知识库 + 真 AI 分析"
+              title="推演引擎 · 已上线"
               when="当前"
               items={[
-                "74 方法 + 10 案例 + 六大引擎",
-                "CMD+K 全局搜索 + 双主题",
-                "/demo 真 AI 推演（限免每天 5 次）",
+                "74 方法 + 10 案例编入系统提示",
+                "多轮会话 · 带着前文判断续问",
+                "方法调用链可视化 · 引导追问",
               ]}
             />
             <RoadmapCard
-              v="v0.9"
+              v="β"
               status="next"
-              title="数据驱动迭代"
-              when="6 周内"
+              title="记忆 + 自适应分析"
+              when="进行中"
               items={[
-                "按真实使用数据锁定主战场",
-                "私有分析记忆库 + 分析链",
-                "案例库持续扩充",
+                "分析记忆库——你的场景不用重复说",
+                "按领域动态注入最相关案例",
+                "分析质量数据反哺方法迭代",
               ]}
             />
             <RoadmapCard
               v="v1.0"
               status="vision"
-              title="订阅 / 团队版"
+              title="个人化战略伙伴"
               when="2026 Q4"
               items={[
-                "付费扩量 + 私有部署",
-                "团队协作 + API",
-                "企业级数据隔离",
+                "私有方法引擎 + 定制 system prompt",
+                "团队协作空间 + 分析历史云同步",
+                "订阅 / 私有部署 / API 开放",
               ]}
             />
           </ol>

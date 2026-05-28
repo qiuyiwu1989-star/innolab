@@ -1,4 +1,4 @@
-// InnoLab Engine — 把用户问题 + SKILL.md + 74 个方法 + 10 个案例
+// InnoLab Engine — 把用户问题 + SYSTEM_PROMPT.md + 74 个方法 + 10 个案例
 // 拼成系统提示，调小米 MiMo（OpenAI 兼容协议）流式返回。
 //
 // 切其他 OpenAI 兼容供应商只需要换 env：MIMO_BASE_URL / MIMO_API_KEY / MIMO_MODEL
@@ -11,7 +11,9 @@ import { getAllMethods } from "./methods";
 import { getAllCases } from "./cases";
 import { engines } from "./engines";
 
-const SKILL_PATH = path.join(process.cwd(), "SKILL.md");
+// SYSTEM_PROMPT.md = lean web-optimized prompt (~2KB vs SKILL.md ~15KB)
+// SKILL.md 保留作为 Claude Code agent 的完整知识库，不用于 web API
+const SKILL_PATH = path.join(process.cwd(), "SYSTEM_PROMPT.md");
 
 let _systemPrompt: string | null = null;
 

@@ -64,12 +64,12 @@ export default function DemoPage() {
           <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-dust">
             <span className="inline-flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-volt" />
-              Claude Sonnet 4.6
+              MiMo v2.5 Pro
             </span>
             <span>·</span>
-            <span>SKILL.md + 74 方法 + 10 案例做 system prompt</span>
+            <span>74 方法 + 10 案例编入 system prompt</span>
             <span>·</span>
-            <span>prompt caching 加速 + 降本</span>
+            <span>多轮会话 · 方法链可视化</span>
           </div>
         </header>
 
@@ -107,8 +107,8 @@ export default function DemoPage() {
             为什么有配额？
           </h3>
           <p className="mt-3 leading-relaxed">
-            v0.1 限免使用 Anthropic API，我（邱懿武）出钱。每次分析约 $0.05-0.15。
-            限额是为了让更多人能试用，也防止单点滥用。v1.0 上线后会有自带 key、订阅、私有记忆库等选项。
+            v0.1 限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，74 个方法 + 10 案例进入上下文。
+            限额是为了让更多人能试用。β 版会开放带自己 key、私有记忆库、无限次数等能力。
           </p>
           <Link
             href="/#waitlist"
