@@ -8,7 +8,7 @@ import { engines } from "@/lib/engines";
 export const metadata: Metadata = {
   title: "关于",
   description:
-    "InnoLab 由邱懿武创建——74 个方法论 + 10 个真实案例的可分析系统。从知识库走向 AI 战略咨询师。",
+    "InnoLab 由邱懿武创建——74 个方法论 + 19 个真实案例的战略推演引擎。多轮追问、方法链可视化、越用越懂你。",
 };
 
 // 方法论的源头（来自 SKILL.md 中的体系）— 比假书名诚实
@@ -103,9 +103,9 @@ export default function AboutPage() {
             >
               {totalCases} 个真实案例
             </Link>
-            来自邱懿武和团队近年的具体工作——AIIP（老蔡 IP 四层构建）、造物云（KA
-            设计公司的 AI 攻守战略）、球球老师（AI 儿童内心对话产品）、零售企业
-            AI 转型的三大幻觉、50 人教育公司的双轨人才体系实践。
+            横跨 AI 转型、战略决策、IP 变现、组织激励、产品增长五个领域——
+            从 B2B SaaS 出海选市场、DTC 品牌定价困境，到销售激励失效诊断、
+            SaaS 免费转付费困局，到播客主理人变现路线、小红书达人品牌化。
             这些案例不是营销素材，是真实做过的判断。
           </p>
           <p>
