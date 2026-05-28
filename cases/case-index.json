@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 30,
+  "total_cases": 33,
   "cases": [
     {
       "id": "case-001",
@@ -727,6 +727,39 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "fintech/fintech-app-growth-stall.json"
+    },
+    {
+      "id": "case-031",
+      "title": "新能源冲击下传统 4S 店转型：销量跌 35%，降价、转品牌、还是转业态？",
+      "domain": ["汽车", "零售", "战略", "转型"],
+      "tags": ["4S店", "新能源", "汽车经销商", "直营模式", "转型策略", "范式转移"],
+      "related_methods": ["ST01", "ST17", "ST06", "DC07", "PD05"],
+      "summary": "4S 店最典型的转型困境：用传统「卖车」思维应对直营模式的颠覆，降价和换品牌都是错误答案",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "auto/ev-dealership-transformation.json"
+    },
+    {
+      "id": "case-032",
+      "title": "供应链 SaaS 出海东南亚：在国内是行业第一，到了东南亚「什么都要重做」",
+      "domain": ["供应链", "SaaS", "出海", "战略"],
+      "tags": ["供应链SaaS", "出海", "东南亚", "B2B企业服务", "市场选择", "本地化"],
+      "related_methods": ["ST06", "DC07", "CG16", "ST11", "PD01"],
+      "summary": "供应链 SaaS 出海最常见的失误：把国内的产品优势当成东南亚的市场差异化，却没意识到两个市场的核心问题根本不同",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "enterprise/supply-chain-saas-southeast-asia.json"
+    },
+    {
+      "id": "case-033",
+      "title": "50 万会员企微社群活跃率跌至 3%：每月花 30 万维护一个「僵尸社群」",
+      "domain": ["产品", "运营", "增长", "战略"],
+      "tags": ["企业微信", "社群运营", "私域流量", "会员体系", "用户活跃", "社群变现"],
+      "related_methods": ["PD07", "EV01", "ST17", "CG01", "PD05"],
+      "summary": "企业微信私域社群最常见的失败模式：把「用户数量」当成「用户价值」，500 个群却没有一个能自我运转",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/enterprise-community-stall.json"
     }
   ]
 }

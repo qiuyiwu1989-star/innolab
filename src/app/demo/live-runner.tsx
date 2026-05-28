@@ -95,6 +95,9 @@ const EXAMPLE_PROMPTS = [
   "医疗 SaaS 产品 POC 三次通过，三甲医院合同谈了 2 年签不下来——卡在哪里？",
   "跨境电商家居爆款 SKU 从 15 扩到 180，GMV 翻倍但利润腰斩——怎么办？",
   "消费金融 App 注册 50 万，月活 8%，投资人要 DAU 翻倍——追数字还是追质量？",
+  "传统豪车 4S 店销量跌 35%，新能源直营店开在隔壁——降价换品牌还是转业态？",
+  "供应链 SaaS 国内行业第一，出海东南亚 6 个月只签 2 家——市场错了还是策略错了？",
+  "美妆品牌 50 万会员企微群活跃率 3%，每月花 30 万维护——这钱值不值得继续烧？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -173,12 +176,12 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
 
 /** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
 const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
-  "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03"],
-  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07"],
-  "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10"],
-  org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10"],
-  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03"],
-  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06"],
+  "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03", "ST19"],
+  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04"],
+  "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10", "EV04"],
+  org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10", "ST19"],
+  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01"],
+  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06", "ST19", "EV04"],
 };
 
 interface CaseSnippet {
@@ -1015,7 +1018,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 77 方法 + 30 案例
+                  MiMo v2.5 Pro · 77 方法 + 33 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1311,7 +1314,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 77 方法 + 30 案例</span>
+                    <span className="text-dust">· 77 方法 + 33 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
