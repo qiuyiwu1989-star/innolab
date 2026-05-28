@@ -116,6 +116,8 @@ export function LiveRunner() {
   const [pickedFromDomain, setPickedFromDomain] = useState<DomainKey | "free">(
     "free",
   );
+  /** 等首个 delta 到达前的"思考中"状态 */
+  const [waitingFirstChunk, setWaitingFirstChunk] = useState(false);
 
   const visibleSuggestions =
     activeDomain === "all"
@@ -127,6 +129,28 @@ export function LiveRunner() {
 
   // 卸载时取消请求
   useEffect(() => () => abortRef.current?.abort(), []);
+
+  // 加载时恢复上次选择的领域
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("innolab.demo.domain");
+      if (saved && DOMAINS.some((d) => d.key === saved)) {
+        setActiveDomain(saved as DomainKey);
+      }
+    } catch {
+      /* localStorage 不可用就算了 */
+    }
+  }, []);
+
+  // 选择领域时持久化
+  const pickDomain = useCallback((key: DomainKey) => {
+    setActiveDomain(key);
+    try {
+      localStorage.setItem("innolab.demo.domain", key);
+    } catch {
+      /* noop */
+    }
+  }, []);
 
   // 流式时自动滚到底部
   useEffect(() => {
@@ -162,6 +186,7 @@ export function LiveRunner() {
       setUsage(null);
       setError(null);
       setPhase("streaming");
+      setWaitingFirstChunk(true);
 
       setTimeout(() => {
         outputRef.current?.scrollIntoView({
@@ -230,6 +255,7 @@ export function LiveRunner() {
               try {
                 const ev = JSON.parse(json);
                 if (ev.type === "delta") {
+                  if (waitingFirstChunk) setWaitingFirstChunk(false);
                   setOutput((prev) => prev + ev.text);
                 } else if (ev.type === "usage") {
                   setUsage({
@@ -301,7 +327,7 @@ export function LiveRunner() {
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  Claude Sonnet 4.6 · 74 方法可用
+                  MiMo v2.5 Pro · 74 方法 + 10 案例可用
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -339,7 +365,7 @@ export function LiveRunner() {
                 <button
                   key={d.key}
                   type="button"
-                  onClick={() => setActiveDomain(d.key)}
+                  onClick={() => pickDomain(d.key)}
                   className={cn(
                     "rounded-full border px-3 py-1 text-xs font-medium transition",
                     activeDomain === d.key
@@ -418,6 +444,15 @@ export function LiveRunner() {
                 )}
               </button>
             </div>
+            {pickedFromDomain !== "free" && (
+              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-dust">
+                <span className="size-1 rounded-full bg-volt" />
+                <span>来自领域</span>
+                <span className="text-ash">
+                  {DOMAINS.find((d) => d.key === pickedFromDomain)?.label}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* 状态条 */}
@@ -428,7 +463,11 @@ export function LiveRunner() {
                   <span className="absolute size-2 animate-ping rounded-full bg-volt opacity-75" />
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
-                <span>InnoLab 正在调度方法链 · 流式推演中…</span>
+                <span>
+                  {waitingFirstChunk
+                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 10 案例进入上下文…"
+                    : "InnoLab 正在推演 · 流式输出中…"}
+                </span>
               </>
             )}
             {phase === "done" && (

@@ -70,28 +70,28 @@ export default function Home() {
             从认知到产品化，一次完整的判断、方案、决策、定义。
           </p>
 
-          {/* 模拟输入框（v1.0 入口占位） */}
+          {/* 直接通往 /demo（已限免上线） */}
           <div className="mt-12 max-w-2xl">
             <Link
-              href="#waitlist"
-              className="group flex items-center justify-between gap-3 rounded-lg border border-fog-2 bg-soot/60 px-5 py-4 transition hover:border-volt hover:bg-soot"
+              href="/demo"
+              className="group flex items-center justify-between gap-3 rounded-lg border border-volt/40 bg-volt/[0.04] px-5 py-4 transition hover:border-volt hover:bg-volt/[0.08]"
             >
               <div className="flex flex-1 items-center gap-3">
                 <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-volt" />
-                <span className="text-base text-dust">
+                <span className="text-base text-bone">
                   试试问 InnoLab：我该做 IP 产品吗？
                 </span>
               </div>
-              <span className="flex items-center gap-2 text-xs text-ash">
-                <span className="hidden sm:inline">v1.0 候补</span>
-                <ArrowRight className="size-4 transition group-hover:translate-x-1 group-hover:text-volt" />
+              <span className="flex items-center gap-2 text-xs text-volt">
+                <span className="hidden sm:inline">限免使用</span>
+                <ArrowRight className="size-4 transition group-hover:translate-x-1" />
               </span>
             </Link>
             <div className="mt-3 flex flex-wrap gap-2">
               {SUGGESTIONS.map((s) => (
                 <Link
                   key={s}
-                  href="#demos"
+                  href="/demo"
                   className="rounded-full border border-fog-2 px-3 py-1 text-xs text-ash transition hover:border-fog-3 hover:text-bone"
                 >
                   {s}
@@ -229,40 +229,40 @@ export default function Home() {
           <SectionHead
             kicker="06 · Roadmap"
             title="从弹药库走向 AI 战略咨询师"
-            sub="v0.1 已经上线 — 一个能浏览的方法论体系。下一步是把 AI 接进去。"
+            sub="知识库 + 方法地图 + 真 AI 分析都已经上线。下一步是数据驱动迭代和付费版。"
           />
           <ol className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">
             <RoadmapCard
-              v="v0.1"
+              v="v0.x"
               status="live"
-              title="弹药库"
-              when="Now"
+              title="知识库 + 真 AI 分析"
+              when="当前"
               items={[
-                "74 方法卡 + 10 案例",
-                "六大引擎、五层认知导航",
-                "方法 ↔ 案例双向联动",
+                "74 方法 + 10 案例 + 六大引擎",
+                "CMD+K 全局搜索 + 双主题",
+                "/demo 真 AI 推演（限免每天 5 次）",
               ]}
             />
             <RoadmapCard
-              v="v0.5"
+              v="v0.9"
               status="next"
-              title="方法地图"
-              when="2026 Q3"
+              title="数据驱动迭代"
+              when="6 周内"
               items={[
-                "方法关系图谱可视化",
-                "CMD+K 全局搜索",
-                "案例库扩充至 50+",
+                "按真实使用数据锁定主战场",
+                "私有分析记忆库 + 分析链",
+                "案例库持续扩充",
               ]}
             />
             <RoadmapCard
               v="v1.0"
               status="vision"
-              title="AI 战略咨询师"
+              title="订阅 / 团队版"
               when="2026 Q4"
               items={[
-                "输入问题 → 自动编排方法",
-                "多方案 + 决策 + 产品定义",
-                "你的私有分析记忆库",
+                "付费扩量 + 私有部署",
+                "团队协作 + API",
+                "企业级数据隔离",
               ]}
             />
           </ol>
@@ -280,14 +280,14 @@ export default function Home() {
             07 · Waitlist
           </span>
           <h2 className="display mt-4 text-4xl text-bone sm:text-6xl">
-            等 v1.0 开放，
+            付费版上线时，
             <br />
             我会通知你。
           </h2>
           <p className="mt-6 text-base text-ash sm:text-lg">
-            AI 战略咨询师正在训练。
+            InnoLab 当前限免（/demo 每天 5 次）。
             <br className="sm:hidden" />
-            Beta 名额限定 100 人。
+            订阅 / 团队版上线时 Beta 名额限定 100 人。
           </p>
           <form
             action="/api/waitlist"

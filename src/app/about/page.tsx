@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Github, Mail, ArrowRight } from "lucide-react";
+import { Github, Mail, ArrowRight, ArrowUpRight } from "lucide-react";
 import { getAllMethods } from "@/lib/methods";
 import { getAllCases } from "@/lib/cases";
 import { engines } from "@/lib/engines";
@@ -8,15 +8,31 @@ import { engines } from "@/lib/engines";
 export const metadata: Metadata = {
   title: "关于",
   description:
-    "InnoLab 由邱懿武创建，集成了他在战略、产品、认知三个领域 10 年实践的方法论体系。",
+    "InnoLab 由邱懿武创建——74 个方法论 + 10 个真实案例的可分析系统。从知识库走向 AI 战略咨询师。",
 };
 
-const BOOKS = [
-  { title: "（书名 1）", desc: "占位 — 你填副标题" },
-  { title: "（书名 2）", desc: "占位 — 你填副标题" },
-  { title: "（书名 3）", desc: "占位 — 你填副标题" },
-  { title: "（书名 4）", desc: "占位 — 你填副标题" },
-  { title: "（书名 5）", desc: "占位 — 你填副标题" },
+// 方法论的源头（来自 SKILL.md 中的体系）— 比假书名诚实
+const INFLUENCES = [
+  {
+    name: "蓝海战略",
+    en: "Blue Ocean",
+    note: "价值创新打破价值-成本权衡",
+  },
+  {
+    name: "第一性原理",
+    en: "First Principles",
+    note: "回到行业本质重新推导",
+  },
+  {
+    name: "范式转移",
+    en: "Paradigm Shift",
+    note: "识别底层规则的代际变化",
+  },
+  {
+    name: "设计思维",
+    en: "Design Thinking",
+    note: "从真实用户场景反推产品",
+  },
 ];
 
 export default function AboutPage() {
@@ -25,6 +41,7 @@ export default function AboutPage() {
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+      {/* —— Hero —— */}
       <header>
         <div className="numeral text-xs uppercase tracking-widest text-volt">
           About · 关于 InnoLab
@@ -54,13 +71,49 @@ export default function AboutPage() {
         </p>
       </header>
 
+      {/* —— 数据 —— */}
       <section className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
         <Stat n={totalMethods} l="方法卡" />
         <Stat n={engines.length} l="引擎" />
-        <Stat n={5} l="层级" />
-        <Stat n={totalCases} l="案例" />
+        <Stat n={5} l="认知层级" />
+        <Stat n={totalCases} l="真实案例" />
       </section>
 
+      {/* —— InnoLab 这个项目本身 —— */}
+      <section className="mt-16">
+        <h2 className="numeral text-xs uppercase tracking-widest text-volt">
+          The Project
+        </h2>
+        <h3 className="display mt-3 text-2xl text-bone sm:text-3xl">
+          这个网站做什么用
+        </h3>
+        <div className="mt-6 space-y-4 leading-relaxed text-ash">
+          <p>
+            InnoLab 不是一个方法论的清单，是一台
+            <strong className="font-semibold text-bone">编排引擎</strong>
+            ——把模糊的商业问题切准、调用相关方法链、给出具体下一步动作。
+          </p>
+          <p>
+            收录的{" "}
+            <Link
+              href="/cases"
+              className="text-volt underline decoration-volt/30 underline-offset-2 hover:decoration-volt"
+            >
+              {totalCases} 个真实案例
+            </Link>
+            来自邱懿武和团队近年的具体工作——AIIP（老蔡 IP 四层构建）、造物云（KA
+            设计公司的 AI 攻守战略）、球球老师（AI 儿童内心对话产品）、零售企业
+            AI 转型的三大幻觉、50 人教育公司的双轨人才体系实践。
+            这些案例不是营销素材，是真实做过的判断。
+          </p>
+          <p>
+            InnoLab 把这些工作里反复被调用到的 {totalMethods} 个方法论沉淀下来，
+            按六大引擎组织，让其他在做类似抉择的人也能用。
+          </p>
+        </div>
+      </section>
+
+      {/* —— About Qiu（简洁，待主人续写）—— */}
       <section className="mt-16">
         <h2 className="numeral text-xs uppercase tracking-widest text-volt">
           About Qiu
@@ -70,94 +123,124 @@ export default function AboutPage() {
         </h3>
         <div className="mt-6 space-y-4 leading-relaxed text-ash">
           <p>
-            <span className="rounded bg-volt/15 px-1.5 py-0.5 text-volt">
-              [占位文本]
-            </span>{" "}
-            这里写你自己想说的——背景、当下在做什么、为什么做
-            InnoLab。建议覆盖：教育/工作背景、目前的角色（创始人 / 教授 /
-            独立顾问 / etc）、InnoLab 的来历（解决了你自己什么问题）、
-            联系方式（公众号 / 微信 / 邮箱）。
+            长期从事 AI 创新落地与战略咨询。在做 AIIP、造物云、球球老师 等项目过程中，
+            把反复被调用的方法论沉淀成 InnoLab。
           </p>
           <p>
-            <span className="rounded bg-volt/15 px-1.5 py-0.5 text-volt">
-              [占位文本]
-            </span>{" "}
-            第二段：你的方法论体系怎么形成的—— 来自哪些行业实践、影响最大的几个思想（如蓝海 / 第一性原理 /
-            范式转移）、为什么坚持"中文为主、英文为辅"。
+            <span className="text-dust">
+              详细个人介绍请见{" "}
+              <a
+                href="https://qiuyiwu.com"
+                target="_blank"
+                rel="noopener"
+                className="text-ash underline decoration-fog-3 underline-offset-2 transition hover:text-volt hover:decoration-volt"
+              >
+                qiuyiwu.com
+              </a>
+              。
+            </span>
           </p>
         </div>
       </section>
 
+      {/* —— 方法论的源头（替代假书名）—— */}
       <section className="mt-16">
         <h2 className="numeral text-xs uppercase tracking-widest text-volt">
-          Five Books
+          Roots
         </h2>
         <h3 className="display mt-3 text-2xl text-bone sm:text-3xl">
-          五部著作
+          方法论的源头
         </h3>
         <p className="mt-2 text-sm text-dust">
-          [占位] InnoLab 的方法论体系直接来自这五本书。你填具体书名 + 副标题。
+          InnoLab 的 74 个方法吸收了若干思想脉络。下面是影响最大的四条主线。
         </p>
         <div className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-2">
-          {BOOKS.map((b, i) => (
-            <div key={i} className="bg-ink p-6">
+          {INFLUENCES.map((b, i) => (
+            <div key={b.name} className="bg-ink p-6">
               <div className="numeral text-xs text-dust">
-                Book {String(i + 1).padStart(2, "0")}
+                Root {String(i + 1).padStart(2, "0")}
               </div>
-              <div className="mt-2 text-lg font-semibold text-bone">
-                {b.title}
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-lg font-semibold text-bone">
+                  {b.name}
+                </span>
+                <span className="numeral text-[10px] uppercase tracking-widest text-dust">
+                  {b.en}
+                </span>
               </div>
-              <div className="mt-1 text-sm text-ash">{b.desc}</div>
+              <div className="mt-1 text-sm text-ash">{b.note}</div>
             </div>
           ))}
         </div>
       </section>
 
+      {/* —— Roadmap —— 反映真实当下 —— */}
       <section className="mt-16">
         <h2 className="numeral text-xs uppercase tracking-widest text-volt">
           Roadmap
         </h2>
         <h3 className="display mt-3 text-2xl text-bone sm:text-3xl">
-          路线图：从知识库到 SaaS
+          从知识库到 SaaS
         </h3>
         <ol className="mt-8 space-y-3">
-          <Phase v="v0.1" title="弹药库" status="live" when="Now" />
-          <Phase v="v0.5" title="方法地图" status="next" when="2026 Q3" />
-          <Phase v="v1.0" title="AI 战略咨询师" status="vision" when="2026 Q4" />
+          <Phase
+            v="v0.x"
+            title="知识库 + 方法地图 + 真 AI 分析"
+            status="live"
+            when="2026 Q2 · 当前"
+            note="74 方法 / 10 案例 / CMD+K / /demo 限免使用"
+          />
+          <Phase
+            v="v0.9"
+            title="数据驱动迭代"
+            status="next"
+            when="2026 Q3"
+            note="按真实用户使用数据锁定主战场 + 私有分析记忆库"
+          />
+          <Phase
+            v="v1.0"
+            title="付费 / 账号 / 团队版"
+            status="vision"
+            when="2026 Q4"
+            note="订阅、私有库、API、企业版"
+          />
         </ol>
       </section>
 
+      {/* —— 联系 —— */}
       <section className="mt-16 rounded-xl border border-volt bg-volt/[0.04] p-8">
         <h2 className="display text-2xl text-bone sm:text-3xl">和我聊聊</h2>
         <p className="mt-3 text-ash">
-          做产品 / 创业 / 教育，InnoLab 对你有用，或想合作搭 v1.0 — 联系。
+          做产品 / 创业 / 教育，InnoLab 对你有用，或想合作搭 v1.0 —— 找邱懿武。
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a
-            href="https://github.com/qiuyiwu1989-star/innolab"
+            href="https://qiuyiwu.com"
             target="_blank"
             rel="noopener"
             className="inline-flex items-center gap-2 rounded-md bg-volt px-5 py-2.5 text-sm font-semibold text-ink transition hover:brightness-110"
           >
+            qiuyiwu.com
+            <ArrowUpRight className="size-4" />
+          </a>
+          <a
+            href="https://github.com/qiuyiwu1989-star/innolab"
+            target="_blank"
+            rel="noopener"
+            className="inline-flex items-center gap-2 rounded-md border border-fog-3 px-5 py-2.5 text-sm font-medium text-bone transition hover:border-volt"
+          >
             <Github className="size-4" />
             GitHub
           </a>
-          <a
-            href="mailto:hi@example.com"
-            className="inline-flex items-center gap-2 rounded-md border border-fog-3 px-5 py-2.5 text-sm font-medium text-bone transition hover:border-volt"
-          >
-            <Mail className="size-4" />
-            邮箱（占位 — 你填）
-          </a>
           <Link
-            href="/methods"
+            href="/demo"
             className="inline-flex items-center gap-2 rounded-md border border-fog-3 px-5 py-2.5 text-sm font-medium text-bone transition hover:border-volt"
           >
-            浏览方法库 <ArrowRight className="size-4" />
+            试用 InnoLab <ArrowRight className="size-4" />
           </Link>
         </div>
         <p className="mt-6 text-xs text-dust">
-          InnoLab 是邱懿武的工作之一。其他工作在{" "}
+          InnoLab 是邱懿武的工作之一。其他工作和联系方式在{" "}
           <a
             href="https://qiuyiwu.com"
             target="_blank"
@@ -189,34 +272,39 @@ function Phase({
   title,
   status,
   when,
+  note,
 }: {
   v: string;
   title: string;
   status: "live" | "next" | "vision";
   when: string;
+  note?: string;
 }) {
   return (
-    <li className="flex items-center gap-5 rounded-lg border border-fog-2 bg-soot p-5">
-      <span
-        className={`numeral text-2xl ${status === "live" ? "text-volt" : "text-bone"}`}
-      >
-        {v}
-      </span>
-      <span className="text-lg font-semibold text-bone">{title}</span>
-      <span className="numeral text-xs text-dust">{when}</span>
-      <span
-        className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-medium ${
-          status === "live"
-            ? "bg-volt text-ink"
-            : status === "next"
-              ? "border border-fog-3 text-bone"
-              : "border border-fog-2 text-dust"
-        }`}
-      >
-        {status === "live" && "已上线"}
-        {status === "next" && "进行中"}
-        {status === "vision" && "规划中"}
-      </span>
+    <li className="rounded-lg border border-fog-2 bg-soot p-5">
+      <div className="flex items-center gap-5">
+        <span
+          className={`numeral text-2xl ${status === "live" ? "text-volt" : "text-bone"}`}
+        >
+          {v}
+        </span>
+        <span className="text-lg font-semibold text-bone">{title}</span>
+        <span className="numeral ml-auto text-xs text-dust">{when}</span>
+        <span
+          className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+            status === "live"
+              ? "bg-volt text-ink"
+              : status === "next"
+                ? "border border-fog-3 text-bone"
+                : "border border-fog-2 text-dust"
+          }`}
+        >
+          {status === "live" && "已上线"}
+          {status === "next" && "进行中"}
+          {status === "vision" && "规划中"}
+        </span>
+      </div>
+      {note && <p className="mt-3 ml-12 text-sm text-ash">{note}</p>}
     </li>
   );
 }
