@@ -2,14 +2,25 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 25,
+  "total_cases": 27,
   "cases": [
     {
       "id": "case-001",
       "title": "InnoLab方法论深度评估（自我诊断）",
-      "domain": ["产品", "AI工具"],
-      "tags": ["自我诊断", "方法论评估", "质量分级"],
-      "related_methods": ["CG14", "CG07", "PD05"],
+      "domain": [
+        "产品",
+        "AI工具"
+      ],
+      "tags": [
+        "自我诊断",
+        "方法论评估",
+        "质量分级"
+      ],
+      "related_methods": [
+        "CG14",
+        "CG07",
+        "PD05"
+      ],
       "wiki_obj_token": "XTy2dPlcZozqzbxfiJIc648Znhd",
       "summary": "74个方法论的质量体检：识别出12个需要补强的方法，找到弹药库的覆盖盲区",
       "added_date": "2026-04-05",
@@ -18,9 +29,21 @@
     {
       "id": "case-002",
       "title": "球球老师：AI儿童内心对话产品",
-      "domain": ["教育", "AI产品", "儿童"],
-      "tags": ["蓝海战略", "差异化", "灵魂对话"],
-      "related_methods": ["ST06", "GN02", "PD10"],
+      "domain": [
+        "教育",
+        "AI产品",
+        "儿童"
+      ],
+      "tags": [
+        "蓝海战略",
+        "差异化",
+        "灵魂对话"
+      ],
+      "related_methods": [
+        "ST06",
+        "GN02",
+        "PD10"
+      ],
       "summary": "不教知识、挖真实感受的AI儿童对话产品，全新品类定位",
       "added_date": "2026-04-20",
       "file": "education/qiuqiu-teacher.json"
@@ -28,9 +51,20 @@
     {
       "id": "case-003",
       "title": "某教育公司：AI课程设计的L3陷阱",
-      "domain": ["教育", "企业AI转型"],
-      "tags": ["L2-L4跃迁", "人机协作", "权责真空"],
-      "related_methods": ["CG06", "ST10", "ST09"],
+      "domain": [
+        "教育",
+        "企业AI转型"
+      ],
+      "tags": [
+        "L2-L4跃迁",
+        "人机协作",
+        "权责真空"
+      ],
+      "related_methods": [
+        "CG06",
+        "ST10",
+        "ST09"
+      ],
       "summary": "课程大纲生成卡在L3——权责真空，教研说不行但说不出为什么",
       "added_date": "2026-04-20",
       "file": "education/ai-curriculum-l3-trap.json"
@@ -38,9 +72,20 @@
     {
       "id": "case-004",
       "title": "AIIP项目：老蔡IP的四层构建",
-      "domain": ["IP商业化", "产品设计"],
-      "tags": ["IP四层知识图谱", "角色基因", "老瓶换新装"],
-      "related_methods": ["PD02", "GN02", "GN04"],
+      "domain": [
+        "IP商业化",
+        "产品设计"
+      ],
+      "tags": [
+        "IP四层知识图谱",
+        "角色基因",
+        "老瓶换新装"
+      ],
+      "related_methods": [
+        "PD02",
+        "GN02",
+        "GN04"
+      ],
       "summary": "从文化符号到商业应用的四层IP知识图谱实践",
       "added_date": "2026-04-20",
       "file": "product/aip-OldCai-ip.json"
@@ -48,9 +93,21 @@
     {
       "id": "case-005",
       "title": "造物云：KA设计服务公司的AI攻守",
-      "domain": ["企业服务", "设计", "AI转型"],
-      "tags": ["攻守矩阵", "J曲线", "AI Agent"],
-      "related_methods": ["ST07", "DC05", "ST10"],
+      "domain": [
+        "企业服务",
+        "设计",
+        "AI转型"
+      ],
+      "tags": [
+        "攻守矩阵",
+        "J曲线",
+        "AI Agent"
+      ],
+      "related_methods": [
+        "ST07",
+        "DC05",
+        "ST10"
+      ],
       "summary": "守线提升KA效率，攻线AI Agent产品化——攻线从守线中长出来",
       "added_date": "2026-04-20",
       "file": "enterprise/zaowuyun-ai-offense-defense.json"
@@ -58,9 +115,20 @@
     {
       "id": "case-006",
       "title": "某传统零售企业：AI转型三大幻觉",
-      "domain": ["零售", "企业AI转型"],
-      "tags": ["战略幻觉", "工具崇拜", "数据囤积"],
-      "related_methods": ["ST08", "CG01", "ST07"],
+      "domain": [
+        "零售",
+        "企业AI转型"
+      ],
+      "tags": [
+        "战略幻觉",
+        "工具崇拜",
+        "数据囤积"
+      ],
+      "related_methods": [
+        "ST08",
+        "CG01",
+        "ST07"
+      ],
       "summary": "同时掉入工具崇拜+完美规划+数据囤积三大幻觉",
       "added_date": "2026-04-20",
       "file": "enterprise/retail-ai-illusions.json"
@@ -68,9 +136,21 @@
     {
       "id": "case-007",
       "title": "50人教育公司：双轨人才体系实践",
-      "domain": ["教育", "企业AI转型", "人才"],
-      "tags": ["双轨人才", "AI培训", "能力认证"],
-      "related_methods": ["ST09", "CG06", "EV03"],
+      "domain": [
+        "教育",
+        "企业AI转型",
+        "人才"
+      ],
+      "tags": [
+        "双轨人才",
+        "AI培训",
+        "能力认证"
+      ],
+      "related_methods": [
+        "ST09",
+        "CG06",
+        "EV03"
+      ],
       "summary": "专家轨道+全员轨道双轨并行，3个月产出3个AI提效项目",
       "added_date": "2026-04-20",
       "file": "education/dual-track-talent-practice.json"
@@ -78,9 +158,19 @@
     {
       "id": "case-008",
       "title": "造物云：IP设计流程三阶重构",
-      "domain": ["设计", "AI产品"],
-      "tags": ["流程三阶进化", "10x价值", "AI重构"],
-      "related_methods": ["ST10", "CG06"],
+      "domain": [
+        "设计",
+        "AI产品"
+      ],
+      "tags": [
+        "流程三阶进化",
+        "10x价值",
+        "AI重构"
+      ],
+      "related_methods": [
+        "ST10",
+        "CG06"
+      ],
       "summary": "IP设计周期从4-6周压缩到3-5天——整体快了10倍",
       "added_date": "2026-04-20",
       "file": "product/ip-design-process-rebuild.json"
@@ -88,9 +178,21 @@
     {
       "id": "case-009",
       "title": "老瓶新装：文创爆款案例集",
-      "domain": ["消费品", "文创", "AI生成"],
-      "tags": ["老瓶换新装", "AI生成", "文化符号"],
-      "related_methods": ["GN04", "PD02", "PD06"],
+      "domain": [
+        "消费品",
+        "文创",
+        "AI生成"
+      ],
+      "tags": [
+        "老瓶换新装",
+        "AI生成",
+        "文化符号"
+      ],
+      "related_methods": [
+        "GN04",
+        "PD02",
+        "PD06"
+      ],
       "summary": "胶带纸×颐和园、果盘×木纹、T恤×Q版——三个成功组合",
       "added_date": "2026-04-20",
       "file": "product/old-bottle-new-wine-cases.json"
@@ -98,9 +200,20 @@
     {
       "id": "case-010",
       "title": "球球老师×兜兜：对话数据飞轮原型",
-      "domain": ["教育", "AI产品", "数据飞轮"],
-      "tags": ["数据场景飞轮", "对话数据", "冷启动"],
-      "related_methods": ["EV02", "GN02"],
+      "domain": [
+        "教育",
+        "AI产品",
+        "数据飞轮"
+      ],
+      "tags": [
+        "数据场景飞轮",
+        "对话数据",
+        "冷启动"
+      ],
+      "related_methods": [
+        "EV02",
+        "GN02"
+      ],
       "summary": "对话场景产生认知数据，但数据回路未闭合——飞轮转不起来",
       "added_date": "2026-04-20",
       "file": "education/qiuqiu-data-flywheel.json"
@@ -108,9 +221,25 @@
     {
       "id": "case-011",
       "title": "B2B SaaS 向企业级转型：守线攻线资源分配",
-      "domain": ["战略", "企业服务", "SaaS"],
-      "tags": ["攻守矩阵", "J曲线", "资源分配", "企业级转型", "护城河"],
-      "related_methods": ["ST07", "DC05", "ST10", "CG01", "ST06"],
+      "domain": [
+        "战略",
+        "企业服务",
+        "SaaS"
+      ],
+      "tags": [
+        "攻守矩阵",
+        "J曲线",
+        "资源分配",
+        "企业级转型",
+        "护城河"
+      ],
+      "related_methods": [
+        "ST07",
+        "DC05",
+        "ST10",
+        "CG01",
+        "ST06"
+      ],
       "summary": "中型 B2B SaaS 守住 SMB 基本盘同时进攻企业级——J 曲线阵痛期的资源分配决策",
       "added_date": "2026-05-29",
       "file": "strategy/saas-to-enterprise-pivot.json"
@@ -118,9 +247,25 @@
     {
       "id": "case-012",
       "title": "组织推 AI 为什么推不动：三层阻力诊断",
-      "domain": ["组织", "企业AI转型", "人才"],
-      "tags": ["组织阻力", "权责真空", "L2-L4跃迁", "变革管理", "双轨人才"],
-      "related_methods": ["CG06", "ST09", "ST10", "DC02", "EV03"],
+      "domain": [
+        "组织",
+        "企业AI转型",
+        "人才"
+      ],
+      "tags": [
+        "组织阻力",
+        "权责真空",
+        "L2-L4跃迁",
+        "变革管理",
+        "双轨人才"
+      ],
+      "related_methods": [
+        "CG06",
+        "ST09",
+        "ST10",
+        "DC02",
+        "EV03"
+      ],
       "summary": "300 人科技公司 AI 推广失败：工具买了没人用，真正的阻力在三层组织结构里",
       "added_date": "2026-05-29",
       "file": "enterprise/org-ai-resistance.json"
@@ -128,9 +273,27 @@
     {
       "id": "case-013",
       "title": "小红书 IP 达人：从粉丝变现到品牌化的四层跨越",
-      "domain": ["IP商业化", "内容", "文创", "产品设计"],
-      "tags": ["IP四层知识图谱", "内容IP", "蓝海变现", "品牌化", "老瓶新装", "J曲线"],
-      "related_methods": ["PD02", "ST06", "GN04", "DC05", "CG14"],
+      "domain": [
+        "IP商业化",
+        "内容",
+        "文创",
+        "产品设计"
+      ],
+      "tags": [
+        "IP四层知识图谱",
+        "内容IP",
+        "蓝海变现",
+        "品牌化",
+        "老瓶新装",
+        "J曲线"
+      ],
+      "related_methods": [
+        "PD02",
+        "ST06",
+        "GN04",
+        "DC05",
+        "CG14"
+      ],
       "summary": "50 万粉的生活方式达人，广告变现触到天花板——靠接单养不大，靠品牌太重。四层 IP 模型把她从「网红」重新定位成「生活方式解决方案」，找到第三条路。",
       "added_date": "2026-05-29",
       "file": "product/ip-creator-monetization.json"
@@ -138,9 +301,25 @@
     {
       "id": "case-014",
       "title": "OKR 失效诊断：150 人公司为什么越推越像 KPI",
-      "domain": ["组织", "人才", "管理"],
-      "tags": ["OKR失效", "认知层级", "L2-L4跃迁", "组织变革", "目标管理"],
-      "related_methods": ["CG06", "ST09", "EV03", "DC07", "ST10"],
+      "domain": [
+        "组织",
+        "人才",
+        "管理"
+      ],
+      "tags": [
+        "OKR失效",
+        "认知层级",
+        "L2-L4跃迁",
+        "组织变革",
+        "目标管理"
+      ],
+      "related_methods": [
+        "CG06",
+        "ST09",
+        "EV03",
+        "DC07",
+        "ST10"
+      ],
       "summary": "150 人互联网公司推 OKR 8 个月，Q3 全员达标 96% 但业绩下滑 15%——真正的问题是管理层用 L2 认知在运营一个 L4 工具。",
       "added_date": "2026-05-29",
       "file": "enterprise/okr-failure-diagnosis.json"
@@ -148,9 +327,26 @@
     {
       "id": "case-015",
       "title": "中国 SaaS 出海：为什么不该先去「最容易」的东南亚",
-      "domain": ["战略", "SaaS", "出海", "竞争"],
-      "tags": ["护城河迁移", "波特五力", "市场进入", "出海战略", "评估矩阵"],
-      "related_methods": ["ST02", "ST11", "ST03", "DC07", "ST15"],
+      "domain": [
+        "战略",
+        "SaaS",
+        "出海",
+        "竞争"
+      ],
+      "tags": [
+        "护城河迁移",
+        "波特五力",
+        "市场进入",
+        "出海战略",
+        "评估矩阵"
+      ],
+      "related_methods": [
+        "ST02",
+        "ST11",
+        "ST03",
+        "DC07",
+        "ST15"
+      ],
       "summary": "年收入 3000 万的中国 SaaS 三选一出海目的地：东南亚看起来最简单，但对中国 SaaS 来说反而最难——护城河全部失效。",
       "added_date": "2026-05-29",
       "file": "strategy/saas-overseas-market-entry.json"
@@ -158,9 +354,26 @@
     {
       "id": "case-016",
       "title": "DTC 品牌定价困境：提价流失用户，不提毛利倒挂",
-      "domain": ["战略", "消费品", "商业模式", "品牌"],
-      "tags": ["定价策略", "护城河", "消费分层", "毛利管理", "品牌溢价"],
-      "related_methods": ["ST04", "CG14", "ST06", "DC07", "ST03"],
+      "domain": [
+        "战略",
+        "消费品",
+        "商业模式",
+        "品牌"
+      ],
+      "tags": [
+        "定价策略",
+        "护城河",
+        "消费分层",
+        "毛利管理",
+        "品牌溢价"
+      ],
+      "related_methods": [
+        "ST04",
+        "CG14",
+        "ST06",
+        "DC07",
+        "ST03"
+      ],
       "summary": "中高端 DTC 家居品牌，定价 800-1500 元区间，毛利率 35%，但成本上涨后面临「提价用户跑、不提活不了」的典型困境。",
       "added_date": "2026-05-29",
       "file": "strategy/dtc-brand-pricing-dilemma.json"
@@ -168,9 +381,26 @@
     {
       "id": "case-017",
       "title": "播客主理人：5万忠实听众，如何找到第一条真正跑通的变现路线",
-      "domain": ["IP商业化", "内容", "知识付费"],
-      "tags": ["知识付费", "创作者经济", "角色基因", "变现路线", "Hook模型", "内容IP"],
-      "related_methods": ["GN02", "CG14", "PD07", "ST06", "EV01"],
+      "domain": [
+        "IP商业化",
+        "内容",
+        "知识付费"
+      ],
+      "tags": [
+        "知识付费",
+        "创作者经济",
+        "角色基因",
+        "变现路线",
+        "Hook模型",
+        "内容IP"
+      ],
+      "related_methods": [
+        "GN02",
+        "CG14",
+        "PD07",
+        "ST06",
+        "EV01"
+      ],
       "summary": "商业访谈播客，3年5万订阅，三次变现失败（课程无复购、社群沉默、赞助嫌小）——根本问题不是听众太少，而是用「内容博主」框架对接了「商业决策者」听众。",
       "added_date": "2026-05-30",
       "file": "product/podcast-creator-monetization.json"
@@ -178,9 +408,25 @@
     {
       "id": "case-018",
       "title": "销售激励失效：绩效方案越复杂，好销售越先走",
-      "domain": ["组织", "人才", "管理"],
-      "tags": ["激励设计", "销售管理", "认知层级", "双轨人才", "绩效方案"],
-      "related_methods": ["CG06", "ST09", "DC04", "EV03", "DC02"],
+      "domain": [
+        "组织",
+        "人才",
+        "管理"
+      ],
+      "tags": [
+        "激励设计",
+        "销售管理",
+        "认知层级",
+        "双轨人才",
+        "绩效方案"
+      ],
+      "related_methods": [
+        "CG06",
+        "ST09",
+        "DC04",
+        "EV03",
+        "DC02"
+      ],
       "summary": "B2B SaaS 销售团队精细化绩效方案上线半年，3 名高绩效销售离职，中等销售越来越「安全分」——根本问题不是方案复杂，而是用 L2 管控逻辑设计了一个需要 L4 主动性才能跑通的岗位。",
       "added_date": "2026-05-30",
       "file": "enterprise/sales-incentive-failure.json"
@@ -188,9 +434,27 @@
     {
       "id": "case-019",
       "title": "SaaS Freemium 困局：5 万免费用户，付费转化率卡在 1.5%",
-      "domain": ["产品", "SaaS", "商业模式"],
-      "tags": ["免费增值", "付费转化", "aha moment", "产品定价", "Hook模型", "KANO模型", "客户旅程"],
-      "related_methods": ["PD07", "EV01", "DC04", "PD05", "DC07"],
+      "domain": [
+        "产品",
+        "SaaS",
+        "商业模式"
+      ],
+      "tags": [
+        "免费增值",
+        "付费转化",
+        "aha moment",
+        "产品定价",
+        "Hook模型",
+        "KANO模型",
+        "客户旅程"
+      ],
+      "related_methods": [
+        "PD07",
+        "EV01",
+        "DC04",
+        "PD05",
+        "DC07"
+      ],
       "summary": "B2C SaaS 知识管理工具：注册 5 万、月活 2.2 万，付费转化率 1.5% 一年没动——团队加了 13 个付费功能、讨论了 3 次降价，都没用。根本问题不是功能不够多，而是 18 个付费功能里没有一个会让免费用户「没有就停摆」。",
       "added_date": "2026-05-30",
       "file": "product/saas-freemium-conversion.json"
@@ -198,9 +462,26 @@
     {
       "id": "case-020",
       "title": "产品定位失焦：用户说「挺好的」，投资人说「市场太小」，团队不知道该砍功能还是加功能",
-      "domain": ["产品", "AI产品", "商业模式"],
-      "tags": ["产品定位", "目标用户", "蓝海战略", "用户分层", "功能取舍", "角色基因"],
-      "related_methods": ["GN02", "PD05", "ST06", "DC07", "PD10"],
+      "domain": [
+        "产品",
+        "AI产品",
+        "商业模式"
+      ],
+      "tags": [
+        "产品定位",
+        "目标用户",
+        "蓝海战略",
+        "用户分层",
+        "功能取舍",
+        "角色基因"
+      ],
+      "related_methods": [
+        "GN02",
+        "PD05",
+        "ST06",
+        "DC07",
+        "PD10"
+      ],
       "summary": "AI 效率工具月活 5000，50+ 功能，10 多种不同类型用户在用——用户说「挺好用的」但流失率 60%，投资人说「市场太小」。根本问题不是定位模糊，而是还没找到「非你不可」的那个用户群。",
       "added_date": "2026-05-30",
       "file": "product/product-positioning-blur.json"
@@ -208,9 +489,26 @@
     {
       "id": "case-021",
       "title": "从 0 到 1：产品做出来了，第一个付费用户在哪里",
-      "domain": ["战略", "产品", "商业模式"],
-      "tags": ["冷启动", "第一付费用户", "种子客户", "产品验证", "早期增长", "PMF"],
-      "related_methods": ["GN02", "PD05", "ST06", "DC07", "EV01"],
+      "domain": [
+        "战略",
+        "产品",
+        "商业模式"
+      ],
+      "tags": [
+        "冷启动",
+        "第一付费用户",
+        "种子客户",
+        "产品验证",
+        "早期增长",
+        "PMF"
+      ],
+      "related_methods": [
+        "GN02",
+        "PD05",
+        "ST06",
+        "DC07",
+        "EV01"
+      ],
       "summary": "ToB SaaS 工具完成 MVP，免费试用 3 个月获得 12 家种子用户，一个都没有转付费——根本问题不是功能不够好，而是种子用户选错了：选的是「愿意试」的人，而不是「没有就痛」的人。",
       "added_date": "2026-05-29",
       "file": "strategy/first-paying-customer.json"
@@ -218,9 +516,30 @@
     {
       "id": "case-022",
       "title": "新消费爆品困局：月销 200 万，复购率 18%，三家竞品抄完了 SKU",
-      "domain": ["消费品", "品牌", "战略", "零售"],
-      "tags": ["新消费", "品牌溢价", "爆品", "复购率", "竞品模仿", "品牌定位", "宠物经济", "社区运营", "DTC"],
-      "related_methods": ["GN02", "CG14", "ST06", "DC05", "PD02"],
+      "domain": [
+        "消费品",
+        "品牌",
+        "战略",
+        "零售"
+      ],
+      "tags": [
+        "新消费",
+        "品牌溢价",
+        "爆品",
+        "复购率",
+        "竞品模仿",
+        "品牌定位",
+        "宠物经济",
+        "社区运营",
+        "DTC"
+      ],
+      "related_methods": [
+        "GN02",
+        "CG14",
+        "ST06",
+        "DC05",
+        "PD02"
+      ],
       "summary": "某宠物功能性零食品牌靠内容种草月 GMV 达 200 万，但复购率仅 18%（行业均值 35%），三家竞品 1:1 复刻 SKU 且定价低 30%。根本问题不是产品力不足，而是品牌从未建立认知锚点——用户买的是「那个在小红书火了的猫零食」，不是「某某品牌」，切换成本为零。",
       "added_date": "2026-05-29",
       "file": "consumer/new-consumer-brand-premium.json"
@@ -228,9 +547,28 @@
     {
       "id": "case-023",
       "title": "制造业 AI 转型停摆：工具买了 5 个，一个没跑起来",
-      "domain": ["制造业", "企业AI转型", "战略", "组织"],
-      "tags": ["AI转型", "制造业", "工具采购", "流程再造", "变革管理", "ROI", "数字化"],
-      "related_methods": ["DC05", "CG06", "ST09", "EV03", "DC02"],
+      "domain": [
+        "制造业",
+        "企业AI转型",
+        "战略",
+        "组织"
+      ],
+      "tags": [
+        "AI转型",
+        "制造业",
+        "工具采购",
+        "流程再造",
+        "变革管理",
+        "ROI",
+        "数字化"
+      ],
+      "related_methods": [
+        "DC05",
+        "CG06",
+        "ST09",
+        "EV03",
+        "DC02"
+      ],
       "summary": "某 200 人电子精密零件制造商花 80 万采购 5 套 AI 工具，一年后工厂还在按原来方式运行。根本原因：把「工具采购」当成了「AI 转型」——5 套工具都在原有流程旁边运行，没有一套真正取代了任何一个决策环节。",
       "added_date": "2026-05-29",
       "file": "enterprise/manufacturing-ai-stall.json"
@@ -238,9 +576,29 @@
     {
       "id": "case-024",
       "title": "融不到钱：产品有用户有数据，投资人说「市场太小」",
-      "domain": ["战略", "创业", "商业模式", "产品"],
-      "tags": ["融资", "投资叙事", "B2B", "B2C", "PMF", "ARR", "创业冷启动", "产品定位"],
-      "related_methods": ["GN02", "DC07", "ST06", "PD02", "CG07"],
+      "domain": [
+        "战略",
+        "创业",
+        "商业模式",
+        "产品"
+      ],
+      "tags": [
+        "融资",
+        "投资叙事",
+        "B2B",
+        "B2C",
+        "PMF",
+        "ARR",
+        "创业冷启动",
+        "产品定位"
+      ],
+      "related_methods": [
+        "GN02",
+        "DC07",
+        "ST06",
+        "PD02",
+        "CG07"
+      ],
       "summary": "4 人团队做法律 AI 写作助手，800 注册用户、40 付费（月 99 元），融资 3 轮被拒：「市场太小」。根本问题不是 deck 写得不好，而是 40 个 B2C 用户的数据讲的是「好用工具」的故事，而 VC 要听的是「大市场切入点」——改变叙事需要先改变数据，90 天内做出 2-3 个 B2B 企业合同是唯一的快速路径。",
       "added_date": "2026-05-29",
       "file": "strategy/fundraising-narrative-gap.json"
@@ -248,12 +606,94 @@
     {
       "id": "case-025",
       "title": "国货美妆出海：TikTok Shop 还是亚马逊，东南亚还是北美——选错了就是烧钱",
-      "domain": ["战略", "消费品", "出海", "品牌"],
-      "tags": ["出海", "美妆", "TikTok Shop", "亚马逊", "东南亚", "北美", "DTC", "渠道选择", "新消费", "跨境电商"],
-      "related_methods": ["ST06", "CG14", "DC07", "ST02", "PD02"],
+      "domain": [
+        "战略",
+        "消费品",
+        "出海",
+        "品牌"
+      ],
+      "tags": [
+        "出海",
+        "美妆",
+        "TikTok Shop",
+        "亚马逊",
+        "东南亚",
+        "北美",
+        "DTC",
+        "渠道选择",
+        "新消费",
+        "跨境电商"
+      ],
+      "related_methods": [
+        "ST06",
+        "CG14",
+        "DC07",
+        "ST02",
+        "PD02"
+      ],
       "summary": "某国货护肤品牌同时测试 TikTok Shop 东南亚 + 亚马逊美国，6 个月后两头都没跑通。根本问题：东南亚和北美需要完全不同的品牌策略和运营能力，「两头试」是必败策略。用第一性原理+消费趋势画布+蓝海战略定位到「北美成分派」这个真正适合的切入点。",
       "added_date": "2026-05-29",
       "file": "strategy/consumer-brand-overseas.json"
+    },
+    {
+      "id": "case-026",
+      "title": "B2B SaaS 定价两难：免费增值吸引了 8000 用户，但付费率 1.2%——是模型错了还是价格错了",
+      "domain": [
+        "产品",
+        "战略",
+        "SaaS",
+        "商业模式"
+      ],
+      "tags": [
+        "SaaS",
+        "定价策略",
+        "免费增值",
+        "Freemium",
+        "付费转化",
+        "B2B",
+        "订阅制"
+      ],
+      "related_methods": [
+        "PD07",
+        "DC07",
+        "ST06",
+        "PD01",
+        "EV01"
+      ],
+      "summary": "某 B2B 文档协作 SaaS，Freemium 模式 10 个月，8000 注册用户，付费率 1.2%（96 个团队），MRR 2.4 万。核心误判：把「用户多」当成「价值已验证」，Freemium 模式吸引来了错误分母，降价不解决问题，应切换为按人头阶梯定价+垂直行业聚焦。",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/saas-pricing-freemium-vs-subscription.json"
+    },
+    {
+      "id": "case-027",
+      "title": "K12 教培机构 AI 转型：买了 AI 出题系统，学生分数没变——是工具不行还是策略不行",
+      "domain": [
+        "教育",
+        "AI转型",
+        "战略",
+        "产品"
+      ],
+      "tags": [
+        "K12",
+        "教培",
+        "AI教育",
+        "个性化学习",
+        "AI出题",
+        "教育科技",
+        "转型策略"
+      ],
+      "related_methods": [
+        "CG06",
+        "ST10",
+        "DC05",
+        "ST17",
+        "EV01"
+      ],
+      "summary": "某三线城市 K12 教培机构 6 校区，花 30 万购 AI 出题系统，半年后学生平均分仅提升 2.3 分（对照组 1.8 分）。根本问题：AI 只替代了「印刷试卷」，没有改变任何教学决策节点，老师备课从未使用 AI 报告，工具买的是「AI 噱头」而非「学习效果」。",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "education/k12-ai-tutoring-transformation.json"
     }
   ]
 }

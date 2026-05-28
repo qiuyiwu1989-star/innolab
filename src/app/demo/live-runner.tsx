@@ -90,6 +90,8 @@ const EXAMPLE_PROMPTS = [
   "小红书爆款月销 200 万，复购率只有 18%，三家竞品已经抄完了 SKU——品牌溢价怎么建起来？",
   "产品有 800 用户、40 个付费，融资 3 轮全被拒「市场太小」——是 deck 问题还是数据问题？",
   "国货美妆品牌同时测 TikTok 东南亚和亚马逊美国，6 个月两头没跑通——该怎么选？",
+  "B2B SaaS 免费用户 8000，付费率 1.2%，499 元/月太贵了吗？还是 Freemium 模式本身选错了？",
+  "K12 教培花 30 万买了 AI 出题系统，学生分数没变——工具问题还是使用策略问题？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1010,7 +1012,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 75 方法 + 25 案例
+                  MiMo v2.5 Pro · 75 方法 + 27 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1306,7 +1308,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 75 方法 + 25 案例</span>
+                    <span className="text-dust">· 75 方法 + 27 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
