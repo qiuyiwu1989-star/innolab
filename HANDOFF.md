@@ -99,26 +99,34 @@ git push origin master
 
 push 到的是你自己的 `github.com/qiuyiwu1989-star/innolab`。
 
-### 3. 部署到 Vercel（最快 1 分钟 — 用 CLI）
+### 3. 部署到 Vercel + 挂子域 `innolab.qiuyiwu.com`
 
-**方法 1（推荐）：CLI 一行**
+**方法 1（推荐）：CLI 一行先上 vercel.app**
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 cd /Users/qiu/Documents/innolab-repo
-vercel              # 第一次会问 link 项目（选 link / create），登录浏览器
+vercel              # 第一次 link 项目（选 create），浏览器登录
 vercel --prod       # 部署到生产
 ```
 
-预期：约 90 秒拿到 `https://innolab-xxx.vercel.app`。
+预期：约 90 秒拿到 `https://innolab-xxx.vercel.app`（临时占位 URL）。
 
 **方法 2：Web Dashboard**
 
-详见 `DEPLOY.md`。简版：
-1. push 完代码
-2. https://vercel.com/new → Import `qiuyiwu1989-star/innolab`
-3. 加环境变量 `NEXT_PUBLIC_SITE_URL=https://innolab-xxx.vercel.app`
-4. Deploy → 2 分钟拿 URL → 接自定义域名
+https://vercel.com/new → Import `qiuyiwu1989-star/innolab` → Deploy
+
+### 3b. 挂子域 innolab.qiuyiwu.com（独立子域）
+
+1. Vercel 项目 → Settings → Domains → Add `innolab.qiuyiwu.com`
+2. 到 `qiuyiwu.com` 的 DNS 加 CNAME：
+   - **Name**: `innolab`
+   - **Value**: `cname.vercel-dns.com`
+   - **Cloudflare 用户**：把橙色云朵关掉
+3. DNS 生效（~10 分钟）→ Vercel 自动签证书
+4. Vercel → Settings → Env Vars：`NEXT_PUBLIC_SITE_URL = https://innolab.qiuyiwu.com` → Redeploy
+
+详细见 `DEPLOY.md` 的 §3。
 
 ## 知道这些坑（让你不踩）
 

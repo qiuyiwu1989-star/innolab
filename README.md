@@ -5,6 +5,8 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fqiuyiwu1989-star%2Finnolab&env=NEXT_PUBLIC_SITE_URL&envDescription=站点根%20URL%2C%20生产环境填你的域名&project-name=innolab&repository-name=innolab)
 
+**生产 URL（计划）**：[`innolab.qiuyiwu.com`](https://innolab.qiuyiwu.com) — `qiuyiwu.com` 的独立子域。
+
 ## 🌐 网站（v0.3）
 
 ```bash

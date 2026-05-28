@@ -29,7 +29,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.example.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -64,6 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${notoSC.variable} ${jetbrains.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-ink text-bone">

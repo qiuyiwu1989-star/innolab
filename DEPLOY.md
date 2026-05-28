@@ -22,20 +22,56 @@ git push origin master
    - **Output Directory**: `.next`（默认）
    - **Install Command**: `npm install`（自动）
 5. **Environment Variables**：
-   - 添加 `NEXT_PUBLIC_SITE_URL` = `https://innolab.vercel.app`（部署后改成你的实际域名）
+   - 第一次先填 `NEXT_PUBLIC_SITE_URL` = `https://innolab.vercel.app`（占位 vercel.app 域）
+   - 等子域挂好后改成 `https://innolab.qiuyiwu.com` → Redeploy
 6. 点 **Deploy**
 
 部署约 2-3 分钟。完成后你会得到一个 `https://innolab-xxx.vercel.app` 的临时 URL。
 
-### 3. 接入自定义域名（可选但建议）
+### 3. 接入子域名 `innolab.qiuyiwu.com`
+
+InnoLab 走「`qiuyiwu.com` 主品牌的独立子域」路线。
+
+**3a. 在 Vercel 项目里挂域**
 
 1. Vercel 项目 → Settings → Domains → Add Domain
-2. 输入你要的域名（例：`innolab.com`、`innolab.qiuyiwu.com`）
-3. 按 Vercel 提示在域名 DNS 服务商配置 A 记录或 CNAME：
-   - 顶级域：A 记录指向 `76.76.21.21`
-   - 子域：CNAME 指向 `cname.vercel-dns.com`
-4. DNS 生效后（通常 10 分钟，最长 24 小时），证书自动签发
-5. 回到环境变量，把 `NEXT_PUBLIC_SITE_URL` 改成新域名 → 触发 Redeploy
+2. 输入 `innolab.qiuyiwu.com`
+3. Vercel 会提示你"在 DNS 服务商加一条记录"，记下它给的目标值
+
+**3b. 在 `qiuyiwu.com` 的 DNS 服务商加 CNAME**
+
+到管理 `qiuyiwu.com` 的 DNS 控制台（Cloudflare / 阿里云 / Namecheap / 你用的那家）：
+
+| 字段 | 值 |
+|---|---|
+| Type | `CNAME` |
+| Name / Host | `innolab` |
+| Value / Target | `cname.vercel-dns.com`（以 Vercel 实际给的为准） |
+| TTL | Auto 或 600 |
+| Proxy (Cloudflare 用户) | **关闭橙色云朵**（Vercel 自己签证书） |
+
+**注意**：如果 `qiuyiwu.com` 主站本身托管在 Vercel，也可以在那个项目里直接 add `innolab.qiuyiwu.com` 然后用 redirect 转过来 — 但更干净的是 InnoLab 独立项目独立挂域。
+
+**3c. 等 DNS 生效**
+
+通常 10 分钟，最长 24 小时。验证：
+
+```bash
+dig innolab.qiuyiwu.com CNAME +short
+# 应该返回 cname.vercel-dns.com.（或类似）
+```
+
+DNS 生效后 Vercel 自动签 Let's Encrypt 证书（约 30 秒）。
+
+**3d. 切环境变量**
+
+Vercel 项目 → Settings → Environment Variables：
+
+```
+NEXT_PUBLIC_SITE_URL = https://innolab.qiuyiwu.com
+```
+
+应用到所有环境（Production / Preview / Development）。然后 Deployments → 最新条 → ⋯ → Redeploy（让新 env 生效）。
 
 ### 4. 第一次 Redeploy（应用新环境变量）
 

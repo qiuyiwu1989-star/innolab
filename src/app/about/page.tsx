@@ -40,6 +40,18 @@ export default function AboutPage() {
           创建。这个网站是他十年战略 / 产品 / 认知方法论实践的在线版本，
           也是一个进化中的 AI 战略咨询师。
         </p>
+        <p className="mt-3 text-sm text-dust">
+          邱懿武的其他工作：
+          <a
+            href="https://qiuyiwu.com"
+            target="_blank"
+            rel="noopener"
+            className="ml-1 inline-flex items-baseline gap-0.5 text-ash transition hover:text-volt"
+          >
+            qiuyiwu.com
+            <span className="inline-block size-1 translate-y-[-2px] rounded-full bg-volt" />
+          </a>
+        </p>
       </header>
 
       <section className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
@@ -144,6 +156,18 @@ export default function AboutPage() {
             浏览方法库 <ArrowRight className="size-4" />
           </Link>
         </div>
+        <p className="mt-6 text-xs text-dust">
+          InnoLab 是邱懿武的工作之一。其他工作在{" "}
+          <a
+            href="https://qiuyiwu.com"
+            target="_blank"
+            rel="noopener"
+            className="text-ash underline decoration-fog-3 underline-offset-2 hover:text-volt hover:decoration-volt"
+          >
+            qiuyiwu.com
+          </a>
+          。
+        </p>
       </section>
     </article>
   );
