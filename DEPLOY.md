@@ -1,148 +1,221 @@
-# 部署到 Vercel
+# Deploy
 
-## 三分钟上线
+> 当前**已经上线**在 <https://innolab.qiuyiwu.com>（自建 VPS）。  
+> 这份文档说明：① 增量更新 ② 服务器从零开始重装 ③ 备选 Vercel 路径
 
-### 1. push 代码到 GitHub
+## ① 增量更新（最常用）
 
-```bash
-git push origin master
-```
-
-（如果还没 push，看 `git status` 和 `git log` 确认要 push 的 commit。）
-
-### 2. 在 Vercel 导入项目
-
-1. 打开 https://vercel.com/new
-2. 用 GitHub 登录 → Authorize Vercel
-3. Import 仓库：`qiuyiwu1989-star/innolab`
-4. 配置（多数自动识别）：
-   - **Framework Preset**: Next.js（自动）
-   - **Root Directory**: `./`（默认）
-   - **Build Command**: `npm run build`（自动）
-   - **Output Directory**: `.next`（默认）
-   - **Install Command**: `npm install`（自动）
-5. **Environment Variables**（必填两个）：
-   - `NEXT_PUBLIC_SITE_URL` = `https://innolab.vercel.app`（占位；等子域挂好后改 `https://innolab.qiuyiwu.com`）
-   - **`ANTHROPIC_API_KEY` = `sk-ant-...`** — `/demo` 实时分析必需。在 https://console.anthropic.com/settings/keys 创建。
-   - 可选：`INNOLAB_DAILY_QUOTA_GLOBAL`（默认 50）、`INNOLAB_DAILY_QUOTA_PER_IP`（默认 5）
-6. 点 **Deploy**
-
-部署约 2-3 分钟。完成后你会得到一个 `https://innolab-xxx.vercel.app` 的临时 URL。
-
-### 3. 接入子域名 `innolab.qiuyiwu.com`
-
-InnoLab 走「`qiuyiwu.com` 主品牌的独立子域」路线。
-
-**3a. 在 Vercel 项目里挂域**
-
-1. Vercel 项目 → Settings → Domains → Add Domain
-2. 输入 `innolab.qiuyiwu.com`
-3. Vercel 会提示你"在 DNS 服务商加一条记录"，记下它给的目标值
-
-**3b. 在 `qiuyiwu.com` 的 DNS 服务商加 CNAME**
-
-到管理 `qiuyiwu.com` 的 DNS 控制台（Cloudflare / 阿里云 / Namecheap / 你用的那家）：
-
-| 字段 | 值 |
-|---|---|
-| Type | `CNAME` |
-| Name / Host | `innolab` |
-| Value / Target | `cname.vercel-dns.com`（以 Vercel 实际给的为准） |
-| TTL | Auto 或 600 |
-| Proxy (Cloudflare 用户) | **关闭橙色云朵**（Vercel 自己签证书） |
-
-**注意**：如果 `qiuyiwu.com` 主站本身托管在 Vercel，也可以在那个项目里直接 add `innolab.qiuyiwu.com` 然后用 redirect 转过来 — 但更干净的是 InnoLab 独立项目独立挂域。
-
-**3c. 等 DNS 生效**
-
-通常 10 分钟，最长 24 小时。验证：
+push 完代码后：
 
 ```bash
-dig innolab.qiuyiwu.com CNAME +short
-# 应该返回 cname.vercel-dns.com.（或类似）
+ssh ubuntu@43.159.171.3 'bash ~/innolab/scripts/deploy-update.sh'
 ```
 
-DNS 生效后 Vercel 自动签 Let's Encrypt 证书（约 30 秒）。
+脚本会：
+- `git fetch` + `pull --rebase`（如果远端没新提交直接退出）
+- `npm ci`（按 lock 文件装依赖）
+- `npm run build`
+- `pm2 reload innolab`（零 downtime）
+- smoke test（`/` + `/api/health`）
 
-**3d. 切环境变量**
+整套约 60-90 秒。
 
-Vercel 项目 → Settings → Environment Variables：
+## ② 从零重装（迁移服务器 / 灾备）
 
-```
-NEXT_PUBLIC_SITE_URL = https://innolab.qiuyiwu.com
-```
+假设新服务器是 Ubuntu 22+ 并已开通 22/80/443 端口，用户 `ubuntu`：
 
-应用到所有环境（Production / Preview / Development）。然后 Deployments → 最新条 → ⋯ → Redeploy（让新 env 生效）。
-
-### 4. 第一次 Redeploy（应用新环境变量）
-
-环境变量改完后，Vercel Dashboard → Deployments → 最新一条 → 点 ⋯ → Redeploy。
-
-## 后续维护
-
-### 自动部署
-
-任何 push 到 `master` 分支都会触发 Vercel 自动构建 + 部署。
-
-### 预览部署
-
-任何 push 到非 master 分支或开 PR，Vercel 会给一个独立的 preview URL，可以分享给别人看。
-
-### 添加方法 / 案例
+### 第 1 步：装基础工具链
 
 ```bash
-# 加方法
-cp methods/cognition/some-template.md methods/cognition/your-new-method.md
-# 编辑 frontmatter（## Meta 块）和正文
+ssh ubuntu@<NEW_IP>
 
-# 加案例
-cp cases/enterprise/some-template.json cases/your-domain/your-case.json
-# 编辑 + 把它登记到 cases/case-index.json
+# Node 22 via nvm
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
+nvm install 22 --lts && nvm alias default 22
 
-# 提交
-git add methods cases
-git commit -m "feat: 添加 XX 方法 / 案例"
-git push   # Vercel 自动重新部署
+# pm2 全局
+npm install -g pm2
+
+# nginx + certbot
+sudo apt-get update
+sudo apt-get install -y nginx certbot python3-certbot-nginx git
 ```
 
-### 监控 waitlist 提交
-
-v0.1 的 waitlist 端点只把邮箱 `console.log` 到 Vercel Functions 日志。
-
-查看：Vercel Dashboard → Logs → 筛选 `event":"waitlist.signup`
-
-**v0.5 之前接入 Resend Audiences 做持久化** — 见 `.env.example`。
-
-## 常见问题
-
-### "Module not found: cmdk"
-
-`npm install` 没跑完。本地：`rm -rf node_modules && npm install`。
-
-### Build 失败：TypeScript 错误
-
-本地先跑：
+### 第 2 步：拉代码 + 装依赖 + build
 
 ```bash
+cd ~
+git clone https://github.com/qiuyiwu1989-star/innolab.git
+cd innolab
+npm ci
+```
+
+### 第 3 步：写 .env.local
+
+```bash
+cat > ~/innolab/.env.local <<'ENV'
+NEXT_PUBLIC_SITE_URL=https://innolab.qiuyiwu.com
+MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1
+MIMO_API_KEY=<rotate-后填新值>
+MIMO_MODEL=mimo-v2.5-pro
+PORT=3010
+INNOLAB_DAILY_QUOTA_GLOBAL=50
+INNOLAB_DAILY_QUOTA_PER_IP=5
+INNOLAB_ADMIN_TOKEN=<随机字符串>
+IP_SALT=<随机字符串>
+ENV
+chmod 600 ~/innolab/.env.local
+```
+
+### 第 4 步：build + pm2 起进程
+
+```bash
+cd ~/innolab
 npm run build
+PORT=3010 pm2 start npm --name innolab -- start
+pm2 save                    # 持久化
+pm2 startup systemd -u ubuntu --hp /home/ubuntu | tail -1 | bash   # 开机自启
 ```
 
-确认本地通过再 push。
+### 第 5 步：nginx 反代
 
-### OG 图不更新
+```bash
+sudo tee /etc/nginx/sites-available/innolab > /dev/null <<'NGINX'
+server {
+    listen 80;
+    server_name innolab.qiuyiwu.com;
 
-OG 图是 edge runtime 动态生成，Vercel 边缘节点有缓存。改完 OG 图后强制 redeploy + 等 5-10 分钟 CDN 失效。
+    location /.well-known/acme-challenge/ { root /var/www/html; }
 
-### 域名 SSL 证书一直 Pending
+    location / {
+        proxy_pass http://127.0.0.1:3010;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_buffering off;
+        proxy_read_timeout 120s;
+        proxy_send_timeout 120s;
+    }
+}
+NGINX
 
-DNS 没指对。在终端跑 `dig your-domain.com` 检查 A/CNAME 是否对应到 Vercel。
+sudo ln -sf /etc/nginx/sites-available/innolab /etc/nginx/sites-enabled/innolab
+sudo nginx -t && sudo nginx -s reload
+```
 
-## 自检清单（上线前）
+### 第 6 步：DNS
 
-- [ ] `npm run build` 本地通过
-- [ ] `.env.example` 里所有 `NEXT_PUBLIC_*` 都在 Vercel 配好
-- [ ] 至少 push 了一次（不然 Vercel 看不到代码）
-- [ ] /about 页的 `[占位文本]` 至少填了一段（首次发布时）
-- [ ] Footer 邮箱占位 `hi@example.com` 改成真实邮箱
-- [ ] OG 图 share 到任意社交平台（Slack/Twitter/微信）确认显示对
-- [ ] 在手机浏览器访问一次，菜单 + Hero + Demo 都能用
+到 qiuyiwu.com 的 DNS 控制台加：
+
+| Type | Name | Value |
+|---|---|---|
+| A | `innolab` | `<NEW_IP>` |
+
+或者用泛解析 `*.qiuyiwu.com → <NEW_IP>` 就自动覆盖。
+
+### 第 7 步：SSL
+
+DNS 生效后：
+
+```bash
+sudo certbot --nginx -d innolab.qiuyiwu.com \
+  --non-interactive --agree-tos \
+  --register-unsafely-without-email --redirect
+```
+
+证书 90 天有效，certbot 自动续期。
+
+### 第 8 步：验证
+
+```bash
+curl -sI https://innolab.qiuyiwu.com/ | head -3
+curl -s https://innolab.qiuyiwu.com/api/health | jq
+```
+
+## ③ 备选：Vercel 路径
+
+如果将来 VPS 跑不动了 / 或者想转 serverless：
+
+```bash
+npm install -g vercel
+vercel              # 第一次 link 项目
+vercel --prod       # 生产部署
+```
+
+在 Vercel Dashboard → Settings → Environment Variables 加：
+
+```
+MIMO_API_KEY
+MIMO_BASE_URL
+MIMO_MODEL
+NEXT_PUBLIC_SITE_URL
+INNOLAB_ADMIN_TOKEN
+```
+
+注意：Vercel Hobby plan 上 streaming 25s 超时；MiMo 长推演可能超时。要么用 Pro plan，要么继续 VPS。
+
+## 故障排查
+
+### 用户报 502
+
+```bash
+ssh ubuntu@43.159.171.3
+pm2 status innolab          # 看进程是不是挂了
+pm2 logs innolab --lines 50 # 看具体错误
+pm2 restart innolab         # 重启
+```
+
+### /demo 返回"未配置 MIMO_API_KEY"
+
+```bash
+ssh ubuntu@43.159.171.3
+cat ~/innolab/.env.local | grep MIMO_API_KEY
+# 没有就加，然后 pm2 reload innolab
+```
+
+### SSL 证书要过期了
+
+```bash
+sudo certbot renew --dry-run   # 测试续期
+# 实际续期由 systemd timer 自动跑，每天检查
+sudo systemctl status certbot.timer
+```
+
+### 配额满了 / 用户报 "今日全站配额已用完"
+
+```bash
+# 临时把全站配额加大
+ssh ubuntu@43.159.171.3
+sed -i 's/INNOLAB_DAILY_QUOTA_GLOBAL=50/INNOLAB_DAILY_QUOTA_GLOBAL=200/' ~/innolab/.env.local
+pm2 reload innolab
+```
+
+注意每次分析约 $0.05-0.15，调高配额前先估算成本。
+
+## 监控
+
+### 看实时流量
+
+```bash
+ssh ubuntu@43.159.171.3 'pm2 logs innolab | grep analyze.request'
+```
+
+### 网页看汇总
+
+```
+https://innolab.qiuyiwu.com/admin/stats?token=<INNOLAB_ADMIN_TOKEN>
+```
+
+### 健康检查（外部监控接这个 URL）
+
+```
+GET https://innolab.qiuyiwu.com/api/health
+→ 200 status=ok / degraded / down
+```
