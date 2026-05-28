@@ -1213,7 +1213,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                     </button>
                     {isOpen && (
                       <div className="border-t border-fog-2 bg-ink px-4 py-3">
-                        <Markdown source={m.output} />
+                        <Markdown source={m.output} compact />
                       </div>
                     )}
                   </article>
@@ -1346,7 +1346,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
           {/* 推演输出 */}
           {output && (
             <article className="mt-6 rounded-xl border border-fog-2 bg-soot p-6 sm:p-8">
-              <Markdown source={output} />
+              <Markdown source={output} compact />
               {phase === "streaming" && (
                 <span className="ml-1 inline-block size-2 translate-y-0.5 animate-pulse rounded-sm bg-volt" />
               )}

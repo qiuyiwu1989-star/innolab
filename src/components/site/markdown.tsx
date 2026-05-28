@@ -14,7 +14,7 @@ export function cleanMarkdownBody(raw: string): string {
   return body.trim();
 }
 
-// 暗色主题 markdown 组件映射
+// 暗色主题 markdown 组件映射（标准间距 — 用于方法/关于等长文页面）
 const components = {
   h1: (p: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1 className="mt-10 mb-4 text-2xl font-bold tracking-tight text-bone" {...p} />
@@ -106,13 +106,51 @@ const components = {
   ),
 };
 
-export function Markdown({ source }: { source: string }) {
+// compact 版本 — 用于 demo 分析输出（减少段间距，保持分节清晰）
+const compactComponents = {
+  ...components,
+  h2: (p: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h2
+      className="mt-8 mb-3 border-b border-fog-2 pb-2 text-base font-bold tracking-tight text-bone first:mt-0"
+      {...p}
+    />
+  ),
+  h3: (p: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h3 className="mt-5 mb-2 text-sm font-semibold text-bone" {...p} />
+  ),
+  h4: (p: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h4 className="mt-3 mb-1 text-sm font-semibold text-ash" {...p} />
+  ),
+  p: (p: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <p className="my-2.5 leading-7 text-ash" {...p} />
+  ),
+  ul: (p: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul
+      className="my-2.5 list-disc space-y-1 pl-5 leading-7 text-ash marker:text-volt"
+      {...p}
+    />
+  ),
+  ol: (p: React.OlHTMLAttributes<HTMLOListElement>) => (
+    <ol
+      className="my-2.5 list-decimal space-y-1 pl-5 leading-7 text-ash marker:text-volt marker:font-semibold"
+      {...p}
+    />
+  ),
+};
+
+export function Markdown({
+  source,
+  compact,
+}: {
+  source: string;
+  compact?: boolean;
+}) {
   return (
     <div className="text-[15px]">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSlug]}
-        components={components}
+        components={compact ? compactComponents : components}
       >
         {source}
       </ReactMarkdown>
