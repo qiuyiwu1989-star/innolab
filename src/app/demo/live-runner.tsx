@@ -228,6 +228,8 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
   /** 首屏灵感提示 — 循环展示示例问题 */
   const [exampleIdx, setExampleIdx] = useState(0);
   const [exampleVisible, setExampleVisible] = useState(true);
+  /** 累计已探索的方法 ID（跨 session 持久化） */
+  const [seenMethodIds, setSeenMethodIds] = useState<Set<string>>(new Set());
 
   const visibleSuggestions =
     activeDomain === "all"
@@ -288,6 +290,16 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
       }
     } catch {
       /* 恢复失败就算了，不影响正常使用 */
+    }
+
+    // 恢复已探索方法集合（跨 session 学习轨迹）
+    try {
+      const raw = localStorage.getItem("innolab.seenMethods.v1");
+      if (raw) {
+        setSeenMethodIds(new Set(JSON.parse(raw) as string[]));
+      }
+    } catch {
+      /* noop */
     }
   }, []);
 
@@ -711,6 +723,25 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               /* noop */
             }
           }
+
+          // 3) 更新已探索方法集合（学习轨迹）
+          const newIds = extractMethodIds(outputAccumulator);
+          if (newIds.length > 0) {
+            setSeenMethodIds((prev) => {
+              const next = new Set(prev);
+              newIds.forEach((id) => next.add(id));
+              try {
+                localStorage.setItem(
+                  "innolab.seenMethods.v1",
+                  JSON.stringify(Array.from(next)),
+                );
+              } catch {
+                /* noop */
+              }
+              return next;
+            });
+          }
+
           setPhase("done");
         };
 
@@ -913,10 +944,15 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 15 案例可用
+                  MiMo v2.5 Pro · 74 方法 + 15 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
+                    </span>
+                  )}
+                  {seenMethodIds.size > 0 && (
+                    <span className="ml-2 text-volt/70">
+                      · 你已探索 {seenMethodIds.size} 个方法
                     </span>
                   )}
                 </span>
@@ -1575,17 +1611,25 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         InnoLab 刚才调用了这些方法 —— 点一个深入：
                       </div>
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {citedMethodIds.map((id) => (
+                        {citedMethodIds.map((id) => {
+                          const m = methodsIndex[id];
+                          return (
                           <button
                             key={id}
                             type="button"
                             onClick={() => submitMethodDrill(id)}
-                            className="numeral inline-flex items-center gap-1 rounded border border-fog-2 bg-ink px-2.5 py-1 text-[11px] text-volt transition hover:border-volt"
+                            className="inline-flex items-center gap-1.5 rounded border border-fog-2 bg-ink px-2.5 py-1.5 text-left transition hover:border-volt group"
                           >
-                            <Microscope className="size-3" />
-                            {id}
+                            <Microscope className="size-3 shrink-0 text-volt" />
+                            <span className="numeral text-[10px] text-volt">{id}</span>
+                            {m?.titleCn && (
+                              <span className="text-[11px] text-ash group-hover:text-bone">
+                                {m.titleCn}
+                              </span>
+                            )}
                           </button>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
