@@ -85,6 +85,7 @@ const EXAMPLE_PROMPTS = [
   "我的 MVP 用户说「挺好的」但没有复购，问题出在哪里？",
   "文创 IP 内核已经验证，怎么快速拓展更多变现载体而不失去定位？",
   "播客做了 3 年、5 万忠实听众，三次变现尝试全失败——怎么找到跑通的路？",
+  "SaaS 产品免费用户 5 万，加了半年功能转化率还是 1.5%，该怎么破？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -966,7 +967,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 18 案例
+                  MiMo v2.5 Pro · 74 方法 + 19 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1255,7 +1256,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
                 {waitingFirstChunk ? (
-                  <span>InnoLab 正在装填弹药库 · 74 方法 + 18 案例进入上下文…</span>
+                  <span>InnoLab 正在装填弹药库 · 74 方法 + 19 案例进入上下文…</span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <span>InnoLab 推演中</span>

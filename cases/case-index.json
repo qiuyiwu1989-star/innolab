@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-30",
-  "total_cases": 18,
+  "total_cases": 19,
   "cases": [
     {
       "id": "case-001",
@@ -184,6 +184,16 @@
       "summary": "B2B SaaS 销售团队精细化绩效方案上线半年，3 名高绩效销售离职，中等销售越来越「安全分」——根本问题不是方案复杂，而是用 L2 管控逻辑设计了一个需要 L4 主动性才能跑通的岗位。",
       "added_date": "2026-05-30",
       "file": "enterprise/sales-incentive-failure.json"
+    },
+    {
+      "id": "case-019",
+      "title": "SaaS Freemium 困局：5 万免费用户，付费转化率卡在 1.5%",
+      "domain": ["产品", "SaaS", "商业模式"],
+      "tags": ["免费增值", "付费转化", "aha moment", "产品定价", "Hook模型", "KANO模型", "客户旅程"],
+      "related_methods": ["PD07", "EV01", "DC04", "PD05", "DC07"],
+      "summary": "B2C SaaS 知识管理工具：注册 5 万、月活 2.2 万，付费转化率 1.5% 一年没动——团队加了 13 个付费功能、讨论了 3 次降价，都没用。根本问题不是功能不够多，而是 18 个付费功能里没有一个会让免费用户「没有就停摆」。",
+      "added_date": "2026-05-30",
+      "file": "product/saas-freemium-conversion.json"
     }
   ]
 }
