@@ -160,12 +160,22 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
   },
 ];
 
+interface CaseSnippet {
+  id: string;
+  title: string;
+  summary: string;
+  domain: string[];
+  related_methods: string[];
+}
+
 interface LiveRunnerProps {
   /** Server-side built methods index for method chain visualization */
   methodsIndex?: Record<string, MethodMeta>;
+  /** Lightweight cases index for related-case recommendations */
+  casesIndex?: CaseSnippet[];
 }
 
-export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
+export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [prompt, setPrompt] = useState("");
   const [submittedPrompt, setSubmittedPrompt] = useState("");
@@ -420,6 +430,35 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   const citedMethodIds = extractMethodIds(lastOutput);
   /** AI 生成的追问建议（## 追问方向 段落里的 3 个问题） */
   const suggestedFollowUps = phase === "done" ? extractFollowUpQuestions(lastOutput) : [];
+
+  /** 相关案例推荐：分析完成后显示与本次域相关的案例（最多 2 个） */
+  const relatedCases = (() => {
+    if (phase !== "done" || casesIndex.length === 0) return [];
+    // 计算有效领域
+    const dom =
+      activeDomain !== "all"
+        ? activeDomain
+        : (detectDomainFromPrompt(submittedPrompt) ?? "all");
+    if (dom === "all") return [];
+    // 领域关键词
+    const KWS: Record<string, string[]> = {
+      "ai-transform": ["AI转型", "企业AI转型", "AI工具"],
+      "product": ["AI产品", "产品设计", "产品"],
+      "ip-content": ["IP商业化", "文创", "内容"],
+      "org": ["人才", "组织", "管理"],
+      "strategy": ["战略", "SaaS", "竞争", "出海", "商业模式"],
+    };
+    const kws = KWS[dom] ?? [];
+    if (kws.length === 0) return [];
+    const scored = casesIndex
+      .map((c) => ({
+        case: c,
+        score: (c.domain ?? []).filter((d) => kws.some((k) => d.includes(k))).length,
+      }))
+      .filter((s) => s.score > 0)
+      .sort((a, b) => b.score - a.score);
+    return scored.slice(0, 2).map((s) => s.case);
+  })();
   const submitMethodDrill = useCallback(
     (methodId: string) => {
       void submit(
@@ -1200,6 +1239,44 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               methodIds={citedMethodIds}
               methodsIndex={methodsIndex}
             />
+          )}
+
+          {/* 相关案例推荐 — 推演完成后显示同领域案例 */}
+          {relatedCases.length > 0 && (
+            <section className="mt-5 rounded-xl border border-fog-2 bg-soot p-4 sm:p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="text-[11px] uppercase tracking-widest text-dust">
+                  同领域参考案例
+                </div>
+                <div className="h-px flex-1 bg-fog-2" />
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+                {relatedCases.map((c) => (
+                  <Link
+                    key={c.id}
+                    href={`/cases/${c.id}`}
+                    className="group flex-1 rounded-lg border border-fog-2 bg-ink p-3 transition hover:border-volt/50"
+                  >
+                    <div className="flex flex-wrap gap-1 mb-1.5">
+                      {(c.domain ?? []).slice(0, 2).map((d) => (
+                        <span
+                          key={d}
+                          className="rounded bg-fog-1 px-1.5 py-0.5 text-[10px] text-dust"
+                        >
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="text-sm font-medium leading-snug text-bone group-hover:text-volt transition">
+                      {c.title}
+                    </div>
+                    <div className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-dust">
+                      {c.summary}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
           )}
 
           {/* 错误态 */}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Beaker, ArrowRight } from "lucide-react";
 import { demoScripts } from "@/lib/demo-scripts";
 import { getAllMethods } from "@/lib/methods";
+import { getCaseIndex } from "@/lib/cases";
 import { DemoRunner } from "./demo-runner";
 import { LiveRunner } from "./live-runner";
 import type { MethodMeta } from "@/components/demo/method-chain-viz";
@@ -32,6 +33,15 @@ export default function DemoPage() {
     ]),
   );
   const idToSlug = Object.fromEntries(allMethods.map((m) => [m.id, m.slug]));
+
+  // Build a lightweight cases index for related-case recommendations in LiveRunner
+  const casesIndex = getCaseIndex().map((c) => ({
+    id: c.id,
+    title: c.title,
+    summary: c.summary,
+    domain: c.domain,
+    related_methods: c.related_methods,
+  }));
 
   return (
     <main className="relative isolate flex-1">
@@ -75,7 +85,7 @@ export default function DemoPage() {
 
         {/* 主体：实时分析（LiveRunner） */}
         <div className="mt-12">
-          <LiveRunner methodsIndex={methodsIndex} />
+          <LiveRunner methodsIndex={methodsIndex} casesIndex={casesIndex} />
         </div>
 
         {/* —— 分隔 —— */}
