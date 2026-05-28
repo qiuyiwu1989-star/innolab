@@ -1008,7 +1008,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 22 案例
+                  MiMo v2.5 Pro · 74 方法 + 23 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1304,7 +1304,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 74 方法 + 22 案例</span>
+                    <span className="text-dust">· 74 方法 + 23 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
