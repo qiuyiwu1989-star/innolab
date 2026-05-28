@@ -1,22 +1,80 @@
-// 极简限流：内存兜底（每个 serverless 实例独立）。
-// 真正生产用 Upstash Redis 替换，接口保持不变。
+// 限流 — 内存 + 文件持久化（pm2/Node 长进程；Vercel serverless 用 Upstash 替换）。
 //
 // 默认配额：
 //   - 全站每日 50 次（防止 API 费用失控）
 //   - 单 IP 每日 5 次（防止单人刷屏）
+//
+// 持久化：每次写后异步刷盘到 rate-limit-state.json，pm2 重启后恢复计数。
+
+import fs from "node:fs";
+import path from "node:path";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
-
 const GLOBAL_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_GLOBAL ?? 50);
 const PER_IP_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_PER_IP ?? 5);
+
+// 持久化状态文件路径（在项目根目录，不进 git）
+const STATE_FILE = path.join(process.cwd(), "rate-limit-state.json");
 
 interface Bucket {
   count: number;
   resetAt: number;
 }
 
-const ipBuckets = new Map<string, Bucket>();
-let globalBucket: Bucket = { count: 0, resetAt: Date.now() + WINDOW_MS };
+interface PersistedState {
+  global: Bucket;
+  ips: Record<string, Bucket>;
+}
+
+// ── 初始化（加载持久化状态）────────────────────────────────────────────────
+
+function loadState(): PersistedState {
+  try {
+    const raw = fs.readFileSync(STATE_FILE, "utf8");
+    const parsed = JSON.parse(raw) as PersistedState;
+    return {
+      global: parsed.global ?? { count: 0, resetAt: Date.now() + WINDOW_MS },
+      ips: parsed.ips ?? {},
+    };
+  } catch {
+    // 文件不存在或损坏 — 从零开始
+    return {
+      global: { count: 0, resetAt: Date.now() + WINDOW_MS },
+      ips: {},
+    };
+  }
+}
+
+const _state = loadState();
+let globalBucket: Bucket = _state.global;
+const ipBuckets = new Map<string, Bucket>(
+  Object.entries(_state.ips)
+);
+
+// ── 持久化（异步写，不阻塞请求）──────────────────────────────────────────────
+
+let _saveTimer: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleSave() {
+  if (_saveTimer) return; // 去抖：100ms 内只写一次
+  _saveTimer = setTimeout(() => {
+    _saveTimer = null;
+    // 只保留 resetAt 还没过期的 IP，清理旧数据（防文件膨胀）
+    const now = Date.now();
+    const ips: Record<string, Bucket> = {};
+    for (const [ip, b] of ipBuckets.entries()) {
+      if (b.resetAt > now) ips[ip] = b;
+    }
+    const payload: PersistedState = { global: globalBucket, ips };
+    try {
+      fs.writeFileSync(STATE_FILE, JSON.stringify(payload));
+    } catch {
+      /* 写失败不影响业务，下次 reload 会重置 */
+    }
+  }, 100);
+}
+
+// ── 核心逻辑 ────────────────────────────────────────────────────────────────
 
 function maybeReset(bucket: Bucket): Bucket {
   if (Date.now() >= bucket.resetAt) {
@@ -65,6 +123,10 @@ export function checkAndConsume(ip: string): RateLimitResult {
 
   globalBucket.count += 1;
   ipBucket.count += 1;
+
+  // 异步持久化（不阻塞响应）
+  scheduleSave();
+
   return {
     allowed: true,
     remaining: {
