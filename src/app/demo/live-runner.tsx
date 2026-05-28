@@ -966,7 +966,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 17 案例
+                  MiMo v2.5 Pro · 74 方法 + 18 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1255,7 +1255,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                   <span className="size-2 rounded-full bg-volt" />
                 </span>
                 {waitingFirstChunk ? (
-                  <span>InnoLab 正在装填弹药库 · 74 方法 + 17 案例进入上下文…</span>
+                  <span>InnoLab 正在装填弹药库 · 74 方法 + 18 案例进入上下文…</span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <span>InnoLab 推演中</span>

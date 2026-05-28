@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-30",
-  "total_cases": 17,
+  "total_cases": 18,
   "cases": [
     {
       "id": "case-001",
@@ -174,6 +174,16 @@
       "summary": "商业访谈播客，3年5万订阅，三次变现失败（课程无复购、社群沉默、赞助嫌小）——根本问题不是听众太少，而是用「内容博主」框架对接了「商业决策者」听众。",
       "added_date": "2026-05-30",
       "file": "product/podcast-creator-monetization.json"
+    },
+    {
+      "id": "case-018",
+      "title": "销售激励失效：绩效方案越复杂，好销售越先走",
+      "domain": ["组织", "人才", "管理"],
+      "tags": ["激励设计", "销售管理", "认知层级", "双轨人才", "绩效方案"],
+      "related_methods": ["CG06", "ST09", "DC04", "EV03", "DC02"],
+      "summary": "B2B SaaS 销售团队精细化绩效方案上线半年，3 名高绩效销售离职，中等销售越来越「安全分」——根本问题不是方案复杂，而是用 L2 管控逻辑设计了一个需要 L4 主动性才能跑通的岗位。",
+      "added_date": "2026-05-30",
+      "file": "enterprise/sales-incentive-failure.json"
     }
   ]
 }
