@@ -30,6 +30,7 @@ import {
 import {
   startThread,
   appendToThread,
+  getThread,
   buildPriorSummary,
   extractMethodIds,
   extractFollowUpQuestions,
@@ -176,6 +177,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   const [showNoteInput, setShowNoteInput] = useState(false);
   /** 是否从历史回放（不发 API） */
   const [fromReplay, setFromReplay] = useState(false);
+  /** 是否从上次 session 自动恢复 */
+  const [sessionRestored, setSessionRestored] = useState(false);
   /** 复制 / 分享 状态 */
   const [copied, setCopied] = useState<null | "result" | "link">(null);
 
@@ -204,7 +207,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   // 卸载时取消请求
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  // 加载时恢复上次选择的领域 + 历史
+  // 加载时恢复上次选择的领域 + 历史 + 上一次完成的 thread
   useEffect(() => {
     try {
       const saved = localStorage.getItem("innolab.demo.domain");
@@ -215,6 +218,33 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
       /* localStorage 不可用就算了 */
     }
     setHistory(readHistory());
+
+    // 尝试恢复上次的 thread session（同一用户刷新后不丢失上下文）
+    try {
+      const lastThreadId = localStorage.getItem("innolab.lastThread.v1");
+      if (lastThreadId) {
+        const t = getThread(lastThreadId);
+        if (t && t.messages.length > 0) {
+          const lastMsg = t.messages[t.messages.length - 1];
+          // 只恢复 2 小时内的 thread
+          const age = Date.now() - new Date(t.updatedAt).getTime();
+          if (age < 2 * 60 * 60 * 1000) {
+            setCurrentThread(t);
+            setThreadHistory(t.messages);
+            setSubmittedPrompt(lastMsg.prompt);
+            setOutput(lastMsg.output);
+            setPhase("done");
+            setFromReplay(false);
+            setSessionRestored(true);
+            if (DOMAINS.some((d) => d.key === t.domain)) {
+              setActiveDomain(t.domain as DomainKey);
+            }
+          }
+        }
+      }
+    } catch {
+      /* 恢复失败就算了，不影响正常使用 */
+    }
   }, []);
 
   // 解析 URL ?q= 分享链接：朋友点开时自动 prefill prompt
@@ -275,6 +305,9 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
     setMethodDrillOpen(false);
     // 刷新历史显示
     setHistory(readHistory());
+    // 清除 lastThread 记录，避免下次进来又恢复
+    try { localStorage.removeItem("innolab.lastThread.v1"); } catch { /* noop */ }
+    setSessionRestored(false);
   }, []);
 
   /** 切换某条历史消息的展开 / 折叠 */
@@ -557,6 +590,12 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
           if (updated) {
             setCurrentThread(updated);
             setThreadHistory(updated.messages);
+            // 持久化当前 thread ID，支持刷新后恢复
+            try {
+              localStorage.setItem("innolab.lastThread.v1", updated.id);
+            } catch {
+              /* noop */
+            }
           }
           setPhase("done");
         };
@@ -893,6 +932,12 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                 <span className="text-ash">
                   {DOMAINS.find((d) => d.key === pickedFromDomain)?.label}
                 </span>
+              </div>
+            )}
+            {sessionRestored && (
+              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-volt/70">
+                <span className="size-1 rounded-full bg-volt/70" />
+                <span>上次会话已自动恢复</span>
               </div>
             )}
           </div>
