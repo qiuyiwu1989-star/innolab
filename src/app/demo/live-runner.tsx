@@ -498,6 +498,9 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
         let buffer = "";
         // 本地累积，用于完成时存历史（state 是异步的，不可靠）
         let outputAccumulator = "";
+        // 本地标志：第一个 delta 到达时清除"装填中"状态
+        // 不能用 waitingFirstChunk state（async 闭包里是 stale 值）
+        let isFirstChunk = true;
 
         const finalize = () => {
           // 1) 老的"最近问过"历史也维持（用户视角友好）
@@ -549,7 +552,10 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               try {
                 const ev = JSON.parse(json);
                 if (ev.type === "delta") {
-                  if (waitingFirstChunk) setWaitingFirstChunk(false);
+                  if (isFirstChunk) {
+                    setWaitingFirstChunk(false);
+                    isFirstChunk = false;
+                  }
                   outputAccumulator += ev.text;
                   setOutput((prev) => prev + ev.text);
                 } else if (ev.type === "usage") {
@@ -626,7 +632,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 10 案例可用
+                  MiMo v2.5 Pro · 74 方法 + 12 案例可用
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -872,7 +878,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                 </span>
                 <span>
                   {waitingFirstChunk
-                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 10 案例进入上下文…"
+                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 12 案例进入上下文…"
                     : "InnoLab 正在推演 · 流式输出中…"}
                 </span>
               </>

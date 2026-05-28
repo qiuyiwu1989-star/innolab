@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "created": "2026-04-05",
-  "last_updated": "2026-04-20",
-  "total_cases": 10,
+  "last_updated": "2026-05-29",
+  "total_cases": 12,
   "cases": [
     {
       "id": "case-001",
@@ -104,6 +104,26 @@
       "summary": "对话场景产生认知数据，但数据回路未闭合——飞轮转不起来",
       "added_date": "2026-04-20",
       "file": "education/qiuqiu-data-flywheel.json"
+    },
+    {
+      "id": "case-011",
+      "title": "B2B SaaS 向企业级转型：守线攻线资源分配",
+      "domain": ["战略", "企业服务", "SaaS"],
+      "tags": ["攻守矩阵", "J曲线", "资源分配", "企业级转型", "护城河"],
+      "related_methods": ["ST07", "DC05", "ST10", "CG01", "ST06"],
+      "summary": "中型 B2B SaaS 守住 SMB 基本盘同时进攻企业级——J 曲线阵痛期的资源分配决策",
+      "added_date": "2026-05-29",
+      "file": "strategy/saas-to-enterprise-pivot.json"
+    },
+    {
+      "id": "case-012",
+      "title": "组织推 AI 为什么推不动：三层阻力诊断",
+      "domain": ["组织", "企业AI转型", "人才"],
+      "tags": ["组织阻力", "权责真空", "L2-L4跃迁", "变革管理", "双轨人才"],
+      "related_methods": ["CG06", "ST09", "ST10", "DC02", "EV03"],
+      "summary": "300 人科技公司 AI 推广失败：工具买了没人用，真正的阻力在三层组织结构里",
+      "added_date": "2026-05-29",
+      "file": "enterprise/org-ai-resistance.json"
     }
   ]
 }
