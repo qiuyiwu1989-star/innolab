@@ -90,8 +90,10 @@ export default function AboutPage() {
         <div className="mt-6 space-y-4 leading-relaxed text-ash">
           <p>
             InnoLab 不是一个方法论的清单，是一台
-            <strong className="font-semibold text-bone">编排引擎</strong>
+            <strong className="font-semibold text-bone">战略推演引擎</strong>
             ——把模糊的商业问题切准、调用相关方法链、给出具体下一步动作。
+            和普通 AI 问答不同，它遵循的是<strong className="font-semibold text-bone">智能体的逻辑</strong>：
+            多轮追问、带着前文判断续问、方法调用链可视化、越用越懂你的场景。
           </p>
           <p>
             收录的{" "}
@@ -109,6 +111,7 @@ export default function AboutPage() {
           <p>
             InnoLab 把这些工作里反复被调用到的 {totalMethods} 个方法论沉淀下来，
             按六大引擎组织，让其他在做类似抉择的人也能用。
+            每一次分析都让引擎变得更准——这是它与静态知识库的本质区别。
           </p>
         </div>
       </section>
@@ -174,35 +177,38 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* —— Roadmap —— 反映真实当下 —— */}
+      {/* —— Roadmap —— 演进路径 —— */}
       <section className="mt-16">
         <h2 className="numeral text-xs uppercase tracking-widest text-volt">
-          Roadmap
+          Roadmap · 演进路径
         </h2>
         <h3 className="display mt-3 text-2xl text-bone sm:text-3xl">
-          从知识库到 SaaS
+          从推演工具走向战略创新智能体
         </h3>
+        <p className="mt-2 text-sm text-dust">
+          每一个版本都让 InnoLab 更像一个持续陪你思考的伙伴，而不是一次性问答工具。
+        </p>
         <ol className="mt-8 space-y-3">
           <Phase
-            v="v0.x"
-            title="知识库 + 方法地图 + 真 AI 分析"
+            v="v0.1"
+            title="推演引擎 + 多轮会话"
             status="live"
             when="2026 Q2 · 当前"
-            note="74 方法 / 10 案例 / CMD+K / /demo 限免使用"
+            note="74 方法 + 10 案例 / 多轮追问 / 方法链可视化 / 首次访客引导"
           />
           <Phase
-            v="v0.9"
-            title="数据驱动迭代"
+            v="β"
+            title="记忆 + 自适应分析"
             status="next"
-            when="2026 Q3"
-            note="按真实用户使用数据锁定主战场 + 私有分析记忆库"
+            when="进行中"
+            note="分析记忆库（你的场景不用重复说）/ 领域自适应案例注入 / 输出质量数据反哺"
           />
           <Phase
             v="v1.0"
-            title="付费 / 账号 / 团队版"
+            title="个人化战略伙伴"
             status="vision"
             when="2026 Q4"
-            note="订阅、私有库、API、企业版"
+            note="私有方法引擎 / 团队协作 / 云同步 / 订阅 / API"
           />
         </ol>
       </section>

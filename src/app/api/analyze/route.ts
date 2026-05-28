@@ -136,6 +136,7 @@ export async function POST(request: Request) {
       try {
         for await (const event of analyzeStream({
           prompt,
+          domain: body.domain,
           priorSummary: body.prior_summary,
           signal: request.signal,
         })) {

@@ -37,10 +37,31 @@ export function buildSystemPrompt(): string {
 
   const caseIndex = cases
     .map((c) => {
-      const methodIds = (c.related_methods ?? []).join(",");
-      return `- ${c.id} ${c.title}${methodIds ? ` [用了 ${methodIds}]` : ""} — ${c.summary}`;
+      const flow = c.analysis_flow;
+      // 方法链：ID → ID → ID（有 analysis_flow 时用实际执行顺序）
+      const chainStr = flow
+        ? flow.method_chain.map((m) => m.id).join(" → ")
+        : (c.related_methods ?? []).join(" → ");
+      const lines: string[] = [
+        `### ${c.id} · ${c.title}`,
+        `方法链：${chainStr}`,
+        `概要：${c.summary}`,
+      ];
+      if (flow?.key_judgment) {
+        // 截断到 120 字以内
+        const j = flow.key_judgment.slice(0, 120);
+        lines.push(`核心判断：${j}${flow.key_judgment.length > 120 ? "…" : ""}`);
+      }
+      if (flow?.verdict?.length) {
+        const verdicts = flow.verdict
+          .slice(0, 3)
+          .map((v) => `  ${v.kind === "do" ? "✓" : "✗"} ${v.text}`)
+          .join("\n");
+        lines.push(`推演结论：\n${verdicts}`);
+      }
+      return lines.join("\n");
     })
-    .join("\n");
+    .join("\n\n");
 
   _systemPrompt = `${skill}
 
@@ -104,6 +125,8 @@ const DEFAULT_MODEL = "mimo-v2.5-pro";
 
 export interface AnalyzeOptions {
   prompt: string;
+  /** 用户选择的领域（all / ai-transform / product / ip-content / org / strategy） */
+  domain?: string;
   /** thread 续写时的前文精要（关键判断 + 推演结论） */
   priorSummary?: string;
   /** 透传 abort 信号，方便客户端断开时停止生成 */
@@ -115,12 +138,46 @@ export type AnalyzeEvent =
   | { type: "usage"; input: number; output: number; total: number }
   | { type: "error"; message: string };
 
+/** 领域 → 案例领域关键词映射（用于动态注入最相关案例） */
+const DOMAIN_KEYWORDS: Record<string, string[]> = {
+  "ai-transform": ["AI转型", "企业AI转型", "AI工具"],
+  "product": ["AI产品", "产品设计", "产品"],
+  "ip-content": ["IP商业化", "文创", "内容"],
+  "org": ["人才", "组织", "企业服务"],
+  "strategy": ["战略", "企业服务", "设计"],
+};
+
+/**
+ * 根据领域找最相关的 2 个案例，返回简短的"参考案例"文本。
+ * 注入到 userMessage 前，让缓存的 system prompt 不变。
+ */
+function buildDomainContext(domain: string | undefined): string {
+  if (!domain || domain === "all") return "";
+  const keywords = DOMAIN_KEYWORDS[domain];
+  if (!keywords) return "";
+  const cases = getAllCases();
+  const matched = cases.filter((c) =>
+    (c.domain ?? []).some((d: string) => keywords.some((k) => d.includes(k))),
+  );
+  if (matched.length === 0) return "";
+  const top = matched.slice(0, 2);
+  const lines = top.map((c) => {
+    const flow = c.analysis_flow;
+    const chain = flow
+      ? flow.method_chain.map((m: { id: string }) => m.id).join("→")
+      : (c.related_methods ?? []).join("→");
+    return `- ${c.title}（方法链：${chain}）：${c.summary}${flow?.key_judgment ? `。核心判断：${flow.key_judgment.slice(0, 80)}…` : ""}`;
+  });
+  return `【本次领域相关案例参考】\n${lines.join("\n")}\n\n`;
+}
+
 /**
  * 调用 MiMo（或任何 OpenAI 兼容端点）。
  * 返回 AsyncIterable<AnalyzeEvent>：调用方负责转 SSE。
  */
 export async function* analyzeStream({
   prompt,
+  domain,
   priorSummary,
   signal,
 }: AnalyzeOptions): AsyncGenerator<AnalyzeEvent, void, unknown> {
@@ -140,10 +197,14 @@ export async function* analyzeStream({
   const client = new OpenAI({ apiKey, baseURL });
   const system = buildSystemPrompt();
 
-  // 续 thread 时：用户消息前置 prior_summary，保留 system prompt 不变（让缓存复用）
+  // 构建 userMessage：
+  // 1. 可选：领域案例参考（动态注入，system prompt 不变→缓存复用）
+  // 2. 可选：thread 续问前文精要
+  // 3. 用户实际问题
+  const domainCtx = buildDomainContext(domain);
   const userMessage = priorSummary?.trim()
-    ? `${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
-    : prompt;
+    ? `${domainCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
+    : `${domainCtx}${prompt}`;
 
   try {
     const stream = await client.chat.completions.create(
