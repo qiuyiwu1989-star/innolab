@@ -8,11 +8,23 @@ import { Badge } from "@/components/ui/badge";
 // 首页 demo 三案例（用真实案例作为"看一眼能做什么"的演示）
 const HOMEPAGE_DEMO_CASE_IDS = ["case-002", "case-006", "case-007"];
 
-// 三个 hero suggestion chips（演示性，点击滚到 demo 段）
-const SUGGESTIONS = [
-  "我该做 IP 产品吗？",
-  "AI 转型该从哪里开始？",
-  "怎么搭建双轨人才体系？",
+// Hero suggestion chips — 点击直通 /demo 并预填问题 + 领域
+const SUGGESTIONS: { label: string; q: string; domain: string }[] = [
+  {
+    label: "IP 变现",
+    q: "我该做 IP 产品吗？核心 IP 已经有一些，但还没找到最适合的变现路径。",
+    domain: "ip-content",
+  },
+  {
+    label: "AI 转型",
+    q: "AI 转型该从哪里开始？我们 100 人公司，想用 AI 提效但不知道切入点。",
+    domain: "ai-transform",
+  },
+  {
+    label: "人才组织",
+    q: "怎么搭建双轨人才体系？全员 AI 化推了半年，没什么实质进展。",
+    domain: "org",
+  },
 ];
 
 export default function Home() {
@@ -74,7 +86,7 @@ export default function Home() {
           {/* 直接通往 /demo（已限免上线） */}
           <div className="mt-12 max-w-2xl">
             <Link
-              href="/demo"
+              href={`/demo?domain=${SUGGESTIONS[0].domain}&q=${encodeURIComponent(SUGGESTIONS[0].q)}`}
               className="group flex items-center justify-between gap-3 rounded-lg border border-volt/40 bg-volt/[0.04] px-5 py-4 transition hover:border-volt hover:bg-volt/[0.08]"
             >
               <div className="flex flex-1 items-center gap-3">
@@ -91,11 +103,11 @@ export default function Home() {
             <div className="mt-3 flex flex-wrap gap-2">
               {SUGGESTIONS.map((s) => (
                 <Link
-                  key={s}
-                  href="/demo"
+                  key={s.label}
+                  href={`/demo?domain=${s.domain}&q=${encodeURIComponent(s.q)}`}
                   className="rounded-full border border-fog-2 px-3 py-1 text-xs text-ash transition hover:border-fog-3 hover:text-bone"
                 >
-                  {s}
+                  {s.label}
                 </Link>
               ))}
             </div>

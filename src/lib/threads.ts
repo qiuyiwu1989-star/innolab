@@ -207,12 +207,14 @@ export function extractFollowUpQuestions(markdown: string): string[] {
   const questions: string[] = [];
 
   for (const line of section.split("\n")) {
-    // 匹配 "1. 问题" "2. 问题" 等
+    // 匹配 "1. 问题" 或 "1. **标签**：问题" 格式
     const m = line.match(/^\s*\d+\.\s+(.+)$/);
     if (m) {
-      const q = m[1].trim();
+      let q = m[1].trim();
+      // 剥离 "**不确定点**：" / "**视角盲区**: " 等 bold 前缀标签（AI 会输出这种格式）
+      q = q.replace(/^\*\*[^*]{1,20}\*\*[：:]\s*/, "");
       // 跳过纯占位符括号描述（AI 偶尔会输出模板文字）
-      if (q && !q.startsWith("（") && !q.startsWith("(")) {
+      if (q && !q.startsWith("（") && !q.startsWith("(") && q.length > 8) {
         questions.push(q);
       }
     }
