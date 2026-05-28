@@ -32,10 +32,11 @@ import {
   appendToThread,
   buildPriorSummary,
   extractMethodIds,
+  extractFollowUpQuestions,
   type Thread,
   type ThreadMessage,
 } from "@/lib/threads";
-import { ChevronDown, ChevronUp, MessageSquarePlus, RefreshCw, Microscope } from "lucide-react";
+import { ChevronDown, ChevronUp, MessageSquarePlus, RefreshCw, Microscope, Zap } from "lucide-react";
 import { MethodChainViz, type MethodMeta } from "@/components/demo/method-chain-viz";
 import { OnboardTour } from "@/components/demo/onboard-tour";
 
@@ -300,6 +301,8 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
   const lastOutput =
     threadHistory.length > 0 ? threadHistory[threadHistory.length - 1].output : output;
   const citedMethodIds = extractMethodIds(lastOutput);
+  /** AI 生成的追问建议（## 追问方向 段落里的 3 个问题） */
+  const suggestedFollowUps = phase === "done" ? extractFollowUpQuestions(lastOutput) : [];
   const submitMethodDrill = useCallback(
     (methodId: string) => {
       void submit(
@@ -633,7 +636,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 74 方法 + 12 案例可用
+                  MiMo v2.5 Pro · 74 方法 + 13 案例可用
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -879,7 +882,7 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                 </span>
                 <span>
                   {waitingFirstChunk
-                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 12 案例进入上下文…"
+                    ? "InnoLab 正在装填弹药库 ·  74 方法 + 13 案例进入上下文…"
                     : "InnoLab 正在推演 · 流式输出中…"}
                 </span>
               </>
@@ -1109,6 +1112,36 @@ export function LiveRunner({ methodsIndex = {} }: LiveRunnerProps) {
                   <p className="mt-2 text-xs text-dust">
                     InnoLab 会带着前面的判断回答你，不是从头开始想。
                   </p>
+
+                  {/* AI 生成的追问建议 — 一键触发下一轮 */}
+                  {suggestedFollowUps.length > 0 && (
+                    <div className="mt-4">
+                      <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-volt/70">
+                        <Zap className="size-3" />
+                        <span>InnoLab 建议你继续问</span>
+                      </div>
+                      <div className="mt-2 flex flex-col gap-2">
+                        {suggestedFollowUps.map((q, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => {
+                              void submit(q, { kind: "deeper" });
+                            }}
+                            className="group flex items-start gap-3 rounded-lg border border-volt/30 bg-volt/[0.04] px-4 py-3 text-left transition hover:border-volt hover:bg-volt/[0.08]"
+                          >
+                            <span className="numeral mt-0.5 shrink-0 text-[10px] text-volt">
+                              Q{i + 1}
+                            </span>
+                            <span className="flex-1 text-sm leading-snug text-bone">
+                              {q}
+                            </span>
+                            <ArrowRight className="mt-0.5 size-3.5 shrink-0 text-volt opacity-60 transition group-hover:opacity-100" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button

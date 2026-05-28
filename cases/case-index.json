@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 12,
+  "total_cases": 13,
   "cases": [
     {
       "id": "case-001",
@@ -124,6 +124,16 @@
       "summary": "300 人科技公司 AI 推广失败：工具买了没人用，真正的阻力在三层组织结构里",
       "added_date": "2026-05-29",
       "file": "enterprise/org-ai-resistance.json"
+    },
+    {
+      "id": "case-013",
+      "title": "小红书 IP 达人：从粉丝变现到品牌化的四层跨越",
+      "domain": ["IP商业化", "内容", "文创", "产品设计"],
+      "tags": ["IP四层知识图谱", "内容IP", "蓝海变现", "品牌化", "老瓶新装", "J曲线"],
+      "related_methods": ["PD02", "ST06", "GN04", "DC05", "CG14"],
+      "summary": "50 万粉的生活方式达人，广告变现触到天花板——靠接单养不大，靠品牌太重。四层 IP 模型把她从「网红」重新定位成「生活方式解决方案」，找到第三条路。",
+      "added_date": "2026-05-29",
+      "file": "product/ip-creator-monetization.json"
     }
   ]
 }

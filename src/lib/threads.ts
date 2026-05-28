@@ -187,3 +187,36 @@ export function extractMethodIds(output: string): string[] {
   // 去重保序
   return Array.from(new Set(ids));
 }
+
+/**
+ * 从 Markdown 输出中提取"追问方向"里的 3 个问题。
+ * 格式：
+ *   ## 追问方向
+ *   1. 问题文本
+ *   2. 问题文本
+ *   3. 问题文本
+ */
+export function extractFollowUpQuestions(markdown: string): string[] {
+  // 找到 ## 追问方向 这一节，到下一个 ## 或结尾
+  const sectionMatch = markdown.match(
+    /##\s*追问方向[\s\S]*?(?=\n##\s|\s*$)/,
+  );
+  if (!sectionMatch) return [];
+
+  const section = sectionMatch[0];
+  const questions: string[] = [];
+
+  for (const line of section.split("\n")) {
+    // 匹配 "1. 问题" "2. 问题" 等
+    const m = line.match(/^\s*\d+\.\s+(.+)$/);
+    if (m) {
+      const q = m[1].trim();
+      // 跳过纯占位符括号描述（AI 偶尔会输出模板文字）
+      if (q && !q.startsWith("（") && !q.startsWith("(")) {
+        questions.push(q);
+      }
+    }
+  }
+
+  return questions.slice(0, 3);
+}
