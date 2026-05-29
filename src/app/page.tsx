@@ -287,6 +287,58 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ════════════════ 6.5 · 缝合屏：工具的尽头是人 ════════════════ */}
+      <section className="relative border-b border-fog-1 py-24 sm:py-32">
+        <div className="absolute inset-0 bg-grid opacity-30" />
+        <div className="relative mx-auto max-w-3xl px-6 text-center">
+          <span className="numeral text-xs uppercase tracking-widest text-volt">
+            06 / 工具的尽头
+          </span>
+          <h2 className="display mt-4 text-3xl text-bone sm:text-5xl">
+            AI 能帮你想清楚 80%。
+            <br />
+            最难的那 20%，值得一个人陪你。
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ash">
+            InnoLab 把方法论装进 AI，能把大多数问题推演得很到位。
+            但真正重大的决策——关乎方向、关乎取舍、关乎赌注——
+            需要的不只是一套框架，而是一个有经验的人，带着这套方法陪你把它想到底。
+            这正是邱懿武做的事。
+          </p>
+        </div>
+      </section>
+
+      {/* ════════════════ 6.6 · 邱懿武是谁（轻量，跳转 qiuyiwu.com）════════════════ */}
+      <section className="border-b border-fog-1 py-20 sm:py-28">
+        <div className="mx-auto max-w-3xl px-6">
+          <span className="numeral text-xs uppercase tracking-widest text-volt">
+            07 / 方法论背后的人
+          </span>
+          <h2 className="display mt-4 text-3xl text-bone sm:text-4xl">
+            邱懿武
+          </h2>
+          <div className="mt-6 space-y-4 text-base leading-relaxed text-ash">
+            <p>
+              长期从事 AI 创新落地与战略咨询，做过 AIIP、造物云、球球老师 等项目。
+              InnoLab 里的 {totalMethods} 个方法和 {cases.length} 个案例，
+              都是他在这些真实工作里反复调用、沉淀下来的判断——不是教科书，是打过仗的方法论。
+            </p>
+            <p className="text-sm text-dust">
+              他也把 InnoLab 作为专属工具，交付给正在服务的咨询客户。
+            </p>
+          </div>
+          <a
+            href="https://qiuyiwu.com"
+            target="_blank"
+            rel="noopener"
+            className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-volt hover:underline"
+          >
+            完整了解邱懿武 · qiuyiwu.com
+            <ArrowUpRight className="size-4" />
+          </a>
+        </div>
+      </section>
+
       {/* ════════════════ 7 · 联系咨询 ════════════════ */}
       <section
         id="contact"
@@ -295,7 +347,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-dense opacity-40 mask-fade-b" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
           <span className="numeral text-xs uppercase tracking-widest text-volt">
-            07 · 战略咨询
+            08 · 战略咨询
           </span>
           <h2 className="display mt-4 text-4xl text-bone sm:text-6xl">
             你也面临
