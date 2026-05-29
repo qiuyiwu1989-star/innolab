@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 63,
+  "total_cases": 65,
   "cases": [
     {
       "id": "case-001",
@@ -1090,6 +1090,28 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "org/enterprise-innovation-program-design.json"
+    },
+    {
+      "id": "case-064",
+      "title": "小众咖啡品牌在精品赛道和规模化之间撕裂：开 100 家店还是守住 5 家？",
+      "domain": ["战略", "消费品", "品牌", "商业模式"],
+      "tags": ["蓝海战略", "品牌定位", "小众品牌", "精品咖啡", "规模化悖论", "护城河", "竞争战略", "消费升级"],
+      "related_methods": ["ST06", "PD09", "EV01", "ST07", "CG20"],
+      "summary": "小众精品品牌的规模化悖论：护城河（稀缺性）恰恰是规模化的上限——Blue Bottle 被收购后扩张到 100 家的失败案例直接预演了「素语」A 路线的结局；正确路径是豆子订阅+培训体系，用不破坏稀缺性的方式扩大商业规模",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/niche-brand-positioning.json"
+    },
+    {
+      "id": "case-065",
+      "title": "B2B SaaS 年费从 3000 调到 12000 会死吗？定价四倍涨价的正确姿势",
+      "domain": ["产品", "战略", "SaaS", "商业模式"],
+      "tags": ["定价策略", "SaaS定价", "价值定价", "B2B", "价格锚点", "客户分层", "涨价", "商业模式"],
+      "related_methods": ["EV01", "PD07", "DC07", "ST19", "CG20"],
+      "summary": "B2B SaaS 定价的核心：定价是价值感知的信号，不是成本的倍数——在客户感知到价值之前涨价是加速流失；数据洞的 61% 续费率源于「用不好」而非「价格贵」，应先建立成功引导体系和月度价值报告，再对三层客户实施差异化定价",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/b2b-pricing-strategy.json"
     }
   ]
 }
