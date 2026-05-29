@@ -109,12 +109,29 @@ export default async function CaseDetailPage({ params }: Props) {
   // JSON-LD：让搜索引擎理解这是一篇分析文章
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
+  // 案例用到的方法 → DefinedTerm 引用，把「案例」和「方法」连进同一知识图谱
+  // 让大模型理解：这个真实案例演示了这些命名方法的实战用法
+  const aboutMethods = (c.related_methods ?? [])
+    .map((mid) => {
+      const m = methodsById[mid.toUpperCase()];
+      if (!m) return null;
+      return {
+        "@type": "DefinedTerm",
+        name: m.titleCn,
+        termCode: m.id,
+        url: `${siteUrl}/methods/${m.slug}`,
+      };
+    })
+    .filter(Boolean);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: c.title,
     description: c.summary,
     datePublished: c.added_date,
+    dateModified: c.added_date,
+    inLanguage: "zh-CN",
     author: {
       "@type": "Person",
       name: c.added_by ?? "邱懿武",
@@ -131,6 +148,27 @@ export default async function CaseDetailPage({ params }: Props) {
     },
     keywords: [...(c.tags ?? []), ...(c.domain ?? [])].join(", "),
     articleSection: c.domain?.[0],
+    ...(aboutMethods.length > 0 ? { about: aboutMethods } : {}),
+  };
+
+  // 面包屑结构化数据：帮搜索引擎/大模型理解站点层级
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "案例库",
+        item: `${siteUrl}/cases`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: c.title,
+        item: `${siteUrl}/cases/${c.id}`,
+      },
+    ],
   };
 
   return (
@@ -138,6 +176,10 @@ export default async function CaseDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
       {/* 面包屑 */}
       <nav className="mb-8">
