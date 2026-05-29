@@ -91,6 +91,19 @@ export interface RateLimitResult {
   resetAt: number;
 }
 
+/**
+ * 咨询客户专属：豁免限流。
+ * 客户已为咨询付费，InnoLab 是其交付增强工具，不应受公开配额限制。
+ * 返回一个永远 allowed 的结果，remaining 用 -1 表示「不限次」。
+ */
+export function unlimitedResult(): RateLimitResult {
+  return {
+    allowed: true,
+    remaining: { global: -1, ip: -1 },
+    resetAt: Date.now() + WINDOW_MS,
+  };
+}
+
 export function checkAndConsume(ip: string): RateLimitResult {
   globalBucket = maybeReset(globalBucket);
   const ipBucket = maybeReset(

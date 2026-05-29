@@ -240,9 +240,15 @@ interface LiveRunnerProps {
   methodsIndex?: Record<string, MethodMeta>;
   /** Lightweight cases index for related-case recommendations */
   casesIndex?: CaseSnippet[];
+  /** 咨询客户专属令牌：传入则推演不限次（豁免限流），并隐藏配额提示 */
+  clientToken?: string;
 }
 
-export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerProps) {
+export function LiveRunner({
+  methodsIndex = {},
+  casesIndex = [],
+  clientToken,
+}: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [prompt, setPrompt] = useState("");
   const [submittedPrompt, setSubmittedPrompt] = useState("");
@@ -769,6 +775,8 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
             // 续 thread 时携带前文精要 + kind
             prior_summary: priorSummary || undefined,
             follow_up_kind: kind || undefined,
+            // 咨询客户专属令牌：有效则豁免限流
+            client_token: clientToken || undefined,
           }),
           signal: ctrl.signal,
         });
@@ -1062,10 +1070,14 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
                   MiMo v2.5 Pro · 83 方法 + 76 案例
-                  {remaining.ip !== undefined && (
-                    <span className="ml-2 text-ash">
-                      今日剩 {remaining.ip} 次
-                    </span>
+                  {clientToken ? (
+                    <span className="ml-2 text-volt">专属不限次</span>
+                  ) : (
+                    remaining.ip !== undefined && (
+                      <span className="ml-2 text-ash">
+                        今日剩 {remaining.ip} 次
+                      </span>
+                    )
                   )}
                   {seenMethodIds.size > 0 && (
                     <button

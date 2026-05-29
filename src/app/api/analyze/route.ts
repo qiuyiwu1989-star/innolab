@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { analyzeStream } from "@/lib/innolab-engine";
-import { checkAndConsume, getClientIp } from "@/lib/rate-limit";
+import { checkAndConsume, getClientIp, unlimitedResult } from "@/lib/rate-limit";
+import { getClientByToken } from "@/lib/clients";
 
 /**
  * 结构化日志事件 — 不含 prompt 内容（隐私）。
@@ -45,6 +46,8 @@ interface AnalyzeBody {
   prior_summary?: string;
   /** 续 thread 类型：deeper / angle / method —— 用于事件统计 */
   follow_up_kind?: string;
+  /** 咨询客户专属令牌：有效则豁免限流（InnoLab 作为咨询交付增强工具） */
+  client_token?: string;
 }
 
 /**
@@ -80,9 +83,10 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. 限流
+  // 2. 限流 —— 咨询客户专属令牌豁免限流，其余走公开配额
   const ip = getClientIp(request);
-  const limit = checkAndConsume(ip);
+  const client = getClientByToken(body.client_token);
+  const limit = client ? unlimitedResult() : checkAndConsume(ip);
   const ipHash = hashIp(ip);
 
   // 3. 事件日志（不含 prompt 内容，含哈希 IP + 领域 + 来源 + 是否续 thread）
@@ -90,6 +94,7 @@ export async function POST(request: Request) {
     event: "analyze.request",
     domain: body.domain ?? "unknown",
     source: body.source ?? "free",
+    client: client?.token ?? null,
     follow_up_kind: body.follow_up_kind ?? null,
     has_prior: !!body.prior_summary,
     prompt_length: prompt.length,
