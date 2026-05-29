@@ -77,7 +77,7 @@ export default function DemoPage() {
               MiMo v2.5 Pro
             </span>
             <span>·</span>
-            <span>83 方法 + 48 案例编入 system prompt</span>
+            <span>83 方法 + 49 案例编入 system prompt</span>
             <span>·</span>
             <span>多轮会话 · 方法链可视化</span>
           </div>
@@ -117,7 +117,7 @@ export default function DemoPage() {
             为什么有配额？
           </h3>
           <p className="mt-3 leading-relaxed">
-            v0.1 限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，83 个方法 + 48 案例进入上下文。
+            v0.1 限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，83 个方法 + 49 案例进入上下文。
             限额是为了让更多人能试用。β 版会开放带自己 key、私有记忆库、无限次数等能力。
           </p>
           <Link

@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 48,
+  "total_cases": 49,
   "cases": [
     {
       "id": "case-001",
@@ -925,6 +925,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "enterprise/manufacturing-ai-scenario-selection.json"
+    },
+    {
+      "id": "case-049",
+      "title": "30 人律所 AI 时代困局：大所有数据、小所有特色，中等规模的我们被夹在中间怎么办？",
+      "domain": ["战略", "AI转型", "专业服务", "商业模式"],
+      "tags": ["哑铃型社会", "律所转型", "AI颠覆", "专业服务", "中等规模", "价值链重构", "蓝海", "LegalTech"],
+      "related_methods": ["ST05", "ST07", "ST06", "DC07", "ST19"],
+      "summary": "AI 最先压缩的是「中等」：中等规模的律所、中等技能的律师、中等质量的法律文件——哑铃型社会迫使所有中间层做出选择：要么升级至顶端不可替代，要么下沉至精准小众，在中间等待是最危险的",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/law-firm-ai-disruption.json"
     }
   ]
 }

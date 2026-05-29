@@ -113,6 +113,7 @@ const EXAMPLE_PROMPTS = [
   "公司 5 条产品线研发预算平摊，有两条在亏钱——BCG 矩阵怎么帮我决定砍哪条、保哪条？",
   "刚完成 B 轮融资，投资人要 3 年战略路线图——从 ARR 4000 万到 2.5 亿怎么规划增长路径？",
   "制造企业收到 8 个 AI 上线需求但预算只有 600 万——怎么用场景价值矩阵选出最值得做的 2 个？",
+  "我们是 30 人律所，AI 抢了简单合同业务，大所又进不去——中间层律所的出路在哪里？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1033,7 +1034,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 48 案例
+                  MiMo v2.5 Pro · 83 方法 + 49 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1329,7 +1330,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 48 案例</span>
+                    <span className="text-dust">· 83 方法 + 49 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
