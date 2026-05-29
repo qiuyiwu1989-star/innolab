@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 36,
+  "total_cases": 38,
   "cases": [
     {
       "id": "case-001",
@@ -793,6 +793,28 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "education/vocational-edtech-completion.json"
+    },
+    {
+      "id": "case-037",
+      "title": "HR SaaS 招聘模块获客停滞：销售漏斗转化率 2%，是定价问题还是价值传递问题？",
+      "domain": ["企业服务", "SaaS", "产品", "销售"],
+      "tags": ["HR Tech", "SaaS", "B2B销售", "获客", "转化率", "定价策略", "价值主张"],
+      "related_methods": ["ST06", "DC07", "PD01", "CG07", "EV01"],
+      "summary": "HR SaaS 团队把销售漏斗转化率低归因于「价格太高」，但真正问题是：买家决策路径里从来没有出现过真正的「痛点时刻」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "enterprise/hrtech-talent-acquisition.json"
+    },
+    {
+      "id": "case-038",
+      "title": "竞品抄袭核心功能后用户流失 18%：打价格战还是加速差异化？",
+      "domain": ["战略", "产品", "竞争"],
+      "tags": ["竞争策略", "差异化", "功能抄袭", "用户流失", "定价策略", "护城河", "产品战略"],
+      "related_methods": ["ST07", "ST01", "ST06", "CG20", "PD06"],
+      "summary": "当竞品抄完你的核心功能后，最危险的反应是打价格战。正确答案：用流失事件倒逼你找到你真正有护城河的东西，然后彻底聚焦",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/competitor-copies-core-feature.json"
     }
   ]
 }

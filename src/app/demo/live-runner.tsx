@@ -101,6 +101,8 @@ const EXAMPLE_PROMPTS = [
   "连锁餐饮上了 12 个 SaaS 系统，翻台率和人效还是没变——系统买错了还是用错了？",
   "3 人初创团队有 4 个产品想法，18 个月跑道——怎么决定先做哪个？",
   "职业培训平台完课率 12%，课程评价 4.3 分——是课程问题还是动机问题？",
+  "HR SaaS 销售漏斗转化率 2%，客户总说贵——是定价问题还是价值传递问题？",
+  "竞品抄了我们的核心功能，用户流失 18%——打价格战还是加速差异化？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -183,8 +185,8 @@ const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
   product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04"],
   "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10", "EV04"],
   org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10", "ST19"],
-  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01"],
-  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06", "ST19", "EV04"],
+  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01", "ST20"],
+  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06", "ST19", "EV04", "ST20", "CG20"],
 };
 
 interface CaseSnippet {
@@ -1021,7 +1023,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 78 方法 + 36 案例
+                  MiMo v2.5 Pro · 79 方法 + 38 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1034,7 +1036,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                       className="ml-2 text-volt/70 hover:text-volt transition underline-offset-2 hover:underline"
                       title="查看方法探索地图"
                     >
-                      · 已探索 {seenMethodIds.size} / 78 个方法
+                      · 已探索 {seenMethodIds.size} / 79 个方法
                     </button>
                   )}
                 </span>
@@ -1317,7 +1319,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 78 方法 + 36 案例</span>
+                    <span className="text-dust">· 79 方法 + 38 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
@@ -1795,7 +1797,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   方法探索地图 — 显示 78 个方法 ID，已探索的亮 volt 色
+   方法探索地图 — 显示 79 个方法 ID，已探索的亮 volt 色
    ────────────────────────────────────────────────────────────────────────── */
 
 const ENGINE_META: { prefix: string; label: string; color: string }[] = [

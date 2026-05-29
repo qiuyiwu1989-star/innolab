@@ -11,7 +11,7 @@ import type { MethodMeta } from "@/components/demo/method-chain-viz";
 export const metadata: Metadata = {
   title: "Demo · 试用 InnoLab 引擎",
   description:
-    "把真实商业问题输入 InnoLab — 78 个方法框架编排出战略推演。v0.1 限免使用。",
+    "把真实商业问题输入 InnoLab — 79 个方法框架编排出战略推演。v0.1 限免使用。",
 };
 
 export default function DemoPage() {
@@ -68,7 +68,7 @@ export default function DemoPage() {
             怎么推演。
           </h1>
           <p className="mt-6 max-w-xl text-base text-ash sm:text-lg">
-            输入一个真实商业问题，InnoLab 用 <b className="font-semibold text-bone">78 个方法</b>
+            输入一个真实商业问题，InnoLab 用 <b className="font-semibold text-bone">79 个方法</b>
             编排出问题重构 → 方法链 → 关键判断 → 推演结论。
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-dust">
@@ -77,7 +77,7 @@ export default function DemoPage() {
               MiMo v2.5 Pro
             </span>
             <span>·</span>
-            <span>78 方法 + 36 案例编入 system prompt</span>
+            <span>79 方法 + 38 案例编入 system prompt</span>
             <span>·</span>
             <span>多轮会话 · 方法链可视化</span>
           </div>
@@ -117,7 +117,7 @@ export default function DemoPage() {
             为什么有配额？
           </h3>
           <p className="mt-3 leading-relaxed">
-            v0.1 限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，78 个方法 + 36 案例进入上下文。
+            v0.1 限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，79 个方法 + 38 案例进入上下文。
             限额是为了让更多人能试用。β 版会开放带自己 key、私有记忆库、无限次数等能力。
           </p>
           <Link

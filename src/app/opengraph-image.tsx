@@ -104,7 +104,7 @@ export default async function OG() {
               maxWidth: 800,
             }}
           >
-            用 78 个方法论分析你的真实商业问题
+            用 79 个方法论分析你的真实商业问题
           </div>
         </div>
 
