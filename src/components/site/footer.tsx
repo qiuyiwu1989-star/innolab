@@ -23,7 +23,7 @@ export function SiteFooter() {
               <span className="ml-2 text-xs text-dust">© 2026</span>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-ash">
-              用 79 个方法论分析你的真实商业问题。
+              用 81 个方法论分析你的真实商业问题。
               <br />
               邱懿武 ·{" "}
               <a

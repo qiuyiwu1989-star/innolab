@@ -5,7 +5,7 @@ import { MethodsExplorer } from "./methods-explorer";
 export const metadata: Metadata = {
   title: "方法库",
   description:
-    "InnoLab 收录的 79 个战略 · 产品 · 认知方法论。按引擎和认知层级浏览、筛选、搜索。",
+    "InnoLab 收录的 81 个战略 · 产品 · 认知方法论。按引擎和认知层级浏览、筛选、搜索。",
 };
 
 export default function MethodsPage() {
