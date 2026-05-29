@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 74,
+  "total_cases": 76,
   "cases": [
     {
       "id": "case-001",
@@ -1211,6 +1211,28 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "product/nev-accessory-value-opportunity.json"
+    },
+    {
+      "id": "case-075",
+      "title": "两个 VP 死磕、董事会要答案：CEO 如何在 3 周内把分裂的领导层拧成一股绳并写出让董事会买单的方案",
+      "domain": ["组织", "领导力", "战略", "沟通"],
+      "tags": ["领导力", "组织决策", "马斯洛需求", "非暴力沟通", "六顶思考帽", "金字塔原理", "董事会汇报", "冲突管理"],
+      "related_methods": ["CG10", "DC09", "CG09", "CG12", "CG13"],
+      "summary": "智云 SaaS 增长放缓，销售 VP（下沉规模化）和产品 VP（聚焦大客户 PLG）公开撕裂——马斯洛诊断冲突根因是安全/尊重 vs 归属/自我实现的需求之争；非暴力沟通化解对抗；六顶思考帽催生「第三条路」；金字塔原理+推导式写作构建董事会方案。组织决策成功=正确判断×对齐的人×清晰沟通",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "org/leadership-restructure-communication.json"
+    },
+    {
+      "id": "case-076",
+      "title": "创新培训师在 AI 时代被「免费课程」围剿：杰文斯悖论 + 具身生产法重构一门卖不动的课",
+      "domain": ["IP内容", "教育", "创新方法", "商业模式"],
+      "tags": ["杰文斯悖论", "具身生产法", "创新五大构成", "技能方法卡", "商业折纸", "知识付费", "培训师", "AI时代转型"],
+      "related_methods": ["CG19", "CG05", "GN03", "CG14", "PD13"],
+      "summary": "创新培训师陈默的课被 AI 和免费内容平替、年收入腰斩——杰文斯悖论揭示知识越免费、转化能力越稀缺；创新五大构成解构出实践转化/现场协作/心智激发是 AI 无法触及的层；具身生产法设计不可替代体验；技能方法卡把隐性经验产品化；商业折纸重构「卖结果+卖体系」的新模式",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "ip-content/innovation-training-productization.json"
     }
   ]
 }

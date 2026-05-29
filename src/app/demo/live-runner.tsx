@@ -139,6 +139,8 @@ const EXAMPLE_PROMPTS = [
   "Z 世代员工不爱视频培训课，6 周内如何用认知组装 + 故事板做出可测试原型？",
   "制造企业面对 AI 颠覆焦虑：未来雷达 + What If 如何把模糊威胁变成具体行动优先级？",
   "新能源车配件 45 个 SKU 全在 10-30 名，如何用价值机会分析找到情感维度的蓝海？",
+  "两个 VP 战略撕裂、董事会三周后要答案——CEO 怎么同时搞定选战略、对齐人、说服董事会？",
+  "我做了 8 年创新培训，现在 AI 和免费课把我的课冲垮了——杰文斯悖论说我该卖什么？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1059,7 +1061,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 74 案例
+                  MiMo v2.5 Pro · 83 方法 + 76 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1355,7 +1357,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 74 案例</span>
+                    <span className="text-dust">· 83 方法 + 76 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
