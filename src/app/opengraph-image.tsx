@@ -82,8 +82,8 @@ export default async function OG() {
               display: "flex",
             }}
           >
-            <span>AI&nbsp;</span>
-            <span style={{ color: "#b3ff39" }}>创新</span>
+            <span>把&nbsp;</span>
+            <span style={{ color: "#b3ff39" }}>战略难题</span>
           </div>
           <div
             style={{
@@ -94,7 +94,7 @@ export default async function OG() {
               color: "#fafafa",
             }}
           >
-            战略咨询师
+            想透。
           </div>
           <div
             style={{
@@ -104,7 +104,7 @@ export default async function OG() {
               maxWidth: 800,
             }}
           >
-            用 83 个方法论分析你的真实商业问题
+            邱懿武的方法论 × AI 推演引擎
           </div>
         </div>
 

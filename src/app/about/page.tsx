@@ -55,7 +55,7 @@ export default function AboutPage() {
           InnoLab 由
           <strong className="font-semibold text-bone">邱懿武</strong>
           创建。这个网站是他十年战略 / 产品 / 认知方法论实践的在线版本，
-          也是一个进化中的 AI 战略咨询师。
+          也是他 1:1 战略咨询的方法论引擎与交付工具。
         </p>
         <p className="mt-3 text-sm text-dust">
           邱懿武的其他工作：
