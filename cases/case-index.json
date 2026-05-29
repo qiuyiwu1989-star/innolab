@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 49,
+  "total_cases": 53,
   "cases": [
     {
       "id": "case-001",
@@ -936,6 +936,50 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/law-firm-ai-disruption.json"
+    },
+    {
+      "id": "case-050",
+      "title": "传统家具品牌遭遇 Z 世代冷落：卖了 20 年的爆款，为什么 00 后不买单了？",
+      "domain": ["消费品", "产品创新", "品牌转型", "设计"],
+      "tags": ["设计思维", "Z世代", "家具", "用户研究", "原型测试", "消费品牌", "头脑风暴", "创新方法"],
+      "related_methods": ["GN05", "GN08", "PD04", "GN10", "GN11"],
+      "summary": "设计思维的本质不是「做设计」，而是「让决策以用户为中心」——鸿木居把年轻化等同于颜值改版，但用户研究揭示：25-35 岁购家具的真正焦虑是「我不知道这个选择会不会被后悔」，需要的是「安心」而非「好看」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/furniture-brand-design-thinking.json"
+    },
+    {
+      "id": "case-051",
+      "title": "湖南米粉品牌冲击全国：本地第一，出了省没人认识你——品牌资产该怎么盘？",
+      "domain": ["消费品", "品牌战略", "FMCG", "区域扩张"],
+      "tags": ["品牌资产", "品牌共鸣", "Aaker模型", "区域品牌", "全国化", "米粉", "FMCG", "品牌延伸"],
+      "related_methods": ["PD08", "PD09", "ST07", "CG20", "ST06"],
+      "summary": "品牌资产分析的价值在于把「我们有什么」和「消费者感知到什么」分开——「长沙伢子」的可迁移资产在运营层（工厂、供应链、SOP），而非品牌符号层；全国化应采用母子品牌策略，新建「鲜粉工坊」品牌打全国市场",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/regional-food-brand-equity.json"
+    },
+    {
+      "id": "case-052",
+      "title": "HR SaaS 15 个功能都想 AI 化，但预算只有 300 万——用智能密度评估决定先做哪个",
+      "domain": ["AI转型", "SaaS", "企业软件", "战略"],
+      "tags": ["智能密度", "AI优先级", "HR SaaS", "AI落地", "场景选择", "邱懿武原创", "预算分配", "AI产品"],
+      "related_methods": ["ST16", "DC01", "EV01", "ST19", "DC06"],
+      "summary": "智能密度不是 AI 功能的「重要性」排序，而是「AI 真正能发挥作用」的可能性评估——假勤异常检测智能密度最高（数据结构化、规则明确、高频高人力消耗），而用户最想要的「简历筛选 AI」反而因主观性强排名第五",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "enterprise/saas-intelligence-density.json"
+    },
+    {
+      "id": "case-053",
+      "title": "在线教育平台陷入「功能内卷」：每季度发布 30 个新功能，用户留存却在下滑",
+      "domain": ["产品战略", "EdTech", "在线教育", "创新"],
+      "tags": ["创新十环", "十种创新类型", "功能堆叠", "产品战略", "EdTech", "留存", "创新盲区", "差异化"],
+      "related_methods": ["PD11", "ST07", "ST06", "EV01", "CG20"],
+      "summary": "创新十环揭示了最普遍的企业创新陷阱：把 90% 的创新资源押注在「产品性能」上，而忽视了另外九个同样可以创造差异化的维度——学海平台的创新盲区在服务、品牌、客户参与三个维度，而非产品功能",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/edtech-ten-types-innovation.json"
     }
   ]
 }
