@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { engines } from "@/lib/engines";
 import { getAllMethods } from "@/lib/methods";
 import { getAllCases } from "@/lib/cases";
@@ -58,7 +59,7 @@ export default function MethodologyPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-12 md:py-16">
+    <article className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -66,88 +67,93 @@ export default function MethodologyPage() {
 
       {/* Hero */}
       <header>
-        <div className="text-xs uppercase tracking-widest text-dust">
+        <div className="numeral text-xs uppercase tracking-widest text-volt">
           Methodology · 方法论体系
         </div>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-bone md:text-4xl">
+        <h1 className="display mt-4 text-4xl text-bone sm:text-5xl">
           不是更聪明的 AI，
-          <br className="hidden md:block" />
+          <br className="hidden sm:block" />
           是更可靠的思考方式
         </h1>
-        <p className="mt-5 text-lg leading-relaxed text-pewter">
+        <p className="mt-6 text-lg leading-relaxed text-ash">
           通用 AI 能给你一段看起来合理的战略建议——但你无法判断它是怎么想出来的、漏了什么。
-          InnoLab 不一样：它用 {methods.length} 个经过结构化的方法，
-          按明确的逻辑链对你的处境逐步推演，每一步都看得见、可追问、可反驳。
+          InnoLab 不一样：它用 {methods.length}{" "}
+          个经过结构化的方法，按明确的逻辑链对你的处境逐步推演，每一步都看得见、可追问、可反驳。
         </p>
-        <div className="mt-6 flex flex-wrap gap-3 text-sm">
-          <span className="rounded-full border border-fog-2 bg-snow px-3 py-1 text-pewter">
-            {methods.length} 个方法
-          </span>
-          <span className="rounded-full border border-fog-2 bg-snow px-3 py-1 text-pewter">
-            {cases.length} 个实战案例
-          </span>
-          <span className="rounded-full border border-fog-2 bg-snow px-3 py-1 text-pewter">
-            {engines.length} 大引擎
-          </span>
+        <div className="mt-6 flex flex-wrap gap-2 text-sm">
+          {[
+            `${methods.length} 个方法`,
+            `${cases.length} 个实战案例`,
+            `${engines.length} 大引擎`,
+          ].map((t) => (
+            <span
+              key={t}
+              className="numeral rounded-full border border-fog-2 px-3 py-1 text-ash"
+            >
+              {t}
+            </span>
+          ))}
         </div>
       </header>
 
       {/* 六大引擎 */}
-      <section className="mt-14">
-        <h2 className="text-xl font-semibold text-bone">{engines.length} 大引擎</h2>
-        <p className="mt-2 text-pewter">
-          方法不是散落的工具箱，而是按「思考的不同阶段」组织成 {engines.length} 个引擎。
-          一次完整的战略推演，往往会跨引擎调用——先认知、再战略、后评估。
+      <section className="mt-16">
+        <h2 className="display text-2xl text-bone sm:text-3xl">
+          {engines.length} 大引擎
+        </h2>
+        <p className="mt-3 text-ash">
+          方法不是散落的工具箱，而是按「思考的不同阶段」组织成 {engines.length}{" "}
+          个引擎。一次完整的战略推演，往往跨引擎调用——先认知、再战略、后进化。
         </p>
-        <div className="mt-6 space-y-4">
-          {engines.map((e) => {
-            const count = methods.filter((m) => m.engine === e.key).length;
-            return (
-              <Link
-                key={e.key}
-                href={`/methods/engine/${e.key}`}
-                className="block rounded-2xl border border-fog-2 bg-snow/60 p-5 transition hover:border-volt/40 hover:bg-snow"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="inline-flex size-8 items-center justify-center rounded-lg text-xs font-semibold text-white"
-                      style={{ backgroundColor: e.color }}
-                    >
-                      {e.code}
-                    </span>
-                    <span className="text-base font-semibold text-bone">
-                      {e.name}
+        <div className="mt-6 space-y-3">
+          {[...engines]
+            .sort((a, b) => a.order - b.order)
+            .map((e) => {
+              const count = methods.filter((m) => m.engine === e.key).length;
+              return (
+                <Link
+                  key={e.key}
+                  href={`/methods/engine/${e.key}`}
+                  className="group block rounded-lg border border-fog-2 bg-soot p-5 transition hover:border-volt hover:bg-graphite"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="numeral inline-flex size-8 items-center justify-center rounded-md border border-fog-2 text-xs text-volt">
+                        {e.code}
+                      </span>
+                      <span className="text-base font-semibold text-bone">
+                        {e.cn}引擎
+                      </span>
+                      <span className="text-xs text-dust">{e.oneliner}</span>
+                    </div>
+                    <span className="numeral text-xs text-dust">
+                      {count} 个方法 →
                     </span>
                   </div>
-                  <span className="text-xs text-dust">{count} 个方法 →</span>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-pewter">
-                  {e.description ?? e.summary}
-                </p>
-              </Link>
-            );
-          })}
+                  <p className="mt-3 text-sm leading-relaxed text-ash">
+                    {e.description}
+                  </p>
+                </Link>
+              );
+            })}
         </div>
       </section>
 
       {/* 推演五步法 */}
-      <section className="mt-14">
-        <h2 className="text-xl font-semibold text-bone">推演五步法</h2>
-        <p className="mt-2 text-pewter">
+      <section className="mt-16">
+        <h2 className="display text-2xl text-bone sm:text-3xl">推演五步法</h2>
+        <p className="mt-3 text-ash">
           每一次推演——无论你问的是 AI 转型、品牌定位还是组织冲突——都会走完这五步。
         </p>
         <ol className="mt-6 space-y-5">
           {STEPS.map((s) => (
             <li key={s.n} className="flex gap-4">
-              <span className="numeral shrink-0 text-2xl font-semibold text-volt/70">
+              <span className="numeral shrink-0 text-2xl font-semibold text-volt">
                 {s.n}
               </span>
               <div>
                 <div className="font-semibold text-bone">{s.title}</div>
-                <p className="mt-1 text-sm leading-relaxed text-pewter">
-                  {s.desc}
-                </p>
+                <p className="mt-1 text-sm leading-relaxed text-ash">{s.desc}</p>
               </div>
             </li>
           ))}
@@ -155,11 +161,11 @@ export default function MethodologyPage() {
       </section>
 
       {/* 为什么比通用 AI 可靠 */}
-      <section className="mt-14 rounded-2xl border border-fog-2 bg-mist/30 p-6">
-        <h2 className="text-xl font-semibold text-bone">
+      <section className="mt-16 rounded-lg border border-fog-2 bg-soot p-6 sm:p-8">
+        <h2 className="display text-2xl text-bone sm:text-3xl">
           为什么不直接问 ChatGPT？
         </h2>
-        <div className="mt-4 space-y-3 text-sm leading-relaxed text-pewter">
+        <div className="mt-5 space-y-4 text-sm leading-relaxed text-ash">
           <p>
             <span className="font-medium text-bone">过程可见。</span>{" "}
             通用 AI 给你一个结论，你不知道它怎么来的。InnoLab
@@ -178,28 +184,28 @@ export default function MethodologyPage() {
       </section>
 
       {/* CTA */}
-      <section className="mt-14 rounded-2xl border border-fog-2 bg-gradient-to-br from-snow to-mist/40 p-8 text-center">
-        <h2 className="text-xl font-semibold text-bone">
+      <section className="mt-16 rounded-lg border border-fog-2 bg-soot p-8 text-center">
+        <h2 className="display text-2xl text-bone sm:text-3xl">
           用这套方法论分析你的问题
         </h2>
-        <p className="mx-auto mt-2 max-w-md text-sm text-pewter">
+        <p className="mx-auto mt-3 max-w-md text-sm text-ash">
           描述你正面临的战略难题，InnoLab 会当场跑一次结构化推演给你看。
         </p>
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-snow transition hover:bg-ink/90"
+            className="inline-flex items-center gap-2 rounded-full border border-volt px-5 py-2.5 text-sm font-medium text-volt transition hover:bg-volt/10"
           >
-            免费推演一次 <span aria-hidden>→</span>
+            免费推演一次 <ArrowRight className="size-4" />
           </Link>
           <Link
             href="/methods"
-            className="inline-flex items-center gap-2 rounded-full border border-fog-2 px-5 py-2.5 text-sm font-medium text-pewter transition hover:border-volt/40 hover:text-bone"
+            className="inline-flex items-center gap-2 rounded-full border border-fog-2 px-5 py-2.5 text-sm font-medium text-ash transition hover:border-bone hover:text-bone"
           >
-            浏览全部 {methods.length} 个方法
+            浏览全部 {methods.length} 个方法 <ArrowUpRight className="size-4" />
           </Link>
         </div>
       </section>
-    </div>
+    </article>
   );
 }

@@ -72,8 +72,30 @@ export default async function MethodDetailPage({ params }: Props) {
   const body = cleanMarkdownBody(method.raw);
   const usedInCases = getCasesByMethodId(method.id);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    name: method.titleCn,
+    description: method.oneliner || method.titleCn,
+    termCode: method.id,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      name: "InnoLab 方法库",
+      url: `${siteUrl}/methods`,
+    },
+    url: `${siteUrl}/methods/${method.slug}`,
+    inLanguage: "zh-CN",
+  };
+  // 带方法上下文跳转 demo：预填一句开头，降低「面对空白框」的摩擦
+  const demoSeed = `/demo?q=${encodeURIComponent(`我想用「${method.titleCn}」分析我的业务：`)}`;
+
   return (
     <article className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 面包屑 */}
       <nav className="mb-8 flex items-center gap-2 text-sm text-dust">
         <Link
@@ -206,6 +228,22 @@ export default async function MethodDetailPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* CTA：用此方法推演 */}
+      <section className="mt-16 rounded-lg border border-fog-2 bg-soot p-6 text-center sm:p-8">
+        <h2 className="display text-2xl text-bone sm:text-3xl">
+          用「{method.titleCn}」推演你的问题
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-sm text-ash">
+          描述你正面临的难题，InnoLab 会用这套方法当场跑一次结构化推演。
+        </p>
+        <Link
+          href={demoSeed}
+          className="mt-5 inline-flex items-center gap-2 rounded-full border border-volt px-5 py-2.5 text-sm font-medium text-volt transition hover:bg-volt/10"
+        >
+          免费推演一次 <ArrowRight className="size-4" />
+        </Link>
+      </section>
 
       {/* Prev / Next */}
       <nav className="mt-16 grid grid-cols-1 gap-3 border-t border-fog-2 pt-8 sm:grid-cols-2">

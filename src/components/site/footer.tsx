@@ -45,6 +45,9 @@ export function SiteFooter() {
             <Link href="/cases" className="hover:text-bone">
               案例
             </Link>
+            <Link href="/methodology" className="hover:text-bone">
+              方法论
+            </Link>
             <Link href="/demo" className="hover:text-bone">
               Demo
             </Link>

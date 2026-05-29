@@ -16,9 +16,9 @@ export function GET() {
       const ms = methods.filter((m) => m.engine === e.key);
       const sample = ms
         .slice(0, 6)
-        .map((m) => m.name)
+        .map((m) => m.titleCn)
         .join("、");
-      return `- **${e.name}（${e.code}）** — ${e.summary}\n  共 ${ms.length} 个方法，如：${sample}${ms.length > 6 ? "…" : ""}`;
+      return `- **${e.cn}引擎（${e.code}）** — ${e.role}\n  共 ${ms.length} 个方法，如：${sample}${ms.length > 6 ? "…" : ""}`;
     })
     .join("\n");
 
