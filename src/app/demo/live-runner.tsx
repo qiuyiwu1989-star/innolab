@@ -1802,7 +1802,7 @@ export function LiveRunner({
                     <p className="mt-3 text-sm text-ash">
                       {fromReplay
                         ? "没有重新调用 AI，没扣配额。"
-                        : `今天还剩 ${remaining.ip ?? "?"} 次。订阅 / 团队版上线时会有私有记忆库、自定义引擎、批量分析等能力。`}
+                        : `今天还剩 ${remaining.ip ?? "?"} 次。当问题足够重要、值得一个人陪你想透，邱懿武提供 1:1 战略咨询。`}
                     </p>
                   </div>
                   {!fromReplay && (
