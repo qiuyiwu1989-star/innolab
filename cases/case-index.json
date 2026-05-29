@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 45,
+  "total_cases": 46,
   "cases": [
     {
       "id": "case-001",
@@ -892,6 +892,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/hr-saas-scenario-planning.json"
+    },
+    {
+      "id": "case-046",
+      "title": "企业 5 条产品线，哪条养活公司、哪条拖垮公司？——产品组合 BCG 重分配",
+      "domain": ["战略", "产品", "商业模式", "决策"],
+      "tags": ["BCG矩阵", "产品组合", "资源分配", "现金牛", "明星产品", "问题儿童", "瘦狗", "B2B"],
+      "related_methods": ["DC03", "ST19", "DC07", "CG20", "EV01"],
+      "summary": "BCG 矩阵的价值不在于把产品分类贴标签，而在于「用现金牛的现金流去喂有潜力的明星或问题儿童，同时有纪律地停止喂瘦狗」——问题是大多数公司都在无差别地喂所有产品线",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/product-portfolio-bcg.json"
     }
   ]
 }
