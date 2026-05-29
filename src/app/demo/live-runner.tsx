@@ -630,7 +630,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
   /** 复制分析结果到剪贴板 */
   const copyResult = useCallback(async () => {
     try {
-      const text = `【问题】${submittedPrompt}\n\n${output}\n\n—— InnoLab 战略推演 · https://innolab.qiuyiwu.com/demo`;
+      const text = `【问题】${submittedPrompt}\n\n${output}\n\n—— InnoLab 战略推演 · https://innolab.cc/demo`;
       await navigator.clipboard.writeText(text);
       setCopied("result");
       setTimeout(() => setCopied(null), 2200);
