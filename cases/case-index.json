@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 65,
+  "total_cases": 66,
   "cases": [
     {
       "id": "case-001",
@@ -1112,6 +1112,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "product/b2b-pricing-strategy.json"
+    },
+    {
+      "id": "case-066",
+      "title": "房产中介平台的 AI 威胁：贝壳在用 AI 替代经纪人，我们 200 人的区域平台该怎么活？",
+      "domain": ["战略", "AI转型", "房产", "商业模式"],
+      "tags": ["AI颠覆", "哑铃型社会", "房产中介", "平台战略", "差异化", "本地服务", "B2B2C", "反效率护城河"],
+      "related_methods": ["ST05", "ST06", "DC01", "CG20", "EV01"],
+      "summary": "当大平台用 AI 做到「标准化交易效率极致化」，区域中小平台的出路是做大平台做不了的事——稳家的护城河是 10 年本地隐性知识（学区、邻里、物业），聚焦 800 万以上置换客群，从传统佣金转向本地置换顾问模式",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/proptech-agent-platform.json"
     }
   ]
 }

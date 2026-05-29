@@ -130,6 +130,7 @@ const EXAMPLE_PROMPTS = [
   "企业花 500 万全员创新培训学完照常上班——创造力十段评估 + 方法卡设计哪里出了问题？",
   "精品咖啡 5 家店净利 28%，资本要开 100 家——规模化会杀死品牌还是成就品牌？",
   "B2B SaaS 产品比竞品强但价格是最低的，续费率却只有 61%——涨价到底该怎么涨？",
+  "贝壳 AI 置业顾问来了，我们 200 人区域房产平台客询跌 18%——和大平台拼 AI 还是做他们做不了的事？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1050,7 +1051,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 65 案例
+                  MiMo v2.5 Pro · 83 方法 + 66 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1346,7 +1347,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 65 案例</span>
+                    <span className="text-dust">· 83 方法 + 66 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
