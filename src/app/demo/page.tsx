@@ -77,7 +77,7 @@ export default function DemoPage() {
               MiMo v2.5 Pro
             </span>
             <span>·</span>
-            <span>83 方法 + 66 案例编入 system prompt</span>
+            <span>83 方法 + 70 案例编入 system prompt</span>
             <span>·</span>
             <span>多轮会话 · 方法链可视化</span>
           </div>

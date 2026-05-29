@@ -131,6 +131,10 @@ const EXAMPLE_PROMPTS = [
   "精品咖啡 5 家店净利 28%，资本要开 100 家——规模化会杀死品牌还是成就品牌？",
   "B2B SaaS 产品比竞品强但价格是最低的，续费率却只有 61%——涨价到底该怎么涨？",
   "贝壳 AI 置业顾问来了，我们 200 人区域房产平台客询跌 18%——和大平台拼 AI 还是做他们做不了的事？",
+  "社区团购 GMV 2 亿，竞品补贴一来团长用户供应商全跑了——北极星选错了飞轮怎么转？",
+  "家电品牌 4 条产品线，大股东要押空调、创始人要押小家电——BCG 矩阵怎么打破战略幻觉？",
+  "碳资产平台 A 轮路演 12 次没点燃投资人——三方共进化叙事如何让「必然会发生的趋势」说服人？",
+  "理财 App 300 万用户付费率 0.8%，用户说「省了很多焦虑」——JTBD 告诉你他们真正在买什么",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1051,7 +1055,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 66 案例
+                  MiMo v2.5 Pro · 83 方法 + 70 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1347,7 +1351,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 66 案例</span>
+                    <span className="text-dust">· 83 方法 + 70 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
