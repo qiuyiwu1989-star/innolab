@@ -189,8 +189,8 @@ const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
   product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04", "EV05"],
   "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10", "EV04"],
   org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10", "ST19"],
-  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01", "ST20", "DC09"],
-  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06", "ST19", "EV04", "ST20", "CG20", "EV05", "DC09"],
+  strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01", "ST20", "DC10"],
+  all:            ["ST07", "CG06", "PD07", "GN02", "ST17", "ST09", "EV01", "PD05", "CG16", "ST06", "ST19", "EV04", "ST20", "CG20", "EV05", "DC10"],
 };
 
 interface CaseSnippet {
