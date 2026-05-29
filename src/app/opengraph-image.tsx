@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "InnoLab — AI 创新战略咨询师";
+export const alt = "InnoLab — 把战略难题，想透 | 邱懿武";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -120,7 +120,7 @@ export default async function OG() {
         >
           <div style={{ display: "flex", gap: 40 }}>
             <span>
-              <b style={{ color: "#fafafa" }}>75</b> 方法
+              <b style={{ color: "#fafafa" }}>83</b> 方法
             </span>
             <span>
               <b style={{ color: "#fafafa" }}>6</b> 引擎

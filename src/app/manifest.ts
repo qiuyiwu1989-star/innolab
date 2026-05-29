@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "InnoLab — AI 创新战略咨询师",
+    name: "InnoLab — 把战略难题，想透",
     short_name: "InnoLab",
     description:
-      "用 83 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。",
+      "邱懿武的方法论 × AI 推演引擎。83 方法 + 76 案例，把模糊的商业难题切准、推演、给出下一步。",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0a",

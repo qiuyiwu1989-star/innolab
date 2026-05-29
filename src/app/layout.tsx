@@ -36,11 +36,11 @@ const SITE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "InnoLab — AI 创新战略咨询师",
+    default: "InnoLab — 把战略难题，想透 | 邱懿武",
     template: "%s — InnoLab",
   },
   description:
-    "用 83 个方法论分析你的真实商业问题。从认知到产品化，一次完整的战略推演。/demo 限免使用。",
+    "邱懿武的方法论 × AI 推演引擎。83 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。先免费体验，需要时找他本人做 1:1 战略咨询。",
   keywords: [
     "AI 战略咨询",
     "创新方法论",
@@ -66,8 +66,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "InnoLab — AI 创新战略咨询师",
-    description: "83 个方法论分析你的真实商业问题。/demo 限免使用。",
+    title: "InnoLab — 把战略难题，想透 | 邱懿武",
+    description: "邱懿武的方法论 × AI 推演引擎。83 方法 + 76 案例，先免费体验，需要时找他本人。",
   },
   robots: {
     index: true,
