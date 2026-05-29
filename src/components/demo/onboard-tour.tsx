@@ -21,7 +21,7 @@ const STEPS = [
         </p>
         <p>
           InnoLab：你的问题进入
-          <span className="text-bone font-medium"> 81 个方法框架</span>的弹药库。
+          <span className="text-bone font-medium"> 83 个方法框架</span>的弹药库。
           引擎选出最匹配的方法链，系统性推演出
           <span className="text-bone font-medium"> 问题重构 → 方法链 → 关键判断 → 推演结论</span>。
         </p>

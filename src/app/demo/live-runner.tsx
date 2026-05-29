@@ -1025,7 +1025,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 81 方法 + 40 案例
+                  MiMo v2.5 Pro · 83 方法 + 40 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1038,7 +1038,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                       className="ml-2 text-volt/70 hover:text-volt transition underline-offset-2 hover:underline"
                       title="查看方法探索地图"
                     >
-                      · 已探索 {seenMethodIds.size} / 81 个方法
+                      · 已探索 {seenMethodIds.size} / 83 个方法
                     </button>
                   )}
                 </span>
@@ -1321,7 +1321,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 81 方法 + 40 案例</span>
+                    <span className="text-dust">· 83 方法 + 40 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
@@ -1799,7 +1799,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   方法探索地图 — 显示 81 个方法 ID，已探索的亮 volt 色
+   方法探索地图 — 显示 83 个方法 ID，已探索的亮 volt 色
    ────────────────────────────────────────────────────────────────────────── */
 
 const ENGINE_META: { prefix: string; label: string; color: string }[] = [

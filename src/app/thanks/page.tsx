@@ -58,7 +58,7 @@ export default function ThanksPage() {
             href="/methods"
             className="rounded-md border border-fog-3 px-4 py-2 text-bone hover:border-volt"
           >
-            浏览 81 个方法
+            浏览 83 个方法
           </Link>
           <Link
             href="/"
