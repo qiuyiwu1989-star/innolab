@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 40,
+  "total_cases": 42,
   "cases": [
     {
       "id": "case-001",
@@ -837,6 +837,28 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/post-funding-growth-trap.json"
+    },
+    {
+      "id": "case-041",
+      "title": "B2B 软件产品加了 80 个功能没人用：用 JTBD 重新发现真正的「工作」",
+      "domain": ["产品", "SaaS", "B2B", "战略"],
+      "tags": ["JTBD", "产品定位", "功能蔓延", "用户访谈", "产品重构", "B2B产品", "SaaS"],
+      "related_methods": ["PD15", "PD01", "CG20", "PD07", "ST06"],
+      "summary": "产品加了 80 个功能 NPS 没有变化——不是功能不够好，是没有一个功能真正解决了用户花时间最多的那件「工作」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/b2b-jtbd-pivot.json"
+    },
+    {
+      "id": "case-042",
+      "title": "B2B SaaS 从销售驱动转型产品主导增长：400 人销售团队 vs 增长飞轮，该怎么选？",
+      "domain": ["产品", "SaaS", "增长", "战略"],
+      "tags": ["PLG", "产品主导增长", "销售驱动", "增长飞轮", "SaaS转型", "自助注册", "病毒系数"],
+      "related_methods": ["EV06", "EV01", "EV05", "PD07", "ST19"],
+      "summary": "销售驱动和产品主导增长不是「二选一」，而是「并行期 → 飞轮转速足够后让产品接棒销售」——很多 SaaS 在飞轮还没转起来时就裁撤销售，把自己逼入死角",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "enterprise/saas-plg-transformation.json"
     }
   ]
 }
