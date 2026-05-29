@@ -75,37 +75,47 @@ export default function Home() {
             className="display text-bone"
             style={{ fontSize: "clamp(3.25rem, 11vw, 9rem)" }}
           >
-            AI <span className="text-volt">创新</span>
+            把<span className="text-volt">战略难题</span>，
             <br />
-            战略咨询师
+            想透。
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ash sm:text-xl">
-            把你的真实商业问题，用{" "}
-            <b className="font-semibold text-bone">83 个方法框架</b>
-            系统性推演。
+            <b className="font-semibold text-bone">邱懿武的方法论</b> ×{" "}
+            <b className="font-semibold text-bone">AI 推演引擎</b>。
             <br className="hidden sm:block" />
-            多轮追问 · 方法链可视化 · 越用越懂你的场景。
+            83 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。
+            先免费体验，需要时找他本人。
           </p>
 
-          {/* 直接通往 /demo（已限免上线） */}
+          {/* 双 CTA：主=免费推演（入口），次=认识邱懿武（变现） */}
           <div className="mt-12 max-w-2xl">
-            <Link
-              href={`/demo?domain=${SUGGESTIONS[0].domain}&q=${encodeURIComponent(SUGGESTIONS[0].q)}`}
-              className="group flex items-center justify-between gap-3 rounded-lg border border-volt/40 bg-volt/[0.04] px-5 py-4 transition hover:border-volt hover:bg-volt/[0.08]"
-            >
-              <div className="flex flex-1 items-center gap-3">
-                <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-volt" />
-                <span className="text-base text-bone">
-                  试试问 InnoLab：我该做 IP 产品吗？
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={`/demo?domain=${SUGGESTIONS[0].domain}&q=${encodeURIComponent(SUGGESTIONS[0].q)}`}
+                className="group flex flex-1 items-center justify-between gap-3 rounded-lg border border-volt bg-volt/[0.06] px-5 py-4 transition hover:bg-volt/[0.12]"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-volt" />
+                  <span className="text-base font-medium text-bone">
+                    免费推演一次
+                  </span>
+                </div>
+                <span className="flex items-center gap-2 text-xs text-volt">
+                  <span className="hidden sm:inline">限免</span>
+                  <ArrowRight className="size-4 transition group-hover:translate-x-1" />
                 </span>
-              </div>
-              <span className="flex items-center gap-2 text-xs text-volt">
-                <span className="hidden sm:inline">限免使用</span>
-                <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-              </span>
-            </Link>
+              </Link>
+              <Link
+                href="/about"
+                className="group flex items-center justify-center gap-2 rounded-lg border border-fog-2 px-5 py-4 text-base text-ash transition hover:border-fog-3 hover:text-bone sm:flex-none"
+              >
+                认识邱懿武
+                <ArrowUpRight className="size-4 transition group-hover:text-volt" />
+              </Link>
+            </div>
             <div className="mt-3 flex flex-wrap gap-2">
+              <span className="py-1 text-xs text-dust">试试问：</span>
               {SUGGESTIONS.map((s) => (
                 <Link
                   key={s.label}
