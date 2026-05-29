@@ -31,7 +31,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

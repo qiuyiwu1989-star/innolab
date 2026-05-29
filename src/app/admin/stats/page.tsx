@@ -52,7 +52,7 @@ export default async function AdminStatsPage({ searchParams }: Props) {
     return (
       <Locked
         msg="请在 URL 加 ?token=... 通过验证。"
-        hint="https://innolab.qiuyiwu.com/admin/stats?token=<your-token>"
+        hint="https://innolab.cc/admin/stats?token=<your-token>"
       />
     );
   }

@@ -108,7 +108,7 @@ export default async function CaseDetailPage({ params }: Props) {
 
   // JSON-LD：让搜索引擎理解这是一篇分析文章
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",

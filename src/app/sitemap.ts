@@ -4,7 +4,7 @@ import { getAllCases } from "@/lib/cases";
 import { engines } from "@/lib/engines";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.qiuyiwu.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
