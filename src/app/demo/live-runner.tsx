@@ -112,6 +112,7 @@ const EXAMPLE_PROMPTS = [
   "HR SaaS 面临纵深做 HCM 平台 vs 出海东南亚两个方向，AI 颠覆风险高，该如何做战略取舍？",
   "公司 5 条产品线研发预算平摊，有两条在亏钱——BCG 矩阵怎么帮我决定砍哪条、保哪条？",
   "刚完成 B 轮融资，投资人要 3 年战略路线图——从 ARR 4000 万到 2.5 亿怎么规划增长路径？",
+  "制造企业收到 8 个 AI 上线需求但预算只有 600 万——怎么用场景价值矩阵选出最值得做的 2 个？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -190,7 +191,7 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
 
 /** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
 const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
-  "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03", "ST19"],
+  "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03", "ST19", "DC01", "DC06"],
   product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04", "EV05", "ST20"],
   "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10", "EV04"],
   org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10", "ST19"],
@@ -1032,7 +1033,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 47 案例
+                  MiMo v2.5 Pro · 83 方法 + 48 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1328,7 +1329,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 47 案例</span>
+                    <span className="text-dust">· 83 方法 + 48 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">

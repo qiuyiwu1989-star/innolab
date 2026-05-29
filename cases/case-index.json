@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 47,
+  "total_cases": 48,
   "cases": [
     {
       "id": "case-001",
@@ -914,6 +914,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/fintech-series-b-roadmap.json"
+    },
+    {
+      "id": "case-048",
+      "title": "制造企业 8 个 AI 场景、600 万预算——用场景价值矩阵选出真正值得做的 2 个",
+      "domain": ["AI转型", "制造业", "决策", "企业"],
+      "tags": ["AI转型", "场景选择", "制造业AI", "场景价值矩阵", "预测性维护", "质量检测", "ROI评估", "工业AI"],
+      "related_methods": ["DC01", "DC06", "CG20", "ST19", "DC07"],
+      "summary": "企业 AI 转型最大的浪费不是「选错工具」，而是「选错场景」——场景价值矩阵的核心是用「业务价值 × 实现可行性」把 8 个候选场景快速降维到 2 个，再用三阶评估法做深度验证",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "enterprise/manufacturing-ai-scenario-selection.json"
     }
   ]
 }
