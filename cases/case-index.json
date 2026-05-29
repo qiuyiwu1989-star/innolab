@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 46,
+  "total_cases": 47,
   "cases": [
     {
       "id": "case-001",
@@ -903,6 +903,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/product-portfolio-bcg.json"
+    },
+    {
+      "id": "case-047",
+      "title": "FinTech 刚完成 B 轮融资，投资人要 3 年路线图——战略方向三岔路口如何规划？",
+      "domain": ["战略", "创业", "FinTech", "商业模式"],
+      "tags": ["战略路线图", "B轮融资", "路线图规划", "FinTech", "三年规划", "里程碑", "资源分配", "增长战略"],
+      "related_methods": ["ST14", "ST19", "DC07", "EV01", "CG20"],
+      "summary": "战略路线图的价值不是「把未来 3 年的计划写清楚」，而是「设计出哪些里程碑必须先完成，哪些可以并行，哪些必须等前一个确定后才能启动」——顺序错了，3 年计划等于零",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/fintech-series-b-roadmap.json"
     }
   ]
 }

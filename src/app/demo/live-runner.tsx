@@ -111,6 +111,7 @@ const EXAMPLE_PROMPTS = [
   "职场辅导平台 500 名导师入驻，3 个月只成交 87 笔——双边平台冷启动死循环怎么破？",
   "HR SaaS 面临纵深做 HCM 平台 vs 出海东南亚两个方向，AI 颠覆风险高，该如何做战略取舍？",
   "公司 5 条产品线研发预算平摊，有两条在亏钱——BCG 矩阵怎么帮我决定砍哪条、保哪条？",
+  "刚完成 B 轮融资，投资人要 3 年战略路线图——从 ARR 4000 万到 2.5 亿怎么规划增长路径？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1031,7 +1032,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 46 案例
+                  MiMo v2.5 Pro · 83 方法 + 47 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1327,7 +1328,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 46 案例</span>
+                    <span className="text-dust">· 83 方法 + 47 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
