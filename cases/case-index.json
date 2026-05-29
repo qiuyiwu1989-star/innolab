@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 43,
+  "total_cases": 44,
   "cases": [
     {
       "id": "case-001",
@@ -870,6 +870,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "product/health-app-growth-loop.json"
+    },
+    {
+      "id": "case-044",
+      "title": "双边平台冷启动困局：500 名导师入驻，3 个月只成交 87 笔，平台流量「死循环」怎么破？",
+      "domain": ["产品", "战略", "增长", "商业模式"],
+      "tags": ["双边平台", "冷启动", "平台商业模式", "职场学习", "两边市场", "激励设计", "EdTech"],
+      "related_methods": ["ST20", "EV01", "CG20", "DC07", "ST07"],
+      "summary": "双边平台冷启动最大的误区：同时解决供给侧和需求侧，结果两边都没解决——平台冷启动的核心是「先跑通单边，再激活另一边」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/coaching-marketplace-coldstart.json"
     }
   ]
 }

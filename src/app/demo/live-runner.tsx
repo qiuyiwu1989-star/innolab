@@ -108,6 +108,7 @@ const EXAMPLE_PROMPTS = [
   "B2B SaaS 加了 80 个功能留存率没变，用户访谈说「挺好用的」——问题在哪？",
   "B2B SaaS 1.3 亿 ARR，考虑转 PLG 减少销售依赖——飞轮怎么设计？",
   "健康管理 App 500 万用户，K 值只有 0.08，增长全靠买量——怎么把增长飞轮转起来？",
+  "职场辅导平台 500 名导师入驻，3 个月只成交 87 笔——双边平台冷启动死循环怎么破？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -187,7 +188,7 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
 /** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
 const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
   "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03", "ST19"],
-  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04", "EV05"],
+  product:        ["PD07", "PD05", "PD10", "DC04", "EV01", "PD14", "DC07", "EV04", "EV05", "ST20"],
   "ip-content":  ["GN02", "GN04", "PD02", "ST06", "CG16", "PD10", "EV04"],
   org:            ["ST09", "CG06", "EV03", "DC02", "DC04", "ST10", "ST19"],
   strategy:       ["ST07", "ST06", "ST02", "DC07", "ST11", "ST17", "ST03", "ST19", "ST01", "ST20", "DC10"],
@@ -1028,7 +1029,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 43 案例
+                  MiMo v2.5 Pro · 83 方法 + 44 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1324,7 +1325,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 43 案例</span>
+                    <span className="text-dust">· 83 方法 + 44 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
