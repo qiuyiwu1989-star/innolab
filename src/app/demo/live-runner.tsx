@@ -1209,10 +1209,10 @@ export function LiveRunner({
           </div>
 
           <p className="mt-4 text-xs text-dust">
-            v0.1 限免使用，全站每天 50 次、单用户每天 5 次。
-            想要更多 / 接入你自己的 API key，
-            <Link href="/#waitlist" className="text-volt hover:underline">
-              加入候补 v1.0
+            限免使用，全站每天 50 次、单用户每天 5 次。
+            如果问题足够重要、想要邱懿武亲自陪你想透，
+            <Link href="/about" className="text-volt hover:underline">
+              联系咨询
             </Link>
             。
           </p>
@@ -1495,10 +1495,10 @@ export function LiveRunner({
                   <div className="mt-4 flex flex-wrap gap-2">
                     {error.reason === "rate_limit" ? (
                       <Link
-                        href="/#waitlist"
+                        href="/about"
                         className="inline-flex items-center gap-1.5 rounded-md bg-volt px-4 py-2 text-xs font-semibold text-ink hover:brightness-110"
                       >
-                        加入候补 v1.0
+                        联系邱懿武咨询
                         <ArrowRight className="size-3" />
                       </Link>
                     ) : (
@@ -1797,7 +1797,7 @@ export function LiveRunner({
                     <h3 className="display mt-2 text-2xl text-bone sm:text-3xl">
                       {fromReplay
                         ? "这次是从历史调出来的"
-                        : "再问一个？或者预约付费版。"}
+                        : "再问一个？或者让邱懿武亲自帮你。"}
                     </h3>
                     <p className="mt-3 text-sm text-ash">
                       {fromReplay
@@ -1807,10 +1807,10 @@ export function LiveRunner({
                   </div>
                   {!fromReplay && (
                     <Link
-                      href="/#waitlist"
+                      href="/about"
                       className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
                     >
-                      加入候补
+                      联系邱懿武
                       <ArrowRight className="size-4" />
                     </Link>
                   )}

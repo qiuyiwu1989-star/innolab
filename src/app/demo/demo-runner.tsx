@@ -164,14 +164,14 @@ export function DemoRunner({
               <div className="mt-3 flex items-start gap-2 rounded-md border border-fog-2 bg-soot p-3 text-xs text-ash">
                 <Sparkles className="mt-0.5 size-4 shrink-0 text-volt" />
                 <span>
-                  v0.1 还不支持自定义问题。v1.0 会用真实方法编排来回答你输入的任何问题 —{" "}
+                  这是预设示范。想用真实问题跑推演，去{" "}
                   <Link
-                    href="/#waitlist"
+                    href="/demo"
                     className="font-medium text-volt underline"
                   >
-                    加入候补
+                    上方的 Live 推演
                   </Link>{" "}
-                  收到通知。同时可以试下方预设问题看效果。
+                  输入你的问题。同时可以试下方预设问题看效果。
                 </span>
               </div>
             )}
@@ -271,7 +271,7 @@ export function DemoRunner({
             })}
           </div>
 
-          {/* 完成后 — Waitlist CTA */}
+          {/* 完成后 — 引导去 Live 推演 */}
           {phase === "done" && (
             <div className="mt-12 rounded-xl border border-volt bg-volt/[0.04] p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -280,18 +280,18 @@ export function DemoRunner({
                     Preview Mode
                   </div>
                   <h3 className="display mt-2 text-2xl text-bone sm:text-3xl">
-                    这只是预演。真正的 v1.0 会用你的真实数据。
+                    这是手写示范。换你的真实问题跑一次。
                   </h3>
                   <p className="mt-3 text-sm text-ash">
-                    上面这段分析是手写的样本。v1.0 上线后，你输入任何真实问题，
-                    InnoLab 会根据你的数据 / 行业 / 阶段自动编排方法链。
+                    上面这段是预设样本。把你的真实商业问题输进上方的 Live 推演，
+                    InnoLab 会现场调用方法链给出推演结论。
                   </p>
                 </div>
                 <Link
-                  href="/#waitlist"
+                  href="/demo"
                   className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
                 >
-                  加入候补 v1.0
+                  去 Live 推演
                   <ArrowRight className="size-4" />
                 </Link>
               </div>

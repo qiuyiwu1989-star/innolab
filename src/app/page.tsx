@@ -287,47 +287,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════════ 7 · Waitlist ════════════════ */}
+      {/* ════════════════ 7 · 联系咨询 ════════════════ */}
       <section
-        id="waitlist"
+        id="contact"
         className="relative border-b border-fog-1 py-24 sm:py-32"
       >
         <div className="absolute inset-0 bg-grid-dense opacity-40 mask-fade-b" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
           <span className="numeral text-xs uppercase tracking-widest text-volt">
-            07 · Waitlist
+            07 · 战略咨询
           </span>
           <h2 className="display mt-4 text-4xl text-bone sm:text-6xl">
-            付费版上线时，
+            你也面临
             <br />
-            我会通知你。
+            一个真正的难题？
           </h2>
           <p className="mt-6 text-base text-ash sm:text-lg">
-            InnoLab 当前限免（/demo 每天 5 次）。
+            InnoLab 让你体验了这套方法论怎么推演。
             <br className="sm:hidden" />
-            订阅 / 团队版上线时 Beta 名额限定 100 人。
+            当问题足够重要、值得一个人陪你想透——
+            <br />
+            邱懿武提供 1:1 战略咨询，并把这套智能体作为专属交付工具。
           </p>
-          <form
-            action="/api/waitlist"
-            method="post"
-            className="mx-auto mt-10 flex max-w-md flex-col gap-2 sm:flex-row"
-          >
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="your@email.com"
-              className="flex-1 rounded-md border border-fog-2 bg-soot px-4 py-3 text-sm outline-none transition focus:border-volt"
-            />
-            <button
-              type="submit"
-              className="rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110"
+          <div className="mx-auto mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/about"
+              className="rounded-full bg-volt px-6 py-3 text-sm font-semibold text-ink transition hover:brightness-110"
             >
-              加入候补
-            </button>
-          </form>
+              和邱懿武聊聊 →
+            </Link>
+            <Link
+              href="/demo"
+              className="rounded-full border border-fog-2 px-6 py-3 text-sm font-medium text-ash transition hover:border-bone hover:text-bone"
+            >
+              先免费推演一次
+            </Link>
+          </div>
           <p className="mt-4 text-xs text-dust">
-            只发开放通知。不发别的。
+            先用 InnoLab 把问题想清楚，再决定要不要找我。
           </p>
         </div>
       </section>

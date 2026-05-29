@@ -109,8 +109,8 @@ export async function POST(request: Request) {
   if (!limit.allowed) {
     const message =
       limit.reason === "global_exhausted"
-        ? "今日全站配额已用完。InnoLab v0.1 限免阶段每天 50 次分析。请明天再试，或加入候补 v1.0。"
-        : "你今天已经用了 5 次。明天再试，或加入候补 v1.0。";
+        ? "今日全站配额已用完。InnoLab 限免阶段每天 50 次分析。请明天再试，或联系邱懿武做深度战略咨询。"
+        : "你今天已经用了 5 次。明天再试，或联系邱懿武做深度战略咨询。";
     return NextResponse.json(
       {
         error: message,

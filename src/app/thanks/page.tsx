@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Beaker, ArrowRight, Sparkles } from "lucide-react";
 
-export const metadata = { title: "已加入候补" };
+export const metadata = { title: "收到了" };
 
 export default function ThanksPage() {
   return (
@@ -21,7 +21,7 @@ export default function ThanksPage() {
           收到了。
         </h1>
         <p className="mt-6 max-w-lg mx-auto text-lg text-ash">
-          有大版本动态时第一时间通知你（私有记忆库、订阅、企业版上线等）。
+          收到你的信息了。邱懿武会尽快与你联系。
         </p>
 
         {/* —— InnoLab 已经能用了，引导先试 —— */}

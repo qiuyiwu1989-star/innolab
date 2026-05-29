@@ -81,11 +81,11 @@ const STATIC_PAGES: SearchItem[] = [
   },
   {
     type: "page",
-    id: "waitlist",
-    title: "加入候补 v1.0",
-    sub: "AI 战略咨询师 Beta 通知",
-    href: "/#waitlist",
-    keywords: "waitlist 候补 beta v1.0",
+    id: "contact",
+    title: "联系咨询",
+    sub: "邱懿武 · 1:1 战略咨询",
+    href: "/about",
+    keywords: "联系 咨询 contact 邱懿武 战略咨询 consulting",
   },
 ];
 

@@ -56,10 +56,10 @@ export function SiteNav() {
           </button>
           <ThemeToggle className="ml-1" />
           <Link
-            href="/#waitlist"
+            href="/about"
             className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-volt px-4 py-1.5 text-xs font-medium text-ink transition hover:brightness-110"
           >
-            候补 v1.0
+            联系咨询
           </Link>
         </nav>
 
@@ -105,11 +105,11 @@ export function SiteNav() {
               关于
             </MobileLink>
             <Link
-              href="/#waitlist"
+              href="/about"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-md bg-volt px-4 py-2.5 text-center text-sm font-semibold text-ink"
             >
-              候补 v1.0
+              联系咨询
             </Link>
           </nav>
         </div>
