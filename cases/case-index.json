@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 44,
+  "total_cases": 45,
   "cases": [
     {
       "id": "case-001",
@@ -881,6 +881,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "product/coaching-marketplace-coldstart.json"
+    },
+    {
+      "id": "case-045",
+      "title": "HR SaaS 公司面临战略十字路口：纵深做 HCM 平台 vs 出海东南亚，两条路能同时走吗？",
+      "domain": ["战略", "SaaS", "决策", "出海"],
+      "tags": ["情景规划", "战略十字路口", "HR SaaS", "出海战略", "AI颠覆", "B2B SaaS", "战略押注"],
+      "related_methods": ["DC10", "ST19", "DC07", "CG20", "ST06"],
+      "summary": "战略押注最危险的不是「选错了方向」，而是「两个方向都走一半」——情景规划的价值在于帮你设计「无论哪种情景成真，都不会输光」的战略组合",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/hr-saas-scenario-planning.json"
     }
   ]
 }

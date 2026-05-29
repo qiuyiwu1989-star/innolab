@@ -109,6 +109,7 @@ const EXAMPLE_PROMPTS = [
   "B2B SaaS 1.3 亿 ARR，考虑转 PLG 减少销售依赖——飞轮怎么设计？",
   "健康管理 App 500 万用户，K 值只有 0.08，增长全靠买量——怎么把增长飞轮转起来？",
   "职场辅导平台 500 名导师入驻，3 个月只成交 87 笔——双边平台冷启动死循环怎么破？",
+  "HR SaaS 面临纵深做 HCM 平台 vs 出海东南亚两个方向，AI 颠覆风险高，该如何做战略取舍？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1029,7 +1030,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 44 案例
+                  MiMo v2.5 Pro · 83 方法 + 45 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1325,7 +1326,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 44 案例</span>
+                    <span className="text-dust">· 83 方法 + 45 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
