@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 42,
+  "total_cases": 43,
   "cases": [
     {
       "id": "case-001",
@@ -859,6 +859,17 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "enterprise/saas-plg-transformation.json"
+    },
+    {
+      "id": "case-043",
+      "title": "健康管理 App 增长停滞：500 万用户但 K 值 0.08，增长飞轮怎么转起来？",
+      "domain": ["产品", "增长", "健康", "消费"],
+      "tags": ["健康科技", "增长飞轮", "病毒系数", "社交传播", "用户激活", "HealthTech", "PLG"],
+      "related_methods": ["EV06", "EV01", "PD07", "CG20", "EV04"],
+      "summary": "健康类 App 最常见的增长困境：数据是私密的、行为是孤立的，没有天然的社交传播动机——增长飞轮必须「重新设计」而不是「依靠现有产品的自然传播」",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "product/health-app-growth-loop.json"
     }
   ]
 }
