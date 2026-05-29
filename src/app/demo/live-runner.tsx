@@ -135,6 +135,10 @@ const EXAMPLE_PROMPTS = [
   "家电品牌 4 条产品线，大股东要押空调、创始人要押小家电——BCG 矩阵怎么打破战略幻觉？",
   "碳资产平台 A 轮路演 12 次没点燃投资人——三方共进化叙事如何让「必然会发生的趋势」说服人？",
   "理财 App 300 万用户付费率 0.8%，用户说「省了很多焦虑」——JTBD 告诉你他们真正在买什么",
+  "企业健康 App 月活 5%，员工说「挺好用」就是不打开——行为风暴发现访谈永远问不出的真相",
+  "Z 世代员工不爱视频培训课，6 周内如何用认知组装 + 故事板做出可测试原型？",
+  "制造企业面对 AI 颠覆焦虑：未来雷达 + What If 如何把模糊威胁变成具体行动优先级？",
+  "新能源车配件 45 个 SKU 全在 10-30 名，如何用价值机会分析找到情感维度的蓝海？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1055,7 +1059,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 70 案例
+                  MiMo v2.5 Pro · 83 方法 + 74 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1351,7 +1355,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 70 案例</span>
+                    <span className="text-dust">· 83 方法 + 74 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
