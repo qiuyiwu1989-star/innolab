@@ -103,6 +103,8 @@ const EXAMPLE_PROMPTS = [
   "职业培训平台完课率 12%，课程评价 4.3 分——是课程问题还是动机问题？",
   "HR SaaS 销售漏斗转化率 2%，客户总说贵——是定价问题还是价值传递问题？",
   "竞品抄了我们的核心功能，用户流失 18%——打价格战还是加速差异化？",
+  "DTC 健康零食品牌年销 5000 万，进线下便利店还是盒马？渠道选错会把品牌做死",
+  "融资 3000 万烧完，DAU 翻倍但留存腰斩，下一轮投资人全拒了——哪里出了问题？",
 ] as const;
 
 /** 按领域组织的预设问题 — 同时作为流量分流和数据采集锚点 */
@@ -1023,7 +1025,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 79 方法 + 38 案例
+                  MiMo v2.5 Pro · 79 方法 + 40 案例
                   {remaining.ip !== undefined && (
                     <span className="ml-2 text-ash">
                       今日剩 {remaining.ip} 次
@@ -1319,7 +1321,7 @@ export function LiveRunner({ methodsIndex = {}, casesIndex = [] }: LiveRunnerPro
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 79 方法 + 38 案例</span>
+                    <span className="text-dust">· 79 方法 + 40 案例</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">

@@ -2,7 +2,7 @@
   "version": "1.0",
   "created": "2026-04-05",
   "last_updated": "2026-05-29",
-  "total_cases": 38,
+  "total_cases": 40,
   "cases": [
     {
       "id": "case-001",
@@ -815,6 +815,28 @@
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
       "file": "strategy/competitor-copies-core-feature.json"
+    },
+    {
+      "id": "case-039",
+      "title": "新消费品牌从 DTC 线上切入线下零售：渠道扩张还是品牌稀释？",
+      "domain": ["消费品", "品牌", "战略", "零售"],
+      "tags": ["新消费", "DTC", "线下零售", "渠道策略", "品牌定位", "分销", "快消品"],
+      "related_methods": ["ST06", "ST07", "DC07", "PD05", "CG16"],
+      "summary": "新消费品牌从线上 DTC 切入线下的最大陷阱不是渠道难进，是进去之后折扣促销把自己训练成了廉价品牌",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "consumer/dtc-to-offline-expansion.json"
+    },
+    {
+      "id": "case-040",
+      "title": "融资后烧钱买增长：3000 万用完 DAU 翻倍但 LTV 腰斩，下一轮融不到了",
+      "domain": ["战略", "产品", "增长", "创业"],
+      "tags": ["融资后增长", "烧钱增长", "LTV", "CAC", "增长陷阱", "单位经济", "创业战略"],
+      "related_methods": ["EV01", "CG20", "ST19", "DC07", "PD07"],
+      "summary": "用钱买来的 DAU 和用产品价值赢来的 DAU 数据上长得一模一样，但体质完全不同——一个停钱就死，一个越用越强",
+      "added_date": "2026-05-29",
+      "added_by": "邱懿武",
+      "file": "strategy/post-funding-growth-trap.json"
     }
   ]
 }
