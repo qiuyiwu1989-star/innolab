@@ -10,6 +10,7 @@ import path from "node:path";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const LOG_FILE = path.join(DATA_DIR, "conversations.jsonl");
+const CANDIDATE_FILE = path.join(DATA_DIR, "candidate-cases.jsonl");
 
 export interface ConversationRecord {
   ts: string;
@@ -30,6 +31,8 @@ export interface ConversationRecord {
   output_length: number;
   /** 哈希 IP（去重/防滥用用，不可还原） */
   ip_hash: string;
+  /** 是否完整完成（含推演结论/追问方向）；中断片段为 false */
+  completed?: boolean;
 }
 
 /**
@@ -94,4 +97,51 @@ export function conversationStats(): {
     /* noop */
   }
   return { total, byDomain, byLabel };
+}
+
+// ── 候选案例（飞轮第②圈：把高价值真实推演沉淀成案例库素材）──────────────
+
+/** 已标记为候选案例的对话 ts 集合（去重用） */
+export function candidateTsSet(): Set<string> {
+  const set = new Set<string>();
+  try {
+    if (!fs.existsSync(CANDIDATE_FILE)) return set;
+    const raw = fs.readFileSync(CANDIDATE_FILE, "utf8");
+    for (const line of raw.split("\n")) {
+      if (!line.trim()) continue;
+      try {
+        const r = JSON.parse(line) as ConversationRecord;
+        if (r.ts) set.add(r.ts);
+      } catch {
+        /* skip */
+      }
+    }
+  } catch {
+    /* noop */
+  }
+  return set;
+}
+
+/**
+ * 把某条对话（按 ts 唯一定位）标记为候选案例：复制整条记录到 candidate-cases.jsonl。
+ * 返回 true=成功标记，false=未找到或已存在。
+ */
+export function markCandidateByTs(ts: string): boolean {
+  if (!ts) return false;
+  if (candidateTsSet().has(ts)) return false; // 已标记
+  const all = readRecentConversations(100000);
+  const rec = all.find((r) => r.ts === ts);
+  if (!rec) return false;
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.appendFileSync(CANDIDATE_FILE, JSON.stringify(rec) + "\n", "utf8");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** 候选案例数量 */
+export function candidateCount(): number {
+  return candidateTsSet().size;
 }

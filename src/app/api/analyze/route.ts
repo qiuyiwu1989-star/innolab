@@ -129,9 +129,14 @@ export async function POST(request: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       const send = (obj: unknown) => {
-        controller.enqueue(
-          encoder.encode(`data: ${JSON.stringify(obj)}\n\n`),
-        );
+        // 客户端断开后 enqueue 会抛错 —— 吞掉，避免打断 output 累积与落盘
+        try {
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify(obj)}\n\n`),
+          );
+        } catch {
+          /* stream closed by client */
+        }
       };
 
       try {
@@ -160,29 +165,45 @@ export async function POST(request: Request) {
           message: err instanceof Error ? err.message : "stream failed",
         });
       } finally {
-        controller.close();
-        // 对话落盘 —— 只在真正产出了内容时记录（失败静默，不影响用户）
-        if (outputAccumulator.trim()) {
-          appendConversation({
-            ts: new Date().toISOString(),
-            access_label: access.label,
-            domain: body.domain ?? "unknown",
-            source: body.source ?? "free",
-            is_follow_up: !!body.prior_summary,
-            follow_up_kind: body.follow_up_kind ?? null,
-            prompt,
-            output: outputAccumulator,
-            prompt_length: prompt.length,
-            output_length: outputAccumulator.length,
-            ip_hash: ipHash,
-          });
+        // close() 在客户端已断开时会抛错 —— 先 guard，确保落盘一定执行
+        try {
+          controller.close();
+        } catch {
+          /* already closed by client */
         }
+        // 对话落盘 —— 只要产出了内容就记录（即使用户中途关页面/断开，
+        // 已累积的部分也会落盘，不丢飞轮燃料）。失败静默，不影响业务。
+        persistConversation();
       }
     },
     cancel() {
-      // 客户端断开 — analyzeStream 通过 signal 已经会停
+      // 客户端主动断开 —— analyzeStream 通过 signal 会停；
+      // start() 的 finally 仍会执行落盘已累积内容，这里无需重复。
     },
   });
+
+  // 落盘逻辑抽成闭包，保证「只落一次」+ 可被 finally 安全调用
+  let persisted = false;
+  function persistConversation() {
+    if (persisted) return;
+    persisted = true;
+    if (!outputAccumulator.trim()) return;
+    appendConversation({
+      ts: new Date().toISOString(),
+      access_label: access.label,
+      domain: body.domain ?? "unknown",
+      source: body.source ?? "free",
+      is_follow_up: !!body.prior_summary,
+      follow_up_kind: body.follow_up_kind ?? null,
+      prompt,
+      output: outputAccumulator,
+      prompt_length: prompt.length,
+      output_length: outputAccumulator.length,
+      ip_hash: ipHash,
+      // 标记是否为完整完成（用于看板区分「完整推演」vs「中断片段」）
+      completed: outputAccumulator.includes("## 推演结论") || outputAccumulator.includes("## 追问方向"),
+    });
+  }
 
   return new Response(stream, {
     headers: {

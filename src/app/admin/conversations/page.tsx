@@ -1,7 +1,10 @@
 import {
   readRecentConversations,
   conversationStats,
+  candidateTsSet,
+  candidateCount,
 } from "@/lib/conversation-log";
+import { MarkCandidate } from "@/components/admin/mark-candidate";
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "innolab-admin";
 
@@ -30,6 +33,8 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
 
   const stats = conversationStats();
   const recent = readRecentConversations(80);
+  const candidates = candidateTsSet();
+  const candTotal = candidateCount();
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">
@@ -41,10 +46,11 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
 
       {/* 概览 */}
       <section className="mt-8">
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
           <Stat label="总对话数" value={stats.total} />
           <Stat label="领域数" value={Object.keys(stats.byDomain).length} />
           <Stat label="授权方数" value={Object.keys(stats.byLabel).length} />
+          <Stat label="候选案例" value={candTotal} />
         </div>
       </section>
 
@@ -90,8 +96,15 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
                 <div className="mt-2 line-clamp-2 text-sm font-medium text-bone">
                   {r.prompt}
                 </div>
-                <div className="mt-1 text-[11px] text-dust">
-                  output {r.output_length} 字 · 点击展开完整推演
+                <div className="mt-1 flex items-center gap-2 text-[11px] text-dust">
+                  <span>output {r.output_length} 字 · 点击展开完整推演</span>
+                  <span className="ml-auto" onClick={(e) => e.preventDefault()}>
+                    <MarkCandidate
+                      token={ADMIN_TOKEN}
+                      ts={r.ts}
+                      alreadyMarked={candidates.has(r.ts)}
+                    />
+                  </span>
                 </div>
               </summary>
               <div className="mt-3 border-t border-fog-1 pt-3">
