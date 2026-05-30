@@ -26,11 +26,11 @@ const FALLBACK_CLIENTS: Client[] = [
   { token: "demo-vip", name: "测试客户" },
 ];
 
-/** 内置兜底暗号（仅当 INNOLAB_PASSCODES 未配置时生效） */
-const FALLBACK_PASSCODES: string[] = ["innolab2026"];
+/** 内置兜底暗号 code → 身份（仅当 INNOLAB_PASSCODES 未配置时生效） */
+const FALLBACK_PASSCODES: Record<string, string> = { innolab2026: "授权用户" };
 
 let _cache: Map<string, Client> | null = null;
-let _passcodeCache: Set<string> | null = null;
+let _passcodeCache: Map<string, string> | null = null;
 
 function parseEnv(raw: string): Client[] {
   const out: Client[] = [];

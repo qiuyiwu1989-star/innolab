@@ -21,20 +21,21 @@ interface AccessGateProps {
 
 const LS_PASSCODE = "innolab.access.passcode";
 const LS_LABEL = "innolab.access.label";
+const LS_USERKEY = "innolab.access.userkey";
+const LS_NAME = "innolab.access.name";
 
-/**
- * 访问门禁 —— InnoLab 推演为授权专属。
- * 未授权：显示暗号输入（= 注册，留称呼/公司）。
- * 已授权：渲染 LiveRunner，并把暗号作为 clientToken 透传（豁免限流、不限次）。
- */
 export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
   const [ready, setReady] = useState(false);
   const [passcode, setPasscode] = useState<string | null>(null);
-  const [label, setLabel] = useState<string>("");
+  const [label, setLabel] = useState("");
+  const [userKey, setUserKey] = useState("");
+  const [name, setName] = useState("");
 
   // 表单态
   const [inputCode, setInputCode] = useState("");
   const [inputName, setInputName] = useState("");
+  const [inputContact, setInputContact] = useState("");
+  const [inputCompany, setInputCompany] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,10 +43,11 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LS_PASSCODE);
-      const savedLabel = localStorage.getItem(LS_LABEL) ?? "";
       if (saved) {
         setPasscode(saved);
-        setLabel(savedLabel);
+        setLabel(localStorage.getItem(LS_LABEL) ?? "");
+        setUserKey(localStorage.getItem(LS_USERKEY) ?? "");
+        setName(localStorage.getItem(LS_NAME) ?? "");
       }
     } catch {
       /* noop */
@@ -56,27 +58,38 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const code = inputCode.trim();
-    if (!code) return;
+    const nm = inputName.trim();
+    const contact = inputContact.trim();
+    if (!code || !nm || !contact) return;
     setSubmitting(true);
     setError("");
     try {
       const res = await fetch("/api/access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passcode: code, name: inputName.trim() }),
+        body: JSON.stringify({
+          passcode: code,
+          name: nm,
+          contact,
+          company: inputCompany.trim(),
+        }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.ok) {
         try {
           localStorage.setItem(LS_PASSCODE, code);
           localStorage.setItem(LS_LABEL, data.label ?? "");
+          localStorage.setItem(LS_USERKEY, data.userKey ?? "");
+          localStorage.setItem(LS_NAME, data.name ?? nm);
         } catch {
           /* noop */
         }
         setPasscode(code);
         setLabel(data.label ?? "");
+        setUserKey(data.userKey ?? "");
+        setName(data.name ?? nm);
       } else {
-        setError(data.error ?? "暗号不正确，请重试。");
+        setError(data.error ?? "验证失败，请重试。");
       }
     } catch {
       setError("网络错误，请稍后重试。");
@@ -87,20 +100,20 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
 
   function signOut() {
     try {
-      localStorage.removeItem(LS_PASSCODE);
-      localStorage.removeItem(LS_LABEL);
+      [LS_PASSCODE, LS_LABEL, LS_USERKEY, LS_NAME].forEach((k) =>
+        localStorage.removeItem(k),
+      );
     } catch {
       /* noop */
     }
     setPasscode(null);
     setLabel("");
+    setUserKey("");
+    setName("");
     setInputCode("");
   }
 
-  // 避免 SSR/CSR 闪烁：localStorage 读完前不渲染
-  if (!ready) {
-    return <div className="h-64" aria-hidden />;
-  }
+  if (!ready) return <div className="h-64" aria-hidden />;
 
   // 已授权 → 推演工作台
   if (passcode) {
@@ -109,7 +122,7 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
         <div className="mb-4 flex items-center justify-between rounded-lg border border-fog-2 bg-soot px-4 py-2 text-xs">
           <span className="inline-flex items-center gap-1.5 text-volt">
             <ShieldCheck className="size-3.5" />
-            已授权{label ? ` · ${label}` : ""} · 推演不限次
+            {name ? `${name} · ` : ""}已授权 · 推演不限次
           </span>
           <button
             type="button"
@@ -123,12 +136,16 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
           methodsIndex={methodsIndex}
           casesIndex={casesIndex}
           clientToken={passcode}
+          userKey={userKey}
         />
       </div>
     );
   }
 
-  // 未授权 → 暗号门禁
+  // 未授权 → 留资闸门
+  const canSubmit =
+    !!inputCode.trim() && !!inputName.trim() && !!inputContact.trim();
+
   return (
     <div className="mx-auto max-w-md rounded-2xl border border-fog-2 bg-soot p-8">
       <div className="inline-flex items-center gap-2 rounded-full border border-volt/40 bg-volt/[0.05] px-3 py-1 text-[11px] font-medium text-volt">
@@ -139,7 +156,7 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
         战略推演工作台
       </h2>
       <p className="mt-3 text-sm leading-relaxed text-ash">
-        这是邱懿武战略咨询的专属推演工具。输入授权暗号即可长期使用。
+        这是邱懿武战略咨询的专属推演工具。凭授权暗号 + 留下联系方式即可长期不限次使用。
       </p>
 
       <form onSubmit={submit} className="mt-6 space-y-3">
@@ -155,18 +172,36 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
           type="text"
           value={inputName}
           onChange={(e) => setInputName(e.target.value)}
-          placeholder="你的称呼 / 公司（选填）"
+          placeholder="你的称呼 *"
+          className="w-full rounded-lg border border-fog-2 bg-ink px-4 py-3 text-sm text-bone outline-none transition focus:border-volt placeholder:text-dust"
+        />
+        <input
+          type="text"
+          value={inputContact}
+          onChange={(e) => setInputContact(e.target.value)}
+          placeholder="手机号或邮箱 *（二选一）"
+          autoComplete="off"
+          className="w-full rounded-lg border border-fog-2 bg-ink px-4 py-3 text-sm text-bone outline-none transition focus:border-volt placeholder:text-dust"
+        />
+        <input
+          type="text"
+          value={inputCompany}
+          onChange={(e) => setInputCompany(e.target.value)}
+          placeholder="公司 / 行业（选填）"
           className="w-full rounded-lg border border-fog-2 bg-ink px-4 py-3 text-sm text-bone outline-none transition focus:border-volt placeholder:text-dust"
         />
         {error && <p className="text-xs text-red-400">{error}</p>}
         <button
           type="submit"
-          disabled={!inputCode.trim() || submitting}
+          disabled={!canSubmit || submitting}
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {submitting ? "验证中…" : "进入工作台"}
           {!submitting && <ArrowRight className="size-4" />}
         </button>
+        <p className="text-[11px] leading-relaxed text-dust">
+          联系方式仅用于邱懿武本人回访，不会公开或他用。
+        </p>
       </form>
 
       <div className="mt-6 border-t border-fog-1 pt-5 text-xs text-dust">

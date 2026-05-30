@@ -33,6 +33,8 @@ export interface ConversationRecord {
   ip_hash: string;
   /** 是否完整完成（含推演结论/追问方向）；中断片段为 false */
   completed?: boolean;
+  /** 留资派生的稳定用户标识 → 按人归属画像（可能为空，旧数据/未留资） */
+  user_key?: string;
 }
 
 /**
@@ -157,6 +159,73 @@ export function conversationInsights(topK = 24) {
     completionRate: total ? Math.round((completed / total) * 100) : 0,
     followUpRate: total ? Math.round((followUps / total) * 100) : 0,
   };
+}
+
+// ── 画像层：按人（user_key）聚合提问史 ──────────────────────────────────
+
+import { readRegistrations } from "./registration-log";
+import type { Registration } from "./registration-log";
+
+export interface UserProfile {
+  user_key: string;
+  name: string;
+  company: string;
+  contact: string;
+  contact_type: string;
+  /** 总提问数 */
+  count: number;
+  /** 关注领域（降序） */
+  domains: { domain: string; count: number }[];
+  /** 最近一次活跃时间 */
+  lastActive: string;
+  /** 首次活跃时间 */
+  firstActive: string;
+  /** 该用户的全部对话（最新在前） */
+  conversations: ConversationRecord[];
+}
+
+/**
+ * 按 user_key 聚合出用户画像列表（关联注册留资信息）。
+ * 没有 user_key 的旧/匿名对话归到一个 "anonymous" 桶。
+ */
+export function conversationProfiles(): UserProfile[] {
+  const recs = readRecentConversations(100000); // 已是最新在前
+  const regs = new Map<string, Registration>();
+  for (const r of readRegistrations()) regs.set(r.user_key, r);
+
+  const byUser = new Map<string, ConversationRecord[]>();
+  for (const c of recs) {
+    const key = c.user_key || "anonymous";
+    if (!byUser.has(key)) byUser.set(key, []);
+    byUser.get(key)!.push(c);
+  }
+
+  const profiles: UserProfile[] = [];
+  for (const [key, convs] of byUser.entries()) {
+    const reg = regs.get(key);
+    const domainCount: Record<string, number> = {};
+    for (const c of convs) {
+      domainCount[c.domain] = (domainCount[c.domain] ?? 0) + 1;
+    }
+    const domains = Object.entries(domainCount)
+      .sort((a, b) => b[1] - a[1])
+      .map(([domain, count]) => ({ domain, count }));
+    // convs 已最新在前
+    profiles.push({
+      user_key: key,
+      name: reg?.name ?? (key === "anonymous" ? "匿名/早期" : "（未留资）"),
+      company: reg?.company ?? "",
+      contact: reg?.contact ?? "",
+      contact_type: reg?.contact_type ?? "",
+      count: convs.length,
+      domains,
+      lastActive: convs[0]?.ts ?? "",
+      firstActive: convs[convs.length - 1]?.ts ?? "",
+      conversations: convs,
+    });
+  }
+  // 按活跃度（提问数）降序
+  return profiles.sort((a, b) => b.count - a.count);
 }
 
 // ── 候选案例（飞轮第②圈：把高价值真实推演沉淀成案例库素材）──────────────

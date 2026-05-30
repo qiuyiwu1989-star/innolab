@@ -254,12 +254,15 @@ interface LiveRunnerProps {
   casesIndex?: CaseSnippet[];
   /** 咨询客户专属令牌：传入则推演不限次（豁免限流），并隐藏配额提示 */
   clientToken?: string;
+  /** 留资派生的稳定用户标识：随推演上报 → 飞轮按人归属画像 */
+  userKey?: string;
 }
 
 export function LiveRunner({
   methodsIndex = {},
   casesIndex = [],
   clientToken,
+  userKey,
 }: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [prompt, setPrompt] = useState("");
@@ -821,6 +824,8 @@ export function LiveRunner({
             follow_up_kind: kind || undefined,
             // 咨询客户专属令牌：有效则豁免限流
             client_token: clientToken || undefined,
+            // 留资用户标识：飞轮按人归属
+            user_key: userKey || undefined,
           }),
           signal: ctrl.signal,
         });

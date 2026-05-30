@@ -2,6 +2,7 @@ import {
   readRecentConversations,
   conversationStats,
   conversationInsights,
+  conversationProfiles,
   candidateTsSet,
   candidateCount,
 } from "@/lib/conversation-log";
@@ -45,6 +46,7 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
 
   const stats = conversationStats();
   const insights = conversationInsights();
+  const profiles = conversationProfiles();
   const recent = readRecentConversations(80);
   const candidates = candidateTsSet();
   const candTotal = candidateCount();
@@ -64,6 +66,77 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
           <Stat label="领域数" value={Object.keys(stats.byDomain).length} />
           <Stat label="授权方数" value={Object.keys(stats.byLabel).length} />
           <Stat label="候选案例" value={candTotal} />
+        </div>
+      </section>
+
+      {/* ═══ 画像层：谁在用、关注什么 ═══ */}
+      <section className="mt-10">
+        <h2 className="text-sm font-semibold text-bone">
+          画像 · 谁在用（{profiles.length} 人）
+        </h2>
+        <p className="mt-1 text-[11px] text-dust">
+          每个留资用户的提问史 + 联系方式 → 懂画像 + 咨询线索
+        </p>
+        <div className="mt-3 space-y-2">
+          {profiles.length === 0 && (
+            <p className="rounded-lg border border-fog-2 bg-soot p-5 text-sm text-dust">
+              还没有留资用户。授权用户在 /demo 留手机/邮箱后，这里按人聚合。
+            </p>
+          )}
+          {profiles.map((p) => (
+            <details
+              key={p.user_key}
+              className="rounded-lg border border-fog-2 bg-soot p-4"
+            >
+              <summary className="cursor-pointer list-none">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-semibold text-bone">
+                    {p.name}
+                  </span>
+                  {p.company && (
+                    <span className="text-xs text-ash">· {p.company}</span>
+                  )}
+                  {p.contact && (
+                    <span className="rounded border border-volt/30 bg-volt/[0.06] px-1.5 py-0.5 text-[11px] text-volt">
+                      {p.contact}
+                    </span>
+                  )}
+                  <span className="numeral ml-auto text-xs text-dust">
+                    {p.count} 次提问
+                  </span>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] text-dust">
+                  <span>关注：</span>
+                  {p.domains.slice(0, 4).map((d) => (
+                    <span
+                      key={d.domain}
+                      className="rounded border border-fog-2 px-1.5 py-0.5"
+                    >
+                      {(DOMAIN_LABELS[d.domain] ?? d.domain)} ×{d.count}
+                    </span>
+                  ))}
+                  <span className="ml-auto numeral">
+                    最近 {new Date(p.lastActive).toLocaleDateString("zh-CN")}
+                  </span>
+                </div>
+              </summary>
+              <div className="mt-3 space-y-2 border-t border-fog-1 pt-3">
+                {p.conversations.map((c, i) => (
+                  <div key={i} className="text-xs">
+                    <div className="flex items-center gap-2 text-[11px] text-dust">
+                      <span className="rounded border border-fog-2 px-1 py-0.5">
+                        {DOMAIN_LABELS[c.domain] ?? c.domain}
+                      </span>
+                      <span className="numeral">
+                        {new Date(c.ts).toLocaleString("zh-CN")}
+                      </span>
+                    </div>
+                    <div className="mt-1 text-ash">{c.prompt}</div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ))}
         </div>
       </section>
 

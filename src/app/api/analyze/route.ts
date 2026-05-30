@@ -204,6 +204,8 @@ export async function POST(request: Request) {
       ip_hash: ipHash,
       // 标记是否为完整完成（用于看板区分「完整推演」vs「中断片段」）
       completed: outputAccumulator.includes("## 推演结论") || outputAccumulator.includes("## 追问方向"),
+      // 留资用户标识 → 画像归属
+      user_key: body.user_key,
     });
   }
 
