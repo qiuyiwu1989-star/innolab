@@ -183,6 +183,8 @@ export async function POST(request: Request) {
   });
 
   // 落盘逻辑抽成闭包，保证「只落一次」+ 可被 finally 安全调用
+  // access 在此一定非 null（上面无授权已 return 403），用局部变量固化类型
+  const accessLabel = access.label;
   let persisted = false;
   function persistConversation() {
     if (persisted) return;
@@ -190,7 +192,7 @@ export async function POST(request: Request) {
     if (!outputAccumulator.trim()) return;
     appendConversation({
       ts: new Date().toISOString(),
-      access_label: access.label,
+      access_label: accessLabel,
       domain: body.domain ?? "unknown",
       source: body.source ?? "free",
       is_follow_up: !!body.prior_summary,
