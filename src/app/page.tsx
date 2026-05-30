@@ -378,11 +378,11 @@ export default function Home() {
               href="/demo"
               className="rounded-full border border-fog-2 px-6 py-3 text-sm font-medium text-ash transition hover:border-bone hover:text-bone"
             >
-              先免费推演一次
+              进入工作台（需授权）
             </Link>
           </div>
           <p className="mt-4 text-xs text-dust">
-            先用 InnoLab 把问题想清楚，再决定要不要找我。
+            合作伙伴与客户凭授权暗号使用工作台；没有？先聊聊，看我能不能帮上。
           </p>
         </div>
       </section>
