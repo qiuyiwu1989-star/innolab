@@ -63,6 +63,8 @@
   --color-volt: #b3ff39;
   --color-volt-dim: #6f9e23;
   --color-volt-ink: #4a6b00;
+  /* 亮色下填充块用的深橄榄绿（白底上不刺眼、配白字对比足够） */
+  --color-volt-fill: #5b8a00;
 
   /* 字体栈 */
   --font-sans:
@@ -131,7 +133,30 @@ body {
   text-decoration-color: var(--color-volt-ink);
 }
 
-/* "已上线" 等小色块仍用 volt 填充 — 亮色下不变（CTA 醒目度需要这个） */
+/* 亮色下：荧光绿填充块（按钮/徽标/CTA）压深为橄榄绿，避免刺眼，并改配白字 */
+:root.light .bg-volt {
+  background-color: var(--color-volt-fill);
+  color: #ffffff;
+}
+/* 半透明强调底（bg-volt/[0.04~0.12] 等）在亮色下用橄榄绿做色相，淡晕染 */
+:root.light .bg-volt\/\[0\.04\],
+:root.light .bg-volt\/\[0\.05\],
+:root.light .bg-volt\/\[0\.06\],
+:root.light .bg-volt\/\[0\.08\],
+:root.light .bg-volt\/\[0\.12\] {
+  background-color: rgba(91, 138, 0, 0.08);
+}
+/* 边框用 volt 的地方，亮色下降到橄榄绿，弱化荧光感 */
+:root.light .border-volt {
+  border-color: var(--color-volt-fill);
+}
+/* 选区高亮在亮色下也用橄榄绿，配白字 */
+:root.light ::selection {
+  background: var(--color-volt-fill);
+  color: #ffffff;
+}
+
+/* "已上线" 等小色块在深色下仍用荧光 volt 填充（CTA 醒目度需要这个） */
 
 /* ── 装饰 utility ───────────────────────────────── */
 
