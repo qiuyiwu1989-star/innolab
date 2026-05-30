@@ -489,15 +489,37 @@ export function LiveRunner({
     }
   }, []);
 
-  // 流式时自动滚到底部
+  // 流式时「智能跟随」滚动：仅当用户已在底部附近时才自动跟随；
+  // 一旦用户手动往上滚（离底部 > 120px），停止自动滚动，让其自由查看。
+  const stickToBottomRef = useRef(true);
+
+  // 监听用户滚动，判断是否还「贴着底部」
   useEffect(() => {
-    if (phase === "streaming") {
+    const onScroll = () => {
+      const distanceToBottom =
+        document.documentElement.scrollHeight -
+        window.scrollY -
+        window.innerHeight;
+      stickToBottomRef.current = distanceToBottom < 120;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // 新内容到达时，只有「贴底」状态才自动滚
+  useEffect(() => {
+    if (phase === "streaming" && stickToBottomRef.current) {
       outputRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "end",
       });
     }
   }, [output, phase]);
+
+  // 每次开始新的流式分析时，重置为「跟随」
+  useEffect(() => {
+    if (phase === "streaming") stickToBottomRef.current = true;
+  }, [submittedPrompt, phase]);
 
   /** 保存用户背景到 state + localStorage */
   const saveUserContext = useCallback((text: string) => {
