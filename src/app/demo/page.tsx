@@ -114,11 +114,12 @@ export default function DemoPage() {
         {/* 底部小提示 */}
         <footer className="mt-20 rounded-xl border border-fog-2 bg-soot p-6 text-sm text-ash">
           <h3 className="text-base font-semibold text-bone">
-            为什么有配额？
+            为什么需要暗号？
           </h3>
           <p className="mt-3 leading-relaxed">
-            限免——我（邱懿武）出钱跑 AI 推演。每次推演调用 MiMo v2.5 Pro，83 个方法 + 76 案例进入上下文。
-            限额是为了让更多人能试用。如果问题足够重要、值得一个人陪你想透，我也提供 1:1 战略咨询。
+            InnoLab 推演工作台是邱懿武战略咨询的专属交付工具，不是公开的免费 AI 问答。
+            每次推演调用 MiMo v2.5 Pro，把 83 个方法 + 76 案例编入上下文——成本由邱懿武承担，
+            所以只授权给合作伙伴和客户长期使用。想了解这套方法论能怎么帮你？先看下方公开示范和真实案例，或直接联系。
           </p>
           <Link
             href="/about"
