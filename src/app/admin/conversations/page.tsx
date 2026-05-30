@@ -98,7 +98,7 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
                 </div>
                 <div className="mt-1 flex items-center gap-2 text-[11px] text-dust">
                   <span>output {r.output_length} 字 · 点击展开完整推演</span>
-                  <span className="ml-auto" onClick={(e) => e.preventDefault()}>
+                  <span className="ml-auto">
                     <MarkCandidate
                       token={ADMIN_TOKEN}
                       ts={r.ts}
