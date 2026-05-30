@@ -9,6 +9,10 @@
 //
 // 不配置时：仅内置一个测试客户 demo-vip（"测试客户"），用于验证机制。
 // token 只在服务端校验，不在前端 HTML 暴露其他客户的 token —— 一个客户只知道自己的链接。
+//
+// 另有「通用暗号」机制（合作伙伴自助注册）：
+//   INNOLAB_PASSCODES="innolab2026,partner-x"（逗号分隔，可多个）
+//   在 /demo 工作台输暗号即可长期不限次。token / 暗号 都只在服务端校验。
 
 export interface Client {
   /** URL 令牌，作为 /c/<token> 的路径，也作为请求头校验值 */
@@ -22,7 +26,11 @@ const FALLBACK_CLIENTS: Client[] = [
   { token: "demo-vip", name: "测试客户" },
 ];
 
+/** 内置兜底暗号（仅当 INNOLAB_PASSCODES 未配置时生效） */
+const FALLBACK_PASSCODES: string[] = ["innolab2026"];
+
 let _cache: Map<string, Client> | null = null;
+let _passcodeCache: Set<string> | null = null;
 
 function parseEnv(raw: string): Client[] {
   const out: Client[] = [];
@@ -55,4 +63,31 @@ export function getClientByToken(token: string | null | undefined): Client | nul
 /** 列出所有客户令牌（用于 generateStaticParams 预渲染专属页） */
 export function getAllClientTokens(): string[] {
   return Array.from(loadClients().keys());
+}
+
+function loadPasscodes(): Set<string> {
+  if (_passcodeCache) return _passcodeCache;
+  const raw = process.env.INNOLAB_PASSCODES?.trim();
+  const list = raw
+    ? raw.split(",").map((s) => s.trim()).filter(Boolean)
+    : FALLBACK_PASSCODES;
+  _passcodeCache = new Set(list);
+  return _passcodeCache;
+}
+
+/**
+ * 统一访问校验：传入的值既可能是 VIP 客户令牌，也可能是通用暗号。
+ * 返回授权标签（公司名 / "授权用户"）或 null（未授权）。
+ * /api/analyze 和 /api/access 用它决定是否放行 + 豁免限流。
+ */
+export function validateAccess(
+  token: string | null | undefined,
+): { label: string } | null {
+  if (!token) return null;
+  const t = token.trim();
+  if (!t) return null;
+  const client = loadClients().get(t);
+  if (client) return { label: client.name };
+  if (loadPasscodes().has(t)) return { label: "授权用户" };
+  return null;
 }

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { analyzeStream } from "@/lib/innolab-engine";
-import { checkAndConsume, getClientIp, unlimitedResult } from "@/lib/rate-limit";
-import { getClientByToken } from "@/lib/clients";
+import { getClientIp, unlimitedResult } from "@/lib/rate-limit";
+import { validateAccess } from "@/lib/clients";
 
 /**
  * 结构化日志事件 — 不含 prompt 内容（隐私）。
@@ -83,50 +83,44 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. 限流 —— 咨询客户专属令牌豁免限流，其余走公开配额
+  // 2. 访问授权 —— InnoLab 推演为授权专属（VIP 客户令牌 / 通用暗号）
   const ip = getClientIp(request);
-  const client = getClientByToken(body.client_token);
-  const limit = client ? unlimitedResult() : checkAndConsume(ip);
   const ipHash = hashIp(ip);
+  const access = validateAccess(body.client_token);
 
-  // 3. 事件日志（不含 prompt 内容，含哈希 IP + 领域 + 来源 + 是否续 thread）
+  if (!access) {
+    logEvent({
+      event: "analyze.denied",
+      reason: "no_access",
+      domain: body.domain ?? "unknown",
+      ip_hash: ipHash,
+      prompt_length: prompt.length,
+    });
+    return NextResponse.json(
+      {
+        error:
+          "InnoLab 推演工作台是邱懿武战略咨询的专属工具，需要授权暗号。请在工作台输入暗号，或联系邱懿武获取访问。",
+        reason: "no_access",
+      },
+      { status: 403 },
+    );
+  }
+
+  // 授权用户：推演不限次
+  const limit = unlimitedResult();
+
+  // 3. 事件日志（不含 prompt 内容；记录授权标签 + 领域 + 来源）
   logEvent({
     event: "analyze.request",
+    access_label: access.label,
     domain: body.domain ?? "unknown",
     source: body.source ?? "free",
-    client: client?.token ?? null,
     follow_up_kind: body.follow_up_kind ?? null,
     has_prior: !!body.prior_summary,
     prompt_length: prompt.length,
     prior_length: body.prior_summary?.length ?? 0,
     ip_hash: ipHash,
-    allowed: limit.allowed,
-    reason: limit.reason,
-    remaining_global: limit.remaining.global,
-    remaining_ip: limit.remaining.ip,
   });
-
-  if (!limit.allowed) {
-    const message =
-      limit.reason === "global_exhausted"
-        ? "今日全站配额已用完。InnoLab 限免阶段每天 50 次分析。请明天再试，或联系邱懿武做深度战略咨询。"
-        : "你今天已经用了 5 次。明天再试，或联系邱懿武做深度战略咨询。";
-    return NextResponse.json(
-      {
-        error: message,
-        reason: limit.reason,
-        resetAt: limit.resetAt,
-      },
-      {
-        status: 429,
-        headers: {
-          "X-RateLimit-Reset": String(Math.floor(limit.resetAt / 1000)),
-          "X-RateLimit-Remaining-Global": String(limit.remaining.global),
-          "X-RateLimit-Remaining-Ip": String(limit.remaining.ip),
-        },
-      },
-    );
-  }
 
   // 3. 流式响应
   const encoder = new TextEncoder();

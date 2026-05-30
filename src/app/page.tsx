@@ -88,42 +88,38 @@ export default function Home() {
             先免费体验，需要时找他本人。
           </p>
 
-          {/* 双 CTA：主=免费推演（入口），次=认识邱懿武（变现） */}
+          {/* 双 CTA：主=和邱懿武聊聊（咨询变现），次=进入工作台（授权伙伴） */}
           <div className="mt-12 max-w-2xl">
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href={`/demo?domain=${SUGGESTIONS[0].domain}&q=${encodeURIComponent(SUGGESTIONS[0].q)}`}
+                href="/about"
                 className="group flex flex-1 items-center justify-between gap-3 rounded-lg border border-volt bg-volt/[0.06] px-5 py-4 transition hover:bg-volt/[0.12]"
               >
                 <div className="flex items-center gap-3">
                   <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-volt" />
                   <span className="text-base font-medium text-bone">
-                    免费推演一次
+                    和邱懿武聊聊你的难题
                   </span>
                 </div>
-                <span className="flex items-center gap-2 text-xs text-volt">
-                  <span className="hidden sm:inline">限免</span>
-                  <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-                </span>
+                <ArrowRight className="size-4 text-volt transition group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/about"
+                href="/demo"
                 className="group flex items-center justify-center gap-2 rounded-lg border border-fog-2 px-5 py-4 text-base text-ash transition hover:border-fog-3 hover:text-bone sm:flex-none"
               >
-                认识邱懿武
-                <ArrowUpRight className="size-4 transition group-hover:text-volt" />
+                进入工作台
+                <span className="text-xs text-dust">需授权</span>
               </Link>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="py-1 text-xs text-dust">试试问：</span>
+              <span className="py-1 text-xs text-dust">擅长分析：</span>
               {SUGGESTIONS.map((s) => (
-                <Link
+                <span
                   key={s.label}
-                  href={`/demo?domain=${s.domain}&q=${encodeURIComponent(s.q)}`}
-                  className="rounded-full border border-fog-2 px-3 py-1 text-xs text-ash transition hover:border-fog-3 hover:text-bone"
+                  className="rounded-full border border-fog-2 px-3 py-1 text-xs text-ash"
                 >
                   {s.label}
-                </Link>
+                </span>
               ))}
             </div>
           </div>

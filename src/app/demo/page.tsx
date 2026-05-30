@@ -5,13 +5,13 @@ import { demoScripts } from "@/lib/demo-scripts";
 import { getAllMethods } from "@/lib/methods";
 import { getCaseIndex } from "@/lib/cases";
 import { DemoRunner } from "./demo-runner";
-import { LiveRunner } from "./live-runner";
+import { AccessGate } from "@/components/demo/access-gate";
 import type { MethodMeta } from "@/components/demo/method-chain-viz";
 
 export const metadata: Metadata = {
-  title: "Demo · 试用 InnoLab 引擎",
+  title: "战略推演工作台 · 授权专属",
   description:
-    "把真实商业问题输入 InnoLab — 83 个方法框架编排出战略推演。v0.1 限免使用。",
+    "InnoLab 推演工作台是邱懿武战略咨询的专属交付工具，需要授权暗号。下方可看手写示范了解推演结构。",
 };
 
 export default function DemoPage() {
@@ -55,7 +55,7 @@ export default function DemoPage() {
         <header>
           <div className="inline-flex items-center gap-2 rounded-full border border-volt/40 bg-volt/[0.05] px-3 py-1.5 text-[11px] font-medium text-volt">
             <Beaker className="size-3.5" />
-            <span>Live · v0.1 限免内测</span>
+            <span>授权专属 · 战略推演工作台</span>
           </div>
           <h1
             className="display mt-6 text-bone"
@@ -68,7 +68,7 @@ export default function DemoPage() {
             怎么推演。
           </h1>
           <p className="mt-6 max-w-xl text-base text-ash sm:text-lg">
-            输入一个真实商业问题，InnoLab 用 <b className="font-semibold text-bone">83 个方法</b>
+            授权后，输入真实商业问题，InnoLab 用 <b className="font-semibold text-bone">83 个方法</b>
             编排出问题重构 → 方法链 → 关键判断 → 推演结论。
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-dust">
@@ -83,9 +83,9 @@ export default function DemoPage() {
           </div>
         </header>
 
-        {/* 主体：实时分析（LiveRunner） */}
+        {/* 主体：授权门禁 → 实时分析（LiveRunner） */}
         <div className="mt-12">
-          <LiveRunner methodsIndex={methodsIndex} casesIndex={casesIndex} />
+          <AccessGate methodsIndex={methodsIndex} casesIndex={casesIndex} />
         </div>
 
         {/* —— 分隔 —— */}
@@ -104,7 +104,7 @@ export default function DemoPage() {
               5 个手写示范
             </h2>
             <p className="mt-2 text-sm text-ash">
-              这些是手写的推演样本（不消耗你的限免配额），用来快速展示输出结构。真正的分析在上面。
+              没有暗号也能看——这些是手写的推演样本，展示 InnoLab 的输出结构。真正的实时推演在上方工作台（需授权）。
             </p>
           </div>
 
