@@ -158,6 +158,30 @@ body {
 
 /* "已上线" 等小色块在深色下仍用荧光 volt 填充（CTA 醒目度需要这个） */
 
+/* 淡化的 volt 文字（text-volt/50~80）在亮底上几乎看不见 — 统一降到深绿不透明 */
+:root.light .text-volt\/50,
+:root.light .text-volt\/60,
+:root.light .text-volt\/70,
+:root.light .text-volt\/80 {
+  color: var(--color-volt-ink);
+}
+
+/* 引擎色：深色用 -300/-400（亮调），亮色下对比不足 — 统一压到 -600/-700 深调
+   覆盖方法调用链卡片(method-chain-viz)的 ID 文字与圆点 */
+:root.light .text-amber-300 { color: #b45309; }   /* amber-700 */
+:root.light .text-sky-300 { color: #0369a1; }      /* sky-700 */
+:root.light .text-emerald-300 { color: #047857; }  /* emerald-700 */
+:root.light .text-rose-300 { color: #be123c; }     /* rose-700 */
+:root.light .text-violet-300 { color: #6d28d9; }   /* violet-700 */
+:root.light .text-cyan-300 { color: #0e7490; }     /* cyan-700 */
+/* 引擎圆点 -400 在亮底也偏浅 — 压到 -500/-600 */
+:root.light .bg-amber-400 { background-color: #d97706; }
+:root.light .bg-sky-400 { background-color: #0284c7; }
+:root.light .bg-emerald-400 { background-color: #059669; }
+:root.light .bg-rose-400 { background-color: #e11d48; }
+:root.light .bg-violet-400 { background-color: #7c3aed; }
+:root.light .bg-cyan-400 { background-color: #0891b2; }
+
 /* ── 装饰 utility ───────────────────────────────── */
 
 .bg-grid {

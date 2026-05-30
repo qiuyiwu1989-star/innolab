@@ -217,6 +217,18 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
   },
 ];
 
+/**
+ * "装填弹药库"等待阶段的推理步骤 — 让等待看起来像 AI 在分步行动 / 自我反思，
+ * 而不只是机械换标签。每一步配一句"它在干什么"。纯视觉，不影响真实逻辑。
+ */
+const THINKING_STAGES: { label: string; detail: string }[] = [
+  { label: "读懂你的问题", detail: "拆解表面诉求，定位真正要解决的决策点" },
+  { label: "检索方法库", detail: "在 83 个方法中筛选最相关的几个" },
+  { label: "匹配实战案例", detail: "从 76 个真实案例里找可参照的先例" },
+  { label: "编排推演链", detail: "把方法按逻辑顺序串成分析路径" },
+  { label: "生成判断", detail: "逐法推演，准备给出 do / don't 结论" },
+];
+
 /** 各领域在"思考中"阶段循环展示的方法 ID — 纯视觉动画，不影响逻辑 */
 const DOMAIN_METHOD_CYCLE: Record<string, string[]> = {
   "ai-transform": ["CG06", "ST10", "ST09", "DC05", "ST07", "CG01", "EV03", "ST19", "DC01", "DC06"],
@@ -266,6 +278,8 @@ export function LiveRunner({
   const [waitingFirstChunk, setWaitingFirstChunk] = useState(false);
   /** 思考动画：循环展示方法 ID（纯视觉） */
   const [thinkingMethodId, setThinkingMethodId] = useState("");
+  /** 思考动画：当前推理阶段索引（让等待感像 AI 在分步行动） */
+  const [thinkingStage, setThinkingStage] = useState(0);
   /** 本地分析历史（localStorage） */
   const [history, setHistory] = useState<HistoryItem[]>([]);
   /** 完成后的反馈（一次性） */
@@ -414,10 +428,12 @@ export function LiveRunner({
     return () => clearInterval(id);
   }, [phase, prompt]);
 
-  // 思考动画：waitingFirstChunk 时循环展示域内方法 ID
+  // 思考动画：waitingFirstChunk 时，分阶段推进推理步骤 + 在每阶段内快速翻动方法 ID
+  // 让等待看起来像 AI 在"读问题→检索→匹配→编排→生成"地行动，而非机械换标签
   useEffect(() => {
     if (!waitingFirstChunk) {
       setThinkingMethodId("");
+      setThinkingStage(0);
       if (thinkingTimerRef.current !== null) {
         clearInterval(thinkingTimerRef.current);
         thinkingTimerRef.current = null;
@@ -426,12 +442,18 @@ export function LiveRunner({
     }
     const pool =
       DOMAIN_METHOD_CYCLE[pickedFromDomain] ?? DOMAIN_METHOD_CYCLE["all"];
+    let tick = 0;
     let idx = 0;
+    setThinkingStage(0);
     setThinkingMethodId(pool[idx]);
+    // 每 220ms 翻一个方法 ID；每 ~1.5s（7 个 tick）推进一个推理阶段，停在最后一阶段
     thinkingTimerRef.current = setInterval(() => {
+      tick += 1;
       idx = (idx + 1) % pool.length;
       setThinkingMethodId(pool[idx]);
-    }, 270);
+      const stage = Math.min(Math.floor(tick / 7), THINKING_STAGES.length - 1);
+      setThinkingStage(stage);
+    }, 220);
     return () => {
       if (thinkingTimerRef.current !== null) {
         clearInterval(thinkingTimerRef.current);
@@ -1363,13 +1385,17 @@ export function LiveRunner({
                 </span>
                 {waitingFirstChunk ? (
                   <span className="flex items-center gap-2">
-                    <span>装填弹药库</span>
+                    <span className="font-medium text-bone transition-all duration-300">
+                      {THINKING_STAGES[thinkingStage]?.label ?? "装填弹药库"}
+                    </span>
                     {thinkingMethodId && (
                       <span className="numeral rounded border border-volt/25 bg-volt/[0.06] px-1.5 py-0.5 text-[10px] font-medium text-volt/80 tabular-nums transition-all duration-200">
                         {thinkingMethodId}
                       </span>
                     )}
-                    <span className="text-dust">· 83 方法 + 76 案例</span>
+                    <span className="hidden text-dust sm:inline">
+                      {THINKING_STAGES[thinkingStage]?.detail}
+                    </span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
