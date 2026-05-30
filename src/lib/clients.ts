@@ -65,13 +65,28 @@ export function getAllClientTokens(): string[] {
   return Array.from(loadClients().keys());
 }
 
-function loadPasscodes(): Set<string> {
+function loadPasscodes(): Map<string, string> {
   if (_passcodeCache) return _passcodeCache;
   const raw = process.env.INNOLAB_PASSCODES?.trim();
-  const list = raw
-    ? raw.split(",").map((s) => s.trim()).filter(Boolean)
-    : FALLBACK_PASSCODES;
-  _passcodeCache = new Set(list);
+  const map = new Map<string, string>();
+  if (raw) {
+    // 逗号分隔，每项 "code=身份"；无 "=" 时身份回退为"授权用户"
+    for (const item of raw.split(",")) {
+      const trimmed = item.trim();
+      if (!trimmed) continue;
+      const eq = trimmed.indexOf("=");
+      if (eq > 0) {
+        const code = trimmed.slice(0, eq).trim();
+        const name = trimmed.slice(eq + 1).trim();
+        if (code) map.set(code, name || "授权用户");
+      } else {
+        map.set(trimmed, "授权用户");
+      }
+    }
+  } else {
+    for (const [k, v] of Object.entries(FALLBACK_PASSCODES)) map.set(k, v);
+  }
+  _passcodeCache = map;
   return _passcodeCache;
 }
 
@@ -88,6 +103,7 @@ export function validateAccess(
   if (!t) return null;
   const client = loadClients().get(t);
   if (client) return { label: client.name };
-  if (loadPasscodes().has(t)) return { label: "授权用户" };
+  const passName = loadPasscodes().get(t);
+  if (passName) return { label: passName };
   return null;
 }

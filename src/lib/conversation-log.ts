@@ -99,6 +99,66 @@ export function conversationStats(): {
   return { total, byDomain, byLabel };
 }
 
+// ── 洞察层：领域热度 + 高频关键词 + 完成率 ──────────────────────────────
+
+const KEYWORD_STOPWORDS = new Set([
+  "我们", "我想", "我的", "公司", "怎么", "如何", "应该", "可以", "没有",
+  "现在", "已经", "但是", "还是", "这个", "那个", "什么", "为什么", "是否",
+  "一个", "这样", "他们", "自己", "需要", "问题", "感觉", "比较", "关于",
+  "来说", "或者", "因为", "所以", "这些", "那些", "就是", "不是", "如果",
+  "产品", "战略", "团队", "用户", "市场", "怎样", "目前", "想做", "做的",
+]);
+
+/**
+ * 洞察层聚合 —— 直接告诉运营者「大家都在愁什么」：
+ *  - keywords: 高频关键词（从 prompt 提取 2-6 字中文 / 英文词，去停用词）
+ *  - byDomainSorted: 领域热度降序
+ *  - completionRate: 完整推演占比
+ *  - followUpRate: 续问占比（用户愿意深聊 = 价值信号）
+ */
+export function conversationInsights(topK = 24) {
+  const recs = readRecentConversations(100000);
+  const total = recs.length;
+  const kw: Record<string, number> = {};
+  const byDomain: Record<string, number> = {};
+  let completed = 0;
+  let followUps = 0;
+
+  for (const r of recs) {
+    byDomain[r.domain] = (byDomain[r.domain] ?? 0) + 1;
+    if (r.completed) completed += 1;
+    if (r.is_follow_up) followUps += 1;
+    // 关键词：中文 2-6 字片段 + 英文/数字词 ≥2
+    const tokens = (r.prompt ?? "").match(/[一-龥]{2,6}|[a-zA-Z0-9]{2,}/g) ?? [];
+    const seen = new Set<string>(); // 同一条 prompt 内同词只计一次
+    for (const t of tokens) {
+      const k = t.toLowerCase();
+      if (KEYWORD_STOPWORDS.has(t) || k.length < 2) continue;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      kw[k] = (kw[k] ?? 0) + 1;
+    }
+  }
+
+  const keywords = Object.entries(kw)
+    .filter(([, n]) => n >= 2) // 至少 2 条提到才算"高频"
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, topK)
+    .map(([word, count]) => ({ word, count }));
+
+  const byDomainSorted = Object.entries(byDomain)
+    .sort((a, b) => b[1] - a[1])
+    .map(([domain, count]) => ({ domain, count }));
+
+  return {
+    total,
+    keywords,
+    byDomainSorted,
+    completionRate: total ? Math.round((completed / total) * 100) : 0,
+    followUpRate: total ? Math.round((followUps / total) * 100) : 0,
+  };
+}
+
 // ── 候选案例（飞轮第②圈：把高价值真实推演沉淀成案例库素材）──────────────
 
 /** 已标记为候选案例的对话 ts 集合（去重用） */

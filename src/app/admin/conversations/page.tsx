@@ -1,10 +1,22 @@
 import {
   readRecentConversations,
   conversationStats,
+  conversationInsights,
   candidateTsSet,
   candidateCount,
 } from "@/lib/conversation-log";
 import { MarkCandidate } from "@/components/admin/mark-candidate";
+
+const DOMAIN_LABELS: Record<string, string> = {
+  "ai-transform": "AI 转型",
+  product: "产品",
+  "ip-content": "IP / 内容",
+  org: "组织",
+  strategy: "战略",
+  all: "未指定",
+  free: "自由",
+  unknown: "未知",
+};
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "innolab-admin";
 
@@ -32,6 +44,7 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
   }
 
   const stats = conversationStats();
+  const insights = conversationInsights();
   const recent = readRecentConversations(80);
   const candidates = candidateTsSet();
   const candTotal = candidateCount();
@@ -54,10 +67,81 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
         </div>
       </section>
 
-      {/* 按领域 / 授权方分布 */}
+      {/* ═══ 洞察层：大家都在愁什么 ═══ */}
+      <section className="mt-10 rounded-xl border border-volt/30 bg-volt/[0.03] p-5">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-sm font-semibold text-volt">
+            洞察 · 大家都在愁什么
+          </h2>
+          <span className="text-[11px] text-dust">
+            完整推演 {insights.completionRate}% · 续问率 {insights.followUpRate}%
+          </span>
+        </div>
+
+        {/* 领域热度 */}
+        <div className="mt-4">
+          <div className="text-[11px] uppercase tracking-widest text-dust">
+            领域热度（该写哪个案例 / 该卖哪类咨询）
+          </div>
+          <div className="mt-2 space-y-1.5">
+            {insights.byDomainSorted.length === 0 && (
+              <div className="text-xs text-dust">暂无数据</div>
+            )}
+            {insights.byDomainSorted.map((d) => {
+              const max = insights.byDomainSorted[0]?.count ?? 1;
+              return (
+                <div key={d.domain} className="flex items-center gap-2 text-xs">
+                  <span className="w-20 shrink-0 truncate text-ash">
+                    {DOMAIN_LABELS[d.domain] ?? d.domain}
+                  </span>
+                  <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-fog-1">
+                    <div
+                      className="h-full rounded-full bg-volt"
+                      style={{ width: `${Math.round((d.count / max) * 100)}%` }}
+                    />
+                  </div>
+                  <span className="numeral w-8 shrink-0 text-right text-bone">
+                    {d.count}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 高频关键词云 */}
+        <div className="mt-5">
+          <div className="text-[11px] uppercase tracking-widest text-dust">
+            高频关键词（≥2 次提到 · 字号=热度）
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            {insights.keywords.length === 0 && (
+              <div className="text-xs text-dust">
+                还没有足够数据 — 攒几条真实推演后这里会浮现用户的真实关切
+              </div>
+            )}
+            {insights.keywords.map((k) => {
+              const max = insights.keywords[0]?.count ?? 1;
+              const scale = 0.85 + (k.count / max) * 0.9; // 0.85x ~ 1.75x
+              return (
+                <span
+                  key={k.word}
+                  className="text-bone"
+                  style={{ fontSize: `${scale}rem`, opacity: 0.55 + (k.count / max) * 0.45 }}
+                  title={`${k.count} 次`}
+                >
+                  {k.word}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 按领域 / 授权方分布（含具名身份） */}
       <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Distribution title="按领域" data={stats.byDomain} />
-        <Distribution title="按授权方" data={stats.byLabel} />
+        <Distribution title="按领域" data={stats.byDomain} labels={DOMAIN_LABELS} />
+        <Distribution title="按身份（谁在用）" data={stats.byLabel} />
       </section>
 
       {/* 最近对话 */}
@@ -148,9 +232,11 @@ function Stat({ label, value }: { label: string; value: number | string }) {
 function Distribution({
   title,
   data,
+  labels,
 }: {
   title: string;
   data: Record<string, number>;
+  labels?: Record<string, string>;
 }) {
   const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
   const max = entries[0]?.[1] ?? 1;
@@ -163,7 +249,9 @@ function Distribution({
         )}
         {entries.map(([k, v]) => (
           <div key={k} className="flex items-center gap-2 text-xs">
-            <span className="w-24 shrink-0 truncate text-ash">{k}</span>
+            <span className="w-24 shrink-0 truncate text-ash">
+              {labels?.[k] ?? k}
+            </span>
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-fog-1">
               <div
                 className="h-full rounded-full bg-volt"
