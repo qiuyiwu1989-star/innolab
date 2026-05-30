@@ -46,3 +46,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 rate-limit-state.json
+
+# 对话落盘（飞轮燃料，不进 git）
+data/

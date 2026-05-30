@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { analyzeStream } from "@/lib/innolab-engine";
 import { getClientIp, unlimitedResult } from "@/lib/rate-limit";
 import { validateAccess } from "@/lib/clients";
+import { appendConversation } from "@/lib/conversation-log";
 
 /**
  * 结构化日志事件 — 不含 prompt 内容（隐私）。
@@ -122,8 +123,9 @@ export async function POST(request: Request) {
     ip_hash: ipHash,
   });
 
-  // 3. 流式响应
+  // 3. 流式响应（同时在服务端累积完整 output → 推演完成后落盘，作为飞轮燃料）
   const encoder = new TextEncoder();
+  let outputAccumulator = "";
   const stream = new ReadableStream({
     async start(controller) {
       const send = (obj: unknown) => {
@@ -139,6 +141,16 @@ export async function POST(request: Request) {
           priorSummary: body.prior_summary,
           signal: request.signal,
         })) {
+          if (
+            event &&
+            typeof event === "object" &&
+            "type" in event &&
+            event.type === "delta" &&
+            "text" in event &&
+            typeof event.text === "string"
+          ) {
+            outputAccumulator += event.text;
+          }
           send(event);
         }
         send({ type: "done" });
@@ -149,6 +161,22 @@ export async function POST(request: Request) {
         });
       } finally {
         controller.close();
+        // 对话落盘 —— 只在真正产出了内容时记录（失败静默，不影响用户）
+        if (outputAccumulator.trim()) {
+          appendConversation({
+            ts: new Date().toISOString(),
+            access_label: access.label,
+            domain: body.domain ?? "unknown",
+            source: body.source ?? "free",
+            is_follow_up: !!body.prior_summary,
+            follow_up_kind: body.follow_up_kind ?? null,
+            prompt,
+            output: outputAccumulator,
+            prompt_length: prompt.length,
+            output_length: outputAccumulator.length,
+            ip_hash: ipHash,
+          });
+        }
       }
     },
     cancel() {
