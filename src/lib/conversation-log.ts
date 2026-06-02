@@ -11,6 +11,7 @@ import path from "node:path";
 const DATA_DIR = path.join(process.cwd(), "data");
 const LOG_FILE = path.join(DATA_DIR, "conversations.jsonl");
 const CANDIDATE_FILE = path.join(DATA_DIR, "candidate-cases.jsonl");
+const FEEDBACK_FILE = path.join(DATA_DIR, "feedback.jsonl");
 
 export interface ConversationRecord {
   ts: string;
@@ -273,4 +274,66 @@ export function markCandidateByTs(ts: string): boolean {
 /** 候选案例数量 */
 export function candidateCount(): number {
   return candidateTsSet().size;
+}
+
+// ── 质量层（飞轮第③圈：用 👍/👎 反馈反推优化引擎）──────────────
+
+export interface FeedbackRecord {
+  ts: string;
+  kind: "up" | "down";
+  /** 被评价的问题（前 500 字）*/
+  prompt: string;
+  domain?: string;
+  /** 👎 时用户的吐槽，最有价值 */
+  note?: string;
+  ip_hash?: string;
+}
+
+/** 落盘一条反馈 */
+export function appendFeedback(rec: FeedbackRecord): void {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.appendFileSync(FEEDBACK_FILE, JSON.stringify(rec) + "\n", "utf8");
+  } catch {
+    /* 落盘失败不影响业务 */
+  }
+}
+
+/** 读全部反馈 */
+export function readFeedback(): FeedbackRecord[] {
+  try {
+    if (!fs.existsSync(FEEDBACK_FILE)) return [];
+    return fs
+      .readFileSync(FEEDBACK_FILE, "utf8")
+      .split("\n")
+      .filter((l) => l.trim())
+      .map((l) => {
+        try {
+          return JSON.parse(l) as FeedbackRecord;
+        } catch {
+          return null;
+        }
+      })
+      .filter((r): r is FeedbackRecord => !!r);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * 质量层汇总：总赞/踩数 + 所有 👎（含吐槽,按时间倒序）。
+ * 👎 是迭代引擎最直接的信号 —— 哪些 prompt 答得差、用户嫌哪里不对。
+ */
+export function feedbackQuality(): {
+  up: number;
+  down: number;
+  downs: FeedbackRecord[];
+} {
+  const all = readFeedback();
+  const up = all.filter((f) => f.kind === "up").length;
+  const down = all.filter((f) => f.kind === "down").length;
+  const downs = all
+    .filter((f) => f.kind === "down")
+    .sort((a, b) => (a.ts < b.ts ? 1 : -1));
+  return { up, down, downs };
 }

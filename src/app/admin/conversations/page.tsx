@@ -5,6 +5,7 @@ import {
   conversationProfiles,
   candidateTsSet,
   candidateCount,
+  feedbackQuality,
 } from "@/lib/conversation-log";
 import { MarkCandidate } from "@/components/admin/mark-candidate";
 
@@ -47,6 +48,7 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
   const stats = conversationStats();
   const insights = conversationInsights();
   const profiles = conversationProfiles();
+  const quality = feedbackQuality();
   const recent = readRecentConversations(80);
   const candidates = candidateTsSet();
   const candTotal = candidateCount();
@@ -66,6 +68,47 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
           <Stat label="领域数" value={Object.keys(stats.byDomain).length} />
           <Stat label="授权方数" value={Object.keys(stats.byLabel).length} />
           <Stat label="候选案例" value={candTotal} />
+        </div>
+      </section>
+
+      {/* ═══ 质量层：哪些推演翻车了（迭代引擎最直接的信号）═══ */}
+      <section className="mt-10">
+        <h2 className="text-sm font-semibold text-bone">
+          质量 · 哪些推演翻车了
+        </h2>
+        <p className="mt-1 text-[11px] text-dust">
+          👍 {quality.up} · 👎 {quality.down} —— 👎 是迭代引擎最直接的信号，看用户嫌哪里不对 → 反推优化方法/system prompt
+        </p>
+        <div className="mt-3 space-y-2">
+          {quality.downs.length === 0 && (
+            <p className="rounded-lg border border-fog-2 bg-soot p-5 text-sm text-dust">
+              暂无 👎 反馈。用户在推演完成后点「不准」时，会带着吐槽出现在这里。
+            </p>
+          )}
+          {quality.downs.slice(0, 20).map((f, i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-rose-500/30 bg-rose-500/[0.04] p-3"
+            >
+              <div className="flex items-center gap-2 text-[11px] text-dust">
+                <span className="rounded border border-rose-500/40 px-1.5 py-0.5 text-rose-400">
+                  👎 不准
+                </span>
+                <span className="rounded border border-fog-2 px-1.5 py-0.5">
+                  {DOMAIN_LABELS[f.domain ?? ""] ?? f.domain ?? "—"}
+                </span>
+                <span className="numeral ml-auto">
+                  {new Date(f.ts).toLocaleString("zh-CN")}
+                </span>
+              </div>
+              <div className="mt-1.5 text-sm text-bone">{f.prompt}</div>
+              {f.note && (
+                <div className="mt-1 rounded bg-ink/60 px-2 py-1 text-xs text-ash">
+                  用户吐槽：{f.note}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 

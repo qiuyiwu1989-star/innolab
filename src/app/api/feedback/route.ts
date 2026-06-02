@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
+import { appendFeedback } from "@/lib/conversation-log";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,6 +70,16 @@ export async function POST(request: Request) {
       ip_hash: hashIp(ip),
     }),
   );
+
+  // 落盘到飞轮 —— 质量层用它反推优化引擎
+  appendFeedback({
+    ts: new Date().toISOString(),
+    kind,
+    prompt,
+    domain: body.domain,
+    note: note || undefined,
+    ip_hash: hashIp(ip),
+  });
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
