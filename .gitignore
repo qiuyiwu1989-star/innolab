@@ -49,3 +49,5 @@ rate-limit-state.json
 
 # 对话落盘（飞轮燃料，不进 git）
 data/
+
+# 部署密码不进 git（deploy 脚本从环境变量读）

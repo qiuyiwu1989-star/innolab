@@ -49,6 +49,8 @@ interface AnalyzeBody {
   follow_up_kind?: string;
   /** 咨询客户专属令牌：有效则豁免限流（InnoLab 作为咨询交付增强工具） */
   client_token?: string;
+  /** 留资派生的用户标识 → 飞轮按人归属画像 */
+  user_key?: string;
 }
 
 /**
