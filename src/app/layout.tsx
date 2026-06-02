@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -105,6 +106,18 @@ export default function RootLayout({
         {/* Vercel 部署后自动收集，本地无副作用 */}
         <Analytics />
         <SpeedInsights />
+        {/* 百度统计 —— 看真人流量（PV/UV/来源/搜索词），补上"机器在抓但看不到真人"的盲区 */}
+        <Script id="baidu-tongji" strategy="afterInteractive">
+          {`
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?2d02e198a4abaa8ac3b0a97aacd10186";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );
