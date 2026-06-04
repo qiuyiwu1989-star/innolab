@@ -166,13 +166,16 @@ export function buildPriorSummary(thread: Thread, maxChars = 1500): string {
     : joined;
 }
 
-/** 从完整 markdown 输出里提取"关键判断 + 推演结论" */
+/** 从完整 markdown 输出里提取判断精华（兼容新旧标题） */
 function extractEssence(output: string): string {
-  const judgmentMatch = output.match(/##\s*关键判断\s*\n+([\s\S]*?)(?=\n##|$)/);
-  const verdictMatch = output.match(/##\s*推演结论\s*\n+([\s\S]*?)(?=\n##|$)/);
+  // 新标题：我的判断 / 落地动作；旧标题：关键判断 / 推演结论（向后兼容）
+  const judgmentMatch =
+    output.match(/##\s*(?:我的判断|关键判断)\s*\n+([\s\S]*?)(?=\n##|$)/);
+  const verdictMatch =
+    output.match(/##\s*(?:落地动作|推演结论)\s*\n+([\s\S]*?)(?=\n##|$)/);
   const parts: string[] = [];
-  if (judgmentMatch) parts.push(`关键判断：${judgmentMatch[1].trim()}`);
-  if (verdictMatch) parts.push(`推演结论：${verdictMatch[1].trim()}`);
+  if (judgmentMatch) parts.push(`判断：${judgmentMatch[1].trim()}`);
+  if (verdictMatch) parts.push(`落地：${verdictMatch[1].trim()}`);
   if (parts.length === 0) {
     // fallback：截取最后 600 字
     return output.slice(-600);
@@ -180,10 +183,25 @@ function extractEssence(output: string): string {
   return parts.join("\n");
 }
 
-/** 从输出里抽取被引用的方法 ID（用于"深入方法"按钮） */
+/**
+ * 从输出里抽取被引用的方法 ID（用于方法链可视化 + "深入方法"按钮）。
+ * 兼容两种来源：
+ *   ① 新格式：末尾「## 本次方法」行里的 ID（CG16 · ST06 · EV01）
+ *   ② 旧格式：三级标题 ### CG16（76 个案例 + 历史输出仍用）
+ */
 export function extractMethodIds(output: string): string[] {
-  const matches = output.match(/###\s+([A-Z]{2}\d{2})/g) ?? [];
-  const ids = matches.map((m) => m.replace(/###\s+/, "").trim());
+  const ids: string[] = [];
+  // ① 末尾方法标签行
+  const tagSection = output.match(/##\s*本次方法\s*\n+([\s\S]*?)(?=\n##|$)/);
+  if (tagSection) {
+    const tagIds = tagSection[1].match(/[A-Z]{2}\d{2}/g) ?? [];
+    ids.push(...tagIds);
+  }
+  // ② 三级标题（向后兼容）
+  const headingIds = (output.match(/###\s+([A-Z]{2}\d{2})/g) ?? []).map((m) =>
+    m.replace(/###\s+/, "").trim(),
+  );
+  ids.push(...headingIds);
   // 去重保序
   return Array.from(new Set(ids));
 }

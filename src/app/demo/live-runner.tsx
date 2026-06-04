@@ -1392,14 +1392,15 @@ export function LiveRunner({
 
           {/* 状态条 */}
           {(() => {
-            // 从当前流式输出推断正在生成哪个段落
+            // 从当前流式输出推断正在生成哪个段落（按出现顺序倒序判断）
             const streamingSection = (() => {
               if (!output) return null;
               if (output.includes("## 追问方向")) return "追问方向";
-              if (output.includes("## 推演结论")) return "推演结论";
-              if (output.includes("## 关键判断")) return "关键判断";
-              if (output.includes("## 调用方法")) return "调用方法";
-              if (output.includes("## 问题重构")) return "问题重构";
+              if (output.includes("## 本次方法")) return "本次方法";
+              if (output.includes("## 落地动作")) return "落地动作";
+              if (output.includes("## 我的判断")) return "我的判断";
+              if (output.includes("## 我的推演")) return "我的推演";
+              if (output.includes("## 真正的问题")) return "真正的问题";
               return "分析中";
             })();
             return (
