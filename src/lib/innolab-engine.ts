@@ -40,33 +40,18 @@ export function buildSystemPrompt(): string {
     })
     .join("\n");
 
+  // 案例索引「瘦身版」：system prompt 里只放一行目录（ID · 标题 · 方法链），
+  // 让模型知道有哪些先例、能引用；案例全文（核心判断/结论）由 buildDomainContext
+  // 在每次请求时只注入最相关的 3 个 → 大幅缩小 system prompt → 首字延迟显著降低。
   const caseIndex = cases
     .map((c) => {
       const flow = c.analysis_flow;
-      // 方法链：ID → ID → ID（有 analysis_flow 时用实际执行顺序）
       const chainStr = flow
-        ? flow.method_chain.map((m) => m.id).join(" → ")
-        : (c.related_methods ?? []).join(" → ");
-      const lines: string[] = [
-        `### ${c.id} · ${c.title}`,
-        `方法链：${chainStr}`,
-        `概要：${c.summary}`,
-      ];
-      if (flow?.key_judgment) {
-        // 截断到 120 字以内
-        const j = flow.key_judgment.slice(0, 120);
-        lines.push(`核心判断：${j}${flow.key_judgment.length > 120 ? "…" : ""}`);
-      }
-      if (flow?.verdict?.length) {
-        const verdicts = flow.verdict
-          .slice(0, 3)
-          .map((v) => `  ${v.kind === "do" ? "✓" : "✗"} ${v.text}`)
-          .join("\n");
-        lines.push(`推演结论：\n${verdicts}`);
-      }
-      return lines.join("\n");
+        ? flow.method_chain.map((m) => m.id).join("→")
+        : (c.related_methods ?? []).join("→");
+      return `- ${c.id} ${c.title}（${chainStr}）`;
     })
-    .join("\n\n");
+    .join("\n");
 
   _systemPrompt = `${skill}
 
@@ -78,7 +63,7 @@ export function buildSystemPrompt(): string {
 
 ${methodIndex}
 
-## 案例索引
+## 案例目录（仅 ID·标题·方法链；与本次问题最相关的案例全文会在用户消息里单独给你）
 
 ${caseIndex}
 
@@ -316,7 +301,7 @@ export async function* analyzeStream({
         model,
         stream: true,
         stream_options: { include_usage: true }, // 让最后一个 chunk 携带 usage
-        max_tokens: 4096,
+        max_tokens: 2800,
         messages: [
           { role: "system", content: system },
           { role: "user", content: userMessage },
