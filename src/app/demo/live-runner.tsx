@@ -283,6 +283,8 @@ export function LiveRunner({
   const [thinkingMethodId, setThinkingMethodId] = useState("");
   /** 思考动画：当前推理阶段索引（让等待感像 AI 在分步行动） */
   const [thinkingStage, setThinkingStage] = useState(0);
+  /** 等待已耗时（秒）—— 诚实告诉用户「在认真算，需要十几秒」 */
+  const [thinkingSeconds, setThinkingSeconds] = useState(0);
   /** 本地分析历史（localStorage） */
   const [history, setHistory] = useState<HistoryItem[]>([]);
   /** 完成后的反馈（一次性） */
@@ -448,20 +450,24 @@ export function LiveRunner({
     let tick = 0;
     let idx = 0;
     setThinkingStage(0);
+    setThinkingSeconds(0);
     setThinkingMethodId(pool[idx]);
-    // 每 220ms 翻一个方法 ID；每 ~1.5s（7 个 tick）推进一个推理阶段，停在最后一阶段
+    // 每 220ms 翻一个方法 ID；每 ~1.5s 推进一个推理阶段——「循环」而非卡死在最后一阶段，
+    // 因为首字本就要十几秒，卡死会让人以为"快好了却干等"，循环+耗时更诚实。
     thinkingTimerRef.current = setInterval(() => {
       tick += 1;
       idx = (idx + 1) % pool.length;
       setThinkingMethodId(pool[idx]);
-      const stage = Math.min(Math.floor(tick / 7), THINKING_STAGES.length - 1);
-      setThinkingStage(stage);
+      setThinkingStage(Math.floor(tick / 7) % THINKING_STAGES.length);
     }, 220);
+    // 每秒累加已耗时，显示给用户
+    const secTimer = setInterval(() => setThinkingSeconds((s) => s + 1), 1000);
     return () => {
       if (thinkingTimerRef.current !== null) {
         clearInterval(thinkingTimerRef.current);
         thinkingTimerRef.current = null;
       }
+      clearInterval(secTimer);
     };
   }, [waitingFirstChunk, pickedFromDomain]);
 
@@ -1414,7 +1420,7 @@ export function LiveRunner({
                 {waitingFirstChunk ? (
                   <span className="flex items-center gap-2">
                     <span className="font-medium text-bone transition-all duration-300">
-                      {THINKING_STAGES[thinkingStage]?.label ?? "装填弹药库"}
+                      {THINKING_STAGES[thinkingStage]?.label ?? "深度推演中"}
                     </span>
                     {thinkingMethodId && (
                       <span className="numeral rounded border border-volt/25 bg-volt/[0.06] px-1.5 py-0.5 text-[10px] font-medium text-volt/80 tabular-nums transition-all duration-200">
@@ -1422,7 +1428,9 @@ export function LiveRunner({
                       </span>
                     )}
                     <span className="hidden text-dust sm:inline">
-                      {THINKING_STAGES[thinkingStage]?.detail}
+                      {thinkingSeconds >= 5
+                        ? `深度推演中，通常需要十几秒 · 已 ${thinkingSeconds}s`
+                        : THINKING_STAGES[thinkingStage]?.detail}
                     </span>
                   </span>
                 ) : (
