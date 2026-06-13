@@ -24,7 +24,8 @@
       "wiki_obj_token": "XTy2dPlcZozqzbxfiJIc648Znhd",
       "summary": "75个方法论的质量体检：识别出覆盖盲区，找到弹药库的薄弱环节",
       "added_date": "2026-04-05",
-      "file": "product/innolab-self-diagnosis.json"
+      "file": "product/innolab-self-diagnosis.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-002",
@@ -46,7 +47,8 @@
       ],
       "summary": "不教知识、挖真实感受的AI儿童对话产品，全新品类定位",
       "added_date": "2026-04-20",
-      "file": "education/qiuqiu-teacher.json"
+      "file": "education/qiuqiu-teacher.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-003",
@@ -67,7 +69,8 @@
       ],
       "summary": "课程大纲生成卡在L3——权责真空，教研说不行但说不出为什么",
       "added_date": "2026-04-20",
-      "file": "education/ai-curriculum-l3-trap.json"
+      "file": "education/ai-curriculum-l3-trap.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-004",
@@ -88,7 +91,8 @@
       ],
       "summary": "从文化符号到商业应用的四层IP知识图谱实践",
       "added_date": "2026-04-20",
-      "file": "product/aip-OldCai-ip.json"
+      "file": "product/aip-OldCai-ip.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-005",
@@ -110,7 +114,8 @@
       ],
       "summary": "守线提升KA效率，攻线AI Agent产品化——攻线从守线中长出来",
       "added_date": "2026-04-20",
-      "file": "enterprise/zaowuyun-ai-offense-defense.json"
+      "file": "enterprise/zaowuyun-ai-offense-defense.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-006",
@@ -131,7 +136,8 @@
       ],
       "summary": "同时掉入工具崇拜+完美规划+数据囤积三大幻觉",
       "added_date": "2026-04-20",
-      "file": "enterprise/retail-ai-illusions.json"
+      "file": "enterprise/retail-ai-illusions.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-007",
@@ -153,7 +159,8 @@
       ],
       "summary": "专家轨道+全员轨道双轨并行，3个月产出3个AI提效项目",
       "added_date": "2026-04-20",
-      "file": "education/dual-track-talent-practice.json"
+      "file": "education/dual-track-talent-practice.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-008",
@@ -173,7 +180,8 @@
       ],
       "summary": "IP设计周期从4-6周压缩到3-5天——整体快了10倍",
       "added_date": "2026-04-20",
-      "file": "product/ip-design-process-rebuild.json"
+      "file": "product/ip-design-process-rebuild.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-009",
@@ -195,7 +203,8 @@
       ],
       "summary": "胶带纸×颐和园、果盘×木纹、T恤×Q版——三个成功组合",
       "added_date": "2026-04-20",
-      "file": "product/old-bottle-new-wine-cases.json"
+      "file": "product/old-bottle-new-wine-cases.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-010",
@@ -216,7 +225,8 @@
       ],
       "summary": "对话场景产生认知数据，但数据回路未闭合——飞轮转不起来",
       "added_date": "2026-04-20",
-      "file": "education/qiuqiu-data-flywheel.json"
+      "file": "education/qiuqiu-data-flywheel.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-011",
@@ -242,7 +252,8 @@
       ],
       "summary": "中型 B2B SaaS 守住 SMB 基本盘同时进攻企业级——J 曲线阵痛期的资源分配决策",
       "added_date": "2026-05-29",
-      "file": "strategy/saas-to-enterprise-pivot.json"
+      "file": "strategy/saas-to-enterprise-pivot.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-012",
@@ -268,7 +279,8 @@
       ],
       "summary": "300 人科技公司 AI 推广失败：工具买了没人用，真正的阻力在三层组织结构里",
       "added_date": "2026-05-29",
-      "file": "enterprise/org-ai-resistance.json"
+      "file": "enterprise/org-ai-resistance.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-013",
@@ -296,7 +308,8 @@
       ],
       "summary": "50 万粉的生活方式达人，广告变现触到天花板——靠接单养不大，靠品牌太重。四层 IP 模型把她从「网红」重新定位成「生活方式解决方案」，找到第三条路。",
       "added_date": "2026-05-29",
-      "file": "product/ip-creator-monetization.json"
+      "file": "product/ip-creator-monetization.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-014",
@@ -322,7 +335,8 @@
       ],
       "summary": "150 人互联网公司推 OKR 8 个月，Q3 全员达标 96% 但业绩下滑 15%——真正的问题是管理层用 L2 认知在运营一个 L4 工具。",
       "added_date": "2026-05-29",
-      "file": "enterprise/okr-failure-diagnosis.json"
+      "file": "enterprise/okr-failure-diagnosis.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-015",
@@ -349,7 +363,8 @@
       ],
       "summary": "年收入 3000 万的中国 SaaS 三选一出海目的地：东南亚看起来最简单，但对中国 SaaS 来说反而最难——护城河全部失效。",
       "added_date": "2026-05-29",
-      "file": "strategy/saas-overseas-market-entry.json"
+      "file": "strategy/saas-overseas-market-entry.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-016",
@@ -376,7 +391,8 @@
       ],
       "summary": "中高端 DTC 家居品牌，定价 800-1500 元区间，毛利率 35%，但成本上涨后面临「提价用户跑、不提活不了」的典型困境。",
       "added_date": "2026-05-29",
-      "file": "strategy/dtc-brand-pricing-dilemma.json"
+      "file": "strategy/dtc-brand-pricing-dilemma.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-017",
@@ -403,7 +419,8 @@
       ],
       "summary": "商业访谈播客，3年5万订阅，三次变现失败（课程无复购、社群沉默、赞助嫌小）——根本问题不是听众太少，而是用「内容博主」框架对接了「商业决策者」听众。",
       "added_date": "2026-05-30",
-      "file": "product/podcast-creator-monetization.json"
+      "file": "product/podcast-creator-monetization.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-018",
@@ -429,7 +446,8 @@
       ],
       "summary": "B2B SaaS 销售团队精细化绩效方案上线半年，3 名高绩效销售离职，中等销售越来越「安全分」——根本问题不是方案复杂，而是用 L2 管控逻辑设计了一个需要 L4 主动性才能跑通的岗位。",
       "added_date": "2026-05-30",
-      "file": "enterprise/sales-incentive-failure.json"
+      "file": "enterprise/sales-incentive-failure.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-019",
@@ -457,7 +475,8 @@
       ],
       "summary": "B2C SaaS 知识管理工具：注册 5 万、月活 2.2 万，付费转化率 1.5% 一年没动——团队加了 13 个付费功能、讨论了 3 次降价，都没用。根本问题不是功能不够多，而是 18 个付费功能里没有一个会让免费用户「没有就停摆」。",
       "added_date": "2026-05-30",
-      "file": "product/saas-freemium-conversion.json"
+      "file": "product/saas-freemium-conversion.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-020",
@@ -484,7 +503,8 @@
       ],
       "summary": "AI 效率工具月活 5000，50+ 功能，10 多种不同类型用户在用——用户说「挺好用的」但流失率 60%，投资人说「市场太小」。根本问题不是定位模糊，而是还没找到「非你不可」的那个用户群。",
       "added_date": "2026-05-30",
-      "file": "product/product-positioning-blur.json"
+      "file": "product/product-positioning-blur.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-021",
@@ -511,7 +531,8 @@
       ],
       "summary": "ToB SaaS 工具完成 MVP，免费试用 3 个月获得 12 家种子用户，一个都没有转付费——根本问题不是功能不够好，而是种子用户选错了：选的是「愿意试」的人，而不是「没有就痛」的人。",
       "added_date": "2026-05-29",
-      "file": "strategy/first-paying-customer.json"
+      "file": "strategy/first-paying-customer.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-022",
@@ -542,7 +563,8 @@
       ],
       "summary": "某宠物功能性零食品牌靠内容种草月 GMV 达 200 万，但复购率仅 18%（行业均值 35%），三家竞品 1:1 复刻 SKU 且定价低 30%。根本问题不是产品力不足，而是品牌从未建立认知锚点——用户买的是「那个在小红书火了的猫零食」，不是「某某品牌」，切换成本为零。",
       "added_date": "2026-05-29",
-      "file": "consumer/new-consumer-brand-premium.json"
+      "file": "consumer/new-consumer-brand-premium.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-023",
@@ -571,7 +593,8 @@
       ],
       "summary": "某 200 人电子精密零件制造商花 80 万采购 5 套 AI 工具，一年后工厂还在按原来方式运行。根本原因：把「工具采购」当成了「AI 转型」——5 套工具都在原有流程旁边运行，没有一套真正取代了任何一个决策环节。",
       "added_date": "2026-05-29",
-      "file": "enterprise/manufacturing-ai-stall.json"
+      "file": "enterprise/manufacturing-ai-stall.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-024",
@@ -601,7 +624,8 @@
       ],
       "summary": "4 人团队做法律 AI 写作助手，800 注册用户、40 付费（月 99 元），融资 3 轮被拒：「市场太小」。根本问题不是 deck 写得不好，而是 40 个 B2C 用户的数据讲的是「好用工具」的故事，而 VC 要听的是「大市场切入点」——改变叙事需要先改变数据，90 天内做出 2-3 个 B2B 企业合同是唯一的快速路径。",
       "added_date": "2026-05-29",
-      "file": "strategy/fundraising-narrative-gap.json"
+      "file": "strategy/fundraising-narrative-gap.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-025",
@@ -633,7 +657,8 @@
       ],
       "summary": "某国货护肤品牌同时测试 TikTok Shop 东南亚 + 亚马逊美国，6 个月后两头都没跑通。根本问题：东南亚和北美需要完全不同的品牌策略和运营能力，「两头试」是必败策略。用第一性原理+消费趋势画布+蓝海战略定位到「北美成分派」这个真正适合的切入点。",
       "added_date": "2026-05-29",
-      "file": "strategy/consumer-brand-overseas.json"
+      "file": "strategy/consumer-brand-overseas.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-026",
@@ -663,7 +688,8 @@
       "summary": "某 B2B 文档协作 SaaS，Freemium 模式 10 个月，8000 注册用户，付费率 1.2%（96 个团队），MRR 2.4 万。核心误判：把「用户多」当成「价值已验证」，Freemium 模式吸引来了错误分母，降价不解决问题，应切换为按人头阶梯定价+垂直行业聚焦。",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/saas-pricing-freemium-vs-subscription.json"
+      "file": "product/saas-pricing-freemium-vs-subscription.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-027",
@@ -693,546 +719,1542 @@
       "summary": "某三线城市 K12 教培机构 6 校区，花 30 万购 AI 出题系统，半年后学生平均分仅提升 2.3 分（对照组 1.8 分）。根本问题：AI 只替代了「印刷试卷」，没有改变任何教学决策节点，老师备课从未使用 AI 报告，工具买的是「AI 噱头」而非「学习效果」。",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "education/k12-ai-tutoring-transformation.json"
+      "file": "education/k12-ai-tutoring-transformation.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-028",
       "title": "医疗 SaaS 死在「采购流程」：产品 POC 三次验证通过，三甲医院合同两年签不下来",
-      "domain": ["医疗", "B2B", "战略", "销售"],
-      "tags": ["医疗SaaS", "医院采购", "B2B销售", "政治地图", "多方决策", "集成商渠道"],
-      "related_methods": ["CG07", "ST11", "DC08", "DC07", "ST12"],
+      "domain": [
+        "医疗",
+        "B2B",
+        "战略",
+        "销售"
+      ],
+      "tags": [
+        "医疗SaaS",
+        "医院采购",
+        "B2B销售",
+        "政治地图",
+        "多方决策",
+        "集成商渠道"
+      ],
+      "related_methods": [
+        "CG07",
+        "ST11",
+        "DC08",
+        "DC07",
+        "ST12"
+      ],
       "summary": "医疗 SaaS 最常见的死法：产品没问题，死在采购政治上",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "healthcare/medical-saas-hospital-procurement.json"
+      "file": "healthcare/medical-saas-hospital-procurement.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-029",
       "title": "跨境电商品类扩张的陷阱：从家居爆款到「什么都卖」，SKU 翻了 10 倍利润腰斩",
-      "domain": ["电商", "战略", "产品", "运营"],
-      "tags": ["跨境电商", "品类扩张", "Amazon", "选品", "SKU管理", "品牌定位"],
-      "related_methods": ["ST13", "ST06", "DC07", "PD05", "ST17"],
+      "domain": [
+        "电商",
+        "战略",
+        "产品",
+        "运营"
+      ],
+      "tags": [
+        "跨境电商",
+        "品类扩张",
+        "Amazon",
+        "选品",
+        "SKU管理",
+        "品牌定位"
+      ],
+      "related_methods": [
+        "ST13",
+        "ST06",
+        "DC07",
+        "PD05",
+        "ST17"
+      ],
       "summary": "跨境电商最典型的增长陷阱：用「加 SKU」代替「做品牌」，最终陷入低价竞争泥潭",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "ecommerce/cross-border-category-expansion.json"
+      "file": "ecommerce/cross-border-category-expansion.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-030",
       "title": "消费金融 App 增长停滞：注册用户 50 万，月活 8%——是产品问题还是用户质量问题",
-      "domain": ["金融科技", "产品", "增长", "战略"],
-      "tags": ["消费金融", "Fintech", "用户增长", "月活", "留存", "用户分层"],
-      "related_methods": ["EV01", "PD07", "ST17", "CG06", "DC05"],
+      "domain": [
+        "金融科技",
+        "产品",
+        "增长",
+        "战略"
+      ],
+      "tags": [
+        "消费金融",
+        "Fintech",
+        "用户增长",
+        "月活",
+        "留存",
+        "用户分层"
+      ],
+      "related_methods": [
+        "EV01",
+        "PD07",
+        "ST17",
+        "CG06",
+        "DC05"
+      ],
       "summary": "消费金融 App 最常见的增长幻觉：注册用户多但月活低，原来是用户质量分层的问题",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "fintech/fintech-app-growth-stall.json"
+      "file": "fintech/fintech-app-growth-stall.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-031",
       "title": "新能源冲击下传统 4S 店转型：销量跌 35%，降价、转品牌、还是转业态？",
-      "domain": ["汽车", "零售", "战略", "转型"],
-      "tags": ["4S店", "新能源", "汽车经销商", "直营模式", "转型策略", "范式转移"],
-      "related_methods": ["ST01", "ST17", "ST06", "DC07", "PD05"],
+      "domain": [
+        "汽车",
+        "零售",
+        "战略",
+        "转型"
+      ],
+      "tags": [
+        "4S店",
+        "新能源",
+        "汽车经销商",
+        "直营模式",
+        "转型策略",
+        "范式转移"
+      ],
+      "related_methods": [
+        "ST01",
+        "ST17",
+        "ST06",
+        "DC07",
+        "PD05"
+      ],
       "summary": "4S 店最典型的转型困境：用传统「卖车」思维应对直营模式的颠覆，降价和换品牌都是错误答案",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "auto/ev-dealership-transformation.json"
+      "file": "auto/ev-dealership-transformation.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-032",
       "title": "供应链 SaaS 出海东南亚：在国内是行业第一，到了东南亚「什么都要重做」",
-      "domain": ["供应链", "SaaS", "出海", "战略"],
-      "tags": ["供应链SaaS", "出海", "东南亚", "B2B企业服务", "市场选择", "本地化"],
-      "related_methods": ["ST06", "DC07", "CG16", "ST11", "PD01"],
+      "domain": [
+        "供应链",
+        "SaaS",
+        "出海",
+        "战略"
+      ],
+      "tags": [
+        "供应链SaaS",
+        "出海",
+        "东南亚",
+        "B2B企业服务",
+        "市场选择",
+        "本地化"
+      ],
+      "related_methods": [
+        "ST06",
+        "DC07",
+        "CG16",
+        "ST11",
+        "PD01"
+      ],
       "summary": "供应链 SaaS 出海最常见的失误：把国内的产品优势当成东南亚的市场差异化，却没意识到两个市场的核心问题根本不同",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "enterprise/supply-chain-saas-southeast-asia.json"
+      "file": "enterprise/supply-chain-saas-southeast-asia.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-033",
       "title": "50 万会员企微社群活跃率跌至 3%：每月花 30 万维护一个「僵尸社群」",
-      "domain": ["产品", "运营", "增长", "战略"],
-      "tags": ["企业微信", "社群运营", "私域流量", "会员体系", "用户活跃", "社群变现"],
-      "related_methods": ["PD07", "EV01", "ST17", "CG01", "PD05"],
+      "domain": [
+        "产品",
+        "运营",
+        "增长",
+        "战略"
+      ],
+      "tags": [
+        "企业微信",
+        "社群运营",
+        "私域流量",
+        "会员体系",
+        "用户活跃",
+        "社群变现"
+      ],
+      "related_methods": [
+        "PD07",
+        "EV01",
+        "ST17",
+        "CG01",
+        "PD05"
+      ],
       "summary": "企业微信私域社群最常见的失败模式：把「用户数量」当成「用户价值」，500 个群却没有一个能自我运转",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/enterprise-community-stall.json"
+      "file": "product/enterprise-community-stall.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-034",
       "title": "连锁餐饮数字化「全面铺开」：50 家门店上了 12 个系统，但翻台率和人效都没变",
-      "domain": ["餐饮", "零售", "数字化", "战略"],
-      "tags": ["连锁餐饮", "数字化转型", "SaaS采购", "门店运营", "翻台率"],
-      "related_methods": ["ST19", "ST17", "DC07", "CG06", "EV03"],
+      "domain": [
+        "餐饮",
+        "零售",
+        "数字化",
+        "战略"
+      ],
+      "tags": [
+        "连锁餐饮",
+        "数字化转型",
+        "SaaS采购",
+        "门店运营",
+        "翻台率"
+      ],
+      "related_methods": [
+        "ST19",
+        "ST17",
+        "DC07",
+        "CG06",
+        "EV03"
+      ],
       "summary": "餐饮数字化最普遍的陷阱：买了 12 个工具但没有改变一个核心流程，约束点分析揭示真正的瓶颈",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "restaurant/chain-digitization-trap.json"
+      "file": "restaurant/chain-digitization-trap.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-035",
       "title": "初创团队 4 个产品想法都「很有机会」：选哪个先做，还是全做试试看？",
-      "domain": ["产品", "创业", "战略", "决策"],
-      "tags": ["创业决策", "产品选择", "初创公司", "MVP", "机会判断", "资源聚焦"],
-      "related_methods": ["DC07", "PD06", "PD01", "CG07", "ST06"],
+      "domain": [
+        "产品",
+        "创业",
+        "战略",
+        "决策"
+      ],
+      "tags": [
+        "创业决策",
+        "产品选择",
+        "初创公司",
+        "MVP",
+        "机会判断",
+        "资源聚焦"
+      ],
+      "related_methods": [
+        "DC07",
+        "PD06",
+        "PD01",
+        "CG07",
+        "ST06"
+      ],
       "summary": "早期创业团队最普遍的错误：用「市场规模」选方向，而不是用「18 个月内能验证的最小假设」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/startup-product-focus.json"
+      "file": "product/startup-product-focus.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-036",
       "title": "职业培训平台完课率 12%：学员付了钱但不学，问题出在课程还是动机？",
-      "domain": ["教育", "产品", "增长", "运营"],
-      "tags": ["职业教育", "在线培训", "完课率", "学习动机", "EdTech", "用户留存"],
-      "related_methods": ["PD07", "EV01", "CG01", "PD05", "ST17"],
+      "domain": [
+        "教育",
+        "产品",
+        "增长",
+        "运营"
+      ],
+      "tags": [
+        "职业教育",
+        "在线培训",
+        "完课率",
+        "学习动机",
+        "EdTech",
+        "用户留存"
+      ],
+      "related_methods": [
+        "PD07",
+        "EV01",
+        "CG01",
+        "PD05",
+        "ST17"
+      ],
       "summary": "职业培训平台最常见的错误：用课程质量解释学员不学，真正原因是动机结构从入学那刻就坏了",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "education/vocational-edtech-completion.json"
+      "file": "education/vocational-edtech-completion.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-037",
       "title": "HR SaaS 招聘模块获客停滞：销售漏斗转化率 2%，是定价问题还是价值传递问题？",
-      "domain": ["企业服务", "SaaS", "产品", "销售"],
-      "tags": ["HR Tech", "SaaS", "B2B销售", "获客", "转化率", "定价策略", "价值主张"],
-      "related_methods": ["ST06", "DC07", "PD01", "CG07", "EV01"],
+      "domain": [
+        "企业服务",
+        "SaaS",
+        "产品",
+        "销售"
+      ],
+      "tags": [
+        "HR Tech",
+        "SaaS",
+        "B2B销售",
+        "获客",
+        "转化率",
+        "定价策略",
+        "价值主张"
+      ],
+      "related_methods": [
+        "ST06",
+        "DC07",
+        "PD01",
+        "CG07",
+        "EV01"
+      ],
       "summary": "HR SaaS 团队把销售漏斗转化率低归因于「价格太高」，但真正问题是：买家决策路径里从来没有出现过真正的「痛点时刻」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "enterprise/hrtech-talent-acquisition.json"
+      "file": "enterprise/hrtech-talent-acquisition.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-038",
       "title": "竞品抄袭核心功能后用户流失 18%：打价格战还是加速差异化？",
-      "domain": ["战略", "产品", "竞争"],
-      "tags": ["竞争策略", "差异化", "功能抄袭", "用户流失", "定价策略", "护城河", "产品战略"],
-      "related_methods": ["ST07", "ST01", "ST06", "CG20", "PD06"],
+      "domain": [
+        "战略",
+        "产品",
+        "竞争"
+      ],
+      "tags": [
+        "竞争策略",
+        "差异化",
+        "功能抄袭",
+        "用户流失",
+        "定价策略",
+        "护城河",
+        "产品战略"
+      ],
+      "related_methods": [
+        "ST07",
+        "ST01",
+        "ST06",
+        "CG20",
+        "PD06"
+      ],
       "summary": "当竞品抄完你的核心功能后，最危险的反应是打价格战。正确答案：用流失事件倒逼你找到你真正有护城河的东西，然后彻底聚焦",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/competitor-copies-core-feature.json"
+      "file": "strategy/competitor-copies-core-feature.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-039",
       "title": "新消费品牌从 DTC 线上切入线下零售：渠道扩张还是品牌稀释？",
-      "domain": ["消费品", "品牌", "战略", "零售"],
-      "tags": ["新消费", "DTC", "线下零售", "渠道策略", "品牌定位", "分销", "快消品"],
-      "related_methods": ["ST06", "ST07", "DC07", "PD05", "CG16"],
+      "domain": [
+        "消费品",
+        "品牌",
+        "战略",
+        "零售"
+      ],
+      "tags": [
+        "新消费",
+        "DTC",
+        "线下零售",
+        "渠道策略",
+        "品牌定位",
+        "分销",
+        "快消品"
+      ],
+      "related_methods": [
+        "ST06",
+        "ST07",
+        "DC07",
+        "PD05",
+        "CG16"
+      ],
       "summary": "新消费品牌从线上 DTC 切入线下的最大陷阱不是渠道难进，是进去之后折扣促销把自己训练成了廉价品牌",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "consumer/dtc-to-offline-expansion.json"
+      "file": "consumer/dtc-to-offline-expansion.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-040",
       "title": "融资后烧钱买增长：3000 万用完 DAU 翻倍但 LTV 腰斩，下一轮融不到了",
-      "domain": ["战略", "产品", "增长", "创业"],
-      "tags": ["融资后增长", "烧钱增长", "LTV", "CAC", "增长陷阱", "单位经济", "创业战略"],
-      "related_methods": ["EV01", "CG20", "ST19", "DC07", "PD07"],
+      "domain": [
+        "战略",
+        "产品",
+        "增长",
+        "创业"
+      ],
+      "tags": [
+        "融资后增长",
+        "烧钱增长",
+        "LTV",
+        "CAC",
+        "增长陷阱",
+        "单位经济",
+        "创业战略"
+      ],
+      "related_methods": [
+        "EV01",
+        "CG20",
+        "ST19",
+        "DC07",
+        "PD07"
+      ],
       "summary": "用钱买来的 DAU 和用产品价值赢来的 DAU 数据上长得一模一样，但体质完全不同——一个停钱就死，一个越用越强",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/post-funding-growth-trap.json"
+      "file": "strategy/post-funding-growth-trap.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-041",
       "title": "B2B 软件产品加了 80 个功能没人用：用 JTBD 重新发现真正的「工作」",
-      "domain": ["产品", "SaaS", "B2B", "战略"],
-      "tags": ["JTBD", "产品定位", "功能蔓延", "用户访谈", "产品重构", "B2B产品", "SaaS"],
-      "related_methods": ["PD15", "PD01", "CG20", "PD07", "ST06"],
+      "domain": [
+        "产品",
+        "SaaS",
+        "B2B",
+        "战略"
+      ],
+      "tags": [
+        "JTBD",
+        "产品定位",
+        "功能蔓延",
+        "用户访谈",
+        "产品重构",
+        "B2B产品",
+        "SaaS"
+      ],
+      "related_methods": [
+        "PD15",
+        "PD01",
+        "CG20",
+        "PD07",
+        "ST06"
+      ],
       "summary": "产品加了 80 个功能 NPS 没有变化——不是功能不够好，是没有一个功能真正解决了用户花时间最多的那件「工作」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/b2b-jtbd-pivot.json"
+      "file": "product/b2b-jtbd-pivot.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-042",
       "title": "B2B SaaS 从销售驱动转型产品主导增长：400 人销售团队 vs 增长飞轮，该怎么选？",
-      "domain": ["产品", "SaaS", "增长", "战略"],
-      "tags": ["PLG", "产品主导增长", "销售驱动", "增长飞轮", "SaaS转型", "自助注册", "病毒系数"],
-      "related_methods": ["EV06", "EV01", "EV05", "PD07", "ST19"],
+      "domain": [
+        "产品",
+        "SaaS",
+        "增长",
+        "战略"
+      ],
+      "tags": [
+        "PLG",
+        "产品主导增长",
+        "销售驱动",
+        "增长飞轮",
+        "SaaS转型",
+        "自助注册",
+        "病毒系数"
+      ],
+      "related_methods": [
+        "EV06",
+        "EV01",
+        "EV05",
+        "PD07",
+        "ST19"
+      ],
       "summary": "销售驱动和产品主导增长不是「二选一」，而是「并行期 → 飞轮转速足够后让产品接棒销售」——很多 SaaS 在飞轮还没转起来时就裁撤销售，把自己逼入死角",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "enterprise/saas-plg-transformation.json"
+      "file": "enterprise/saas-plg-transformation.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-043",
       "title": "健康管理 App 增长停滞：500 万用户但 K 值 0.08，增长飞轮怎么转起来？",
-      "domain": ["产品", "增长", "健康", "消费"],
-      "tags": ["健康科技", "增长飞轮", "病毒系数", "社交传播", "用户激活", "HealthTech", "PLG"],
-      "related_methods": ["EV06", "EV01", "PD07", "CG20", "EV04"],
+      "domain": [
+        "产品",
+        "增长",
+        "健康",
+        "消费"
+      ],
+      "tags": [
+        "健康科技",
+        "增长飞轮",
+        "病毒系数",
+        "社交传播",
+        "用户激活",
+        "HealthTech",
+        "PLG"
+      ],
+      "related_methods": [
+        "EV06",
+        "EV01",
+        "PD07",
+        "CG20",
+        "EV04"
+      ],
       "summary": "健康类 App 最常见的增长困境：数据是私密的、行为是孤立的，没有天然的社交传播动机——增长飞轮必须「重新设计」而不是「依靠现有产品的自然传播」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/health-app-growth-loop.json"
+      "file": "product/health-app-growth-loop.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-044",
       "title": "双边平台冷启动困局：500 名导师入驻，3 个月只成交 87 笔，平台流量「死循环」怎么破？",
-      "domain": ["产品", "战略", "增长", "商业模式"],
-      "tags": ["双边平台", "冷启动", "平台商业模式", "职场学习", "两边市场", "激励设计", "EdTech"],
-      "related_methods": ["ST20", "EV01", "CG20", "DC07", "ST07"],
+      "domain": [
+        "产品",
+        "战略",
+        "增长",
+        "商业模式"
+      ],
+      "tags": [
+        "双边平台",
+        "冷启动",
+        "平台商业模式",
+        "职场学习",
+        "两边市场",
+        "激励设计",
+        "EdTech"
+      ],
+      "related_methods": [
+        "ST20",
+        "EV01",
+        "CG20",
+        "DC07",
+        "ST07"
+      ],
       "summary": "双边平台冷启动最大的误区：同时解决供给侧和需求侧，结果两边都没解决——平台冷启动的核心是「先跑通单边，再激活另一边」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/coaching-marketplace-coldstart.json"
+      "file": "product/coaching-marketplace-coldstart.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-045",
       "title": "HR SaaS 公司面临战略十字路口：纵深做 HCM 平台 vs 出海东南亚，两条路能同时走吗？",
-      "domain": ["战略", "SaaS", "决策", "出海"],
-      "tags": ["情景规划", "战略十字路口", "HR SaaS", "出海战略", "AI颠覆", "B2B SaaS", "战略押注"],
-      "related_methods": ["DC10", "ST19", "DC07", "CG20", "ST06"],
+      "domain": [
+        "战略",
+        "SaaS",
+        "决策",
+        "出海"
+      ],
+      "tags": [
+        "情景规划",
+        "战略十字路口",
+        "HR SaaS",
+        "出海战略",
+        "AI颠覆",
+        "B2B SaaS",
+        "战略押注"
+      ],
+      "related_methods": [
+        "DC10",
+        "ST19",
+        "DC07",
+        "CG20",
+        "ST06"
+      ],
       "summary": "战略押注最危险的不是「选错了方向」，而是「两个方向都走一半」——情景规划的价值在于帮你设计「无论哪种情景成真，都不会输光」的战略组合",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/hr-saas-scenario-planning.json"
+      "file": "strategy/hr-saas-scenario-planning.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-046",
       "title": "企业 5 条产品线，哪条养活公司、哪条拖垮公司？——产品组合 BCG 重分配",
-      "domain": ["战略", "产品", "商业模式", "决策"],
-      "tags": ["BCG矩阵", "产品组合", "资源分配", "现金牛", "明星产品", "问题儿童", "瘦狗", "B2B"],
-      "related_methods": ["DC03", "ST19", "DC07", "CG20", "EV01"],
+      "domain": [
+        "战略",
+        "产品",
+        "商业模式",
+        "决策"
+      ],
+      "tags": [
+        "BCG矩阵",
+        "产品组合",
+        "资源分配",
+        "现金牛",
+        "明星产品",
+        "问题儿童",
+        "瘦狗",
+        "B2B"
+      ],
+      "related_methods": [
+        "DC03",
+        "ST19",
+        "DC07",
+        "CG20",
+        "EV01"
+      ],
       "summary": "BCG 矩阵的价值不在于把产品分类贴标签，而在于「用现金牛的现金流去喂有潜力的明星或问题儿童，同时有纪律地停止喂瘦狗」——问题是大多数公司都在无差别地喂所有产品线",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/product-portfolio-bcg.json"
+      "file": "strategy/product-portfolio-bcg.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-047",
       "title": "FinTech 刚完成 B 轮融资，投资人要 3 年路线图——战略方向三岔路口如何规划？",
-      "domain": ["战略", "创业", "FinTech", "商业模式"],
-      "tags": ["战略路线图", "B轮融资", "路线图规划", "FinTech", "三年规划", "里程碑", "资源分配", "增长战略"],
-      "related_methods": ["ST14", "ST19", "DC07", "EV01", "CG20"],
+      "domain": [
+        "战略",
+        "创业",
+        "FinTech",
+        "商业模式"
+      ],
+      "tags": [
+        "战略路线图",
+        "B轮融资",
+        "路线图规划",
+        "FinTech",
+        "三年规划",
+        "里程碑",
+        "资源分配",
+        "增长战略"
+      ],
+      "related_methods": [
+        "ST14",
+        "ST19",
+        "DC07",
+        "EV01",
+        "CG20"
+      ],
       "summary": "战略路线图的价值不是「把未来 3 年的计划写清楚」，而是「设计出哪些里程碑必须先完成，哪些可以并行，哪些必须等前一个确定后才能启动」——顺序错了，3 年计划等于零",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/fintech-series-b-roadmap.json"
+      "file": "strategy/fintech-series-b-roadmap.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-048",
       "title": "制造企业 8 个 AI 场景、600 万预算——用场景价值矩阵选出真正值得做的 2 个",
-      "domain": ["AI转型", "制造业", "决策", "企业"],
-      "tags": ["AI转型", "场景选择", "制造业AI", "场景价值矩阵", "预测性维护", "质量检测", "ROI评估", "工业AI"],
-      "related_methods": ["DC01", "DC06", "CG20", "ST19", "DC07"],
+      "domain": [
+        "AI转型",
+        "制造业",
+        "决策",
+        "企业"
+      ],
+      "tags": [
+        "AI转型",
+        "场景选择",
+        "制造业AI",
+        "场景价值矩阵",
+        "预测性维护",
+        "质量检测",
+        "ROI评估",
+        "工业AI"
+      ],
+      "related_methods": [
+        "DC01",
+        "DC06",
+        "CG20",
+        "ST19",
+        "DC07"
+      ],
       "summary": "企业 AI 转型最大的浪费不是「选错工具」，而是「选错场景」——场景价值矩阵的核心是用「业务价值 × 实现可行性」把 8 个候选场景快速降维到 2 个，再用三阶评估法做深度验证",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "enterprise/manufacturing-ai-scenario-selection.json"
+      "file": "enterprise/manufacturing-ai-scenario-selection.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-049",
       "title": "30 人律所 AI 时代困局：大所有数据、小所有特色，中等规模的我们被夹在中间怎么办？",
-      "domain": ["战略", "AI转型", "专业服务", "商业模式"],
-      "tags": ["哑铃型社会", "律所转型", "AI颠覆", "专业服务", "中等规模", "价值链重构", "蓝海", "LegalTech"],
-      "related_methods": ["ST05", "ST07", "ST06", "DC07", "ST19"],
+      "domain": [
+        "战略",
+        "AI转型",
+        "专业服务",
+        "商业模式"
+      ],
+      "tags": [
+        "哑铃型社会",
+        "律所转型",
+        "AI颠覆",
+        "专业服务",
+        "中等规模",
+        "价值链重构",
+        "蓝海",
+        "LegalTech"
+      ],
+      "related_methods": [
+        "ST05",
+        "ST07",
+        "ST06",
+        "DC07",
+        "ST19"
+      ],
       "summary": "AI 最先压缩的是「中等」：中等规模的律所、中等技能的律师、中等质量的法律文件——哑铃型社会迫使所有中间层做出选择：要么升级至顶端不可替代，要么下沉至精准小众，在中间等待是最危险的",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/law-firm-ai-disruption.json"
+      "file": "strategy/law-firm-ai-disruption.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-050",
       "title": "传统家具品牌遭遇 Z 世代冷落：卖了 20 年的爆款，为什么 00 后不买单了？",
-      "domain": ["消费品", "产品创新", "品牌转型", "设计"],
-      "tags": ["设计思维", "Z世代", "家具", "用户研究", "原型测试", "消费品牌", "头脑风暴", "创新方法"],
-      "related_methods": ["GN05", "GN08", "PD04", "GN10", "GN11"],
+      "domain": [
+        "消费品",
+        "产品创新",
+        "品牌转型",
+        "设计"
+      ],
+      "tags": [
+        "设计思维",
+        "Z世代",
+        "家具",
+        "用户研究",
+        "原型测试",
+        "消费品牌",
+        "头脑风暴",
+        "创新方法"
+      ],
+      "related_methods": [
+        "GN05",
+        "GN08",
+        "PD04",
+        "GN10",
+        "GN11"
+      ],
       "summary": "设计思维的本质不是「做设计」，而是「让决策以用户为中心」——鸿木居把年轻化等同于颜值改版，但用户研究揭示：25-35 岁购家具的真正焦虑是「我不知道这个选择会不会被后悔」，需要的是「安心」而非「好看」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/furniture-brand-design-thinking.json"
+      "file": "product/furniture-brand-design-thinking.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-051",
       "title": "湖南米粉品牌冲击全国：本地第一，出了省没人认识你——品牌资产该怎么盘？",
-      "domain": ["消费品", "品牌战略", "FMCG", "区域扩张"],
-      "tags": ["品牌资产", "品牌共鸣", "Aaker模型", "区域品牌", "全国化", "米粉", "FMCG", "品牌延伸"],
-      "related_methods": ["PD08", "PD09", "ST07", "CG20", "ST06"],
+      "domain": [
+        "消费品",
+        "品牌战略",
+        "FMCG",
+        "区域扩张"
+      ],
+      "tags": [
+        "品牌资产",
+        "品牌共鸣",
+        "Aaker模型",
+        "区域品牌",
+        "全国化",
+        "米粉",
+        "FMCG",
+        "品牌延伸"
+      ],
+      "related_methods": [
+        "PD08",
+        "PD09",
+        "ST07",
+        "CG20",
+        "ST06"
+      ],
       "summary": "品牌资产分析的价值在于把「我们有什么」和「消费者感知到什么」分开——「长沙伢子」的可迁移资产在运营层（工厂、供应链、SOP），而非品牌符号层；全国化应采用母子品牌策略，新建「鲜粉工坊」品牌打全国市场",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/regional-food-brand-equity.json"
+      "file": "strategy/regional-food-brand-equity.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-052",
       "title": "HR SaaS 15 个功能都想 AI 化，但预算只有 300 万——用智能密度评估决定先做哪个",
-      "domain": ["AI转型", "SaaS", "企业软件", "战略"],
-      "tags": ["智能密度", "AI优先级", "HR SaaS", "AI落地", "场景选择", "邱懿武原创", "预算分配", "AI产品"],
-      "related_methods": ["ST16", "DC01", "EV01", "ST19", "DC06"],
+      "domain": [
+        "AI转型",
+        "SaaS",
+        "企业软件",
+        "战略"
+      ],
+      "tags": [
+        "智能密度",
+        "AI优先级",
+        "HR SaaS",
+        "AI落地",
+        "场景选择",
+        "邱懿武原创",
+        "预算分配",
+        "AI产品"
+      ],
+      "related_methods": [
+        "ST16",
+        "DC01",
+        "EV01",
+        "ST19",
+        "DC06"
+      ],
       "summary": "智能密度不是 AI 功能的「重要性」排序，而是「AI 真正能发挥作用」的可能性评估——假勤异常检测智能密度最高（数据结构化、规则明确、高频高人力消耗），而用户最想要的「简历筛选 AI」反而因主观性强排名第五",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "enterprise/saas-intelligence-density.json"
+      "file": "enterprise/saas-intelligence-density.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-053",
       "title": "在线教育平台陷入「功能内卷」：每季度发布 30 个新功能，用户留存却在下滑",
-      "domain": ["产品战略", "EdTech", "在线教育", "创新"],
-      "tags": ["创新十环", "十种创新类型", "功能堆叠", "产品战略", "EdTech", "留存", "创新盲区", "差异化"],
-      "related_methods": ["PD11", "ST07", "ST06", "EV01", "CG20"],
+      "domain": [
+        "产品战略",
+        "EdTech",
+        "在线教育",
+        "创新"
+      ],
+      "tags": [
+        "创新十环",
+        "十种创新类型",
+        "功能堆叠",
+        "产品战略",
+        "EdTech",
+        "留存",
+        "创新盲区",
+        "差异化"
+      ],
+      "related_methods": [
+        "PD11",
+        "ST07",
+        "ST06",
+        "EV01",
+        "CG20"
+      ],
       "summary": "创新十环揭示了最普遍的企业创新陷阱：把 90% 的创新资源押注在「产品性能」上，而忽视了另外九个同样可以创造差异化的维度——学海平台的创新盲区在服务、品牌、客户参与三个维度，而非产品功能",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/edtech-ten-types-innovation.json"
+      "file": "product/edtech-ten-types-innovation.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-054",
       "title": "SaaS 创始团队的「致命分歧」：CTO 要做企业大客户，CMO 要守中小企业市场——用六顶思考帽化解战略僵局",
-      "domain": ["战略", "决策", "创业", "SaaS"],
-      "tags": ["六顶思考帽", "战略决策", "团队分歧", "SaaS", "企业客户", "中小企业", "未来雷达图", "情景规划"],
-      "related_methods": ["CG09", "CG15", "DC10", "ST19", "CG20"],
+      "domain": [
+        "战略",
+        "决策",
+        "创业",
+        "SaaS"
+      ],
+      "tags": [
+        "六顶思考帽",
+        "战略决策",
+        "团队分歧",
+        "SaaS",
+        "企业客户",
+        "中小企业",
+        "未来雷达图",
+        "情景规划"
+      ],
+      "related_methods": [
+        "CG09",
+        "CG15",
+        "DC10",
+        "ST19",
+        "CG20"
+      ],
       "summary": "六顶思考帽的核心价值不是找到正确答案，而是让团队在同一时刻思考同一件事——当 CTO 和 CMO 各持一词时，强制「平行思维」框架比继续辩论更有效，未来雷达图引入时间维度，揭示了「中型企业蓝海」这条被忽视的第三路径",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/saas-pivot-six-hats.json"
+      "file": "strategy/saas-pivot-six-hats.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-055",
       "title": "传统零售商线上线下失联：APP 下了 80 万次，到店消费却没有增加——人货场重构怎么做？",
-      "domain": ["消费品", "零售", "产品", "数字化转型"],
-      "tags": ["人货场", "全渠道", "零售转型", "数字化", "线上线下", "用户运营", "新零售", "OMO"],
-      "related_methods": ["PD03", "EV05", "ST07", "CG20", "ST06"],
+      "domain": [
+        "消费品",
+        "零售",
+        "产品",
+        "数字化转型"
+      ],
+      "tags": [
+        "人货场",
+        "全渠道",
+        "零售转型",
+        "数字化",
+        "线上线下",
+        "用户运营",
+        "新零售",
+        "OMO"
+      ],
+      "related_methods": [
+        "PD03",
+        "EV05",
+        "ST07",
+        "CG20",
+        "ST06"
+      ],
       "summary": "数字化转型不是「把线下搬到线上」，而是用人货场框架重新设计用户、商品、场景的三角关系——优鲜生活的数字化问题是三角断裂（线上线下平行宇宙），真正应该强化的不是「补货型 APP」，而是「发现型 OMO」体验",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/retail-omnichannel-pgf.json"
+      "file": "product/retail-omnichannel-pgf.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-056",
       "title": "气候科技创业团队准备 A 轮 Pitch：技术真实但投资人睡着了——颠覆性叙事怎么构建？",
-      "domain": ["创业", "融资", "战略", "气候科技"],
-      "tags": ["颠覆性叙事", "故事板", "假设推演", "投资人Pitch", "气候科技", "A轮融资", "路演", "叙事框架"],
-      "related_methods": ["GN07", "GN12", "GN06", "CG20", "DC07"],
+      "domain": [
+        "创业",
+        "融资",
+        "战略",
+        "气候科技"
+      ],
+      "tags": [
+        "颠覆性叙事",
+        "故事板",
+        "假设推演",
+        "投资人Pitch",
+        "气候科技",
+        "A轮融资",
+        "路演",
+        "叙事框架"
+      ],
+      "related_methods": [
+        "GN07",
+        "GN12",
+        "GN06",
+        "CG20",
+        "DC07"
+      ],
       "summary": "颠覆性叙事的本质是让听众先看到一个不理想的世界，再看到你正在构建的那个更好的世界——碳链科技的 Pitch 从「技术汇报」重构为「荒谬现实 + 颠覆时机 + 基础设施定位」三段式叙事，用故事板和 What If 问题链彻底改变投资人的感知框架",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/climate-tech-pitch-narrative.json"
+      "file": "strategy/climate-tech-pitch-narrative.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-057",
       "title": "健康订阅 APP 三档会员无人升级：免费用户 200 万，付费率 1.4%——马斯洛告诉你问题出在哪",
-      "domain": ["产品", "消费品", "健康", "订阅经济"],
-      "tags": ["马斯洛需求", "亲和图", "订阅产品", "会员分层", "健康APP", "用户动机", "付费转化", "产品分层"],
-      "related_methods": ["CG10", "CG18", "EV01", "ST06", "CG20"],
+      "domain": [
+        "产品",
+        "消费品",
+        "健康",
+        "订阅经济"
+      ],
+      "tags": [
+        "马斯洛需求",
+        "亲和图",
+        "订阅产品",
+        "会员分层",
+        "健康APP",
+        "用户动机",
+        "付费转化",
+        "产品分层"
+      ],
+      "related_methods": [
+        "CG10",
+        "CG18",
+        "EV01",
+        "ST06",
+        "CG20"
+      ],
       "summary": "用户不升级高档会员不是因为「贵」，是因为产品层级设计和马斯洛需求层级完全错位——轻脉的付费机会在「社交/尊重层」（被专业人士看见和关心），而非「生理层」（更多健康数据），亲和图从 300 份访谈中挖出了这个反直觉洞察",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/wellness-maslow-subscription.json"
+      "file": "product/wellness-maslow-subscription.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-058",
       "title": "战略方案写了 80 页，董事会看了 10 分钟说「逻辑不清」——金字塔原理怎么救这份报告？",
-      "domain": ["战略", "沟通", "决策", "管理"],
-      "tags": ["金字塔原理", "推导式写作", "结构化表达", "董事会汇报", "SCQA", "战略报告", "说服力", "逻辑思维"],
-      "related_methods": ["CG12", "CG13", "DC07", "ST19", "CG20"],
+      "domain": [
+        "战略",
+        "沟通",
+        "决策",
+        "管理"
+      ],
+      "tags": [
+        "金字塔原理",
+        "推导式写作",
+        "结构化表达",
+        "董事会汇报",
+        "SCQA",
+        "战略报告",
+        "说服力",
+        "逻辑思维"
+      ],
+      "related_methods": [
+        "CG12",
+        "CG13",
+        "DC07",
+        "ST19",
+        "CG20"
+      ],
       "summary": "金字塔原理的本质是对读者认知资源的尊重——结论先行是减少认知负担的最优解；把核心结论放在第 51 页等于假设读者会把前 50 页全部读完；SCQA 结构帮助听众先建立「为什么这个问题值得关注」的认知，再看解决方案",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/board-pyramid-principle.json"
+      "file": "strategy/board-pyramid-principle.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-059",
       "title": "AI 写作工具公司的末日焦虑：GPT-5 一出，我们的产品还有人用吗？",
-      "domain": ["AI转型", "战略", "创业", "商业模式"],
-      "tags": ["杰文斯悖论", "AI机会", "六步共生飞轮", "AI写作", "底层模型威胁", "三方共同进化", "内容创作", "平台战略"],
-      "related_methods": ["CG19", "GN01", "CG02", "EV01", "ST06"],
+      "domain": [
+        "AI转型",
+        "战略",
+        "创业",
+        "商业模式"
+      ],
+      "tags": [
+        "杰文斯悖论",
+        "AI机会",
+        "六步共生飞轮",
+        "AI写作",
+        "底层模型威胁",
+        "三方共同进化",
+        "内容创作",
+        "平台战略"
+      ],
+      "related_methods": [
+        "CG19",
+        "GN01",
+        "CG02",
+        "EV01",
+        "ST06"
+      ],
       "summary": "杰文斯悖论是 AI 时代最重要的思维工具：当写作成本趋近于零，内容生产的总需求不是减少而是爆炸——写匠 AI 应该从「更好的 AI 写作」转向「企业内容资产管理平台」，用六步共生飞轮积累用户专属资产作为真正的护城河",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/ai-writing-jevons-paradox.json"
+      "file": "strategy/ai-writing-jevons-paradox.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-060",
       "title": "智能家居产品面向老年人测试一片好评，上市后月销 300 台——用设计民族志找到真实用户行为",
-      "domain": ["产品", "消费品", "硬件", "用户研究"],
-      "tags": ["设计民族志", "行为风暴", "价值机会分析", "老年用户", "智能家居", "用户研究", "产品设计", "商业折纸"],
-      "related_methods": ["CG17", "GN09", "PD12", "PD13", "EV01"],
+      "domain": [
+        "产品",
+        "消费品",
+        "硬件",
+        "用户研究"
+      ],
+      "tags": [
+        "设计民族志",
+        "行为风暴",
+        "价值机会分析",
+        "老年用户",
+        "智能家居",
+        "用户研究",
+        "产品设计",
+        "商业折纸"
+      ],
+      "related_methods": [
+        "CG17",
+        "GN09",
+        "PD12",
+        "PD13",
+        "EV01"
+      ],
       "summary": "设计民族志揭示了用户研究最大的陷阱：人们描述的行为和实际行为之间存在系统性偏差——老年人访谈说「很有用」，真实家庭观察发现「几乎不主动使用」；被动式健康监测（无需主动操作）才是真正的价值机会",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/smart-home-elderly-ethnography.json"
+      "file": "product/smart-home-elderly-ethnography.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-061",
       "title": "AI 政策引爆技术团队内部战争：「全员用 AI」vs「AI 会让我们失业」，管理层该怎么办？",
-      "domain": ["组织", "AI转型", "管理", "团队"],
-      "tags": ["非暴力沟通", "NVC", "组织冲突", "AI转型", "技术团队", "变革管理", "人才能力", "H3TII"],
-      "related_methods": ["DC09", "CG11", "ST07", "CG20", "EV03"],
+      "domain": [
+        "组织",
+        "AI转型",
+        "管理",
+        "团队"
+      ],
+      "tags": [
+        "非暴力沟通",
+        "NVC",
+        "组织冲突",
+        "AI转型",
+        "技术团队",
+        "变革管理",
+        "人才能力",
+        "H3TII"
+      ],
+      "related_methods": [
+        "DC09",
+        "CG11",
+        "ST07",
+        "CG20",
+        "EV03"
+      ],
       "summary": "非暴力沟通最重要的洞察：组织冲突源于双方都在回应对方的表层立场而没有看到深层需要——工程师反对 AI 工具的表层原因是代码质量，深层需要是职业安全感；H³-TII 框架帮助重新定义高级工程师在 AI 时代的不可替代价值",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "org/tech-team-nvc-conflict.json"
+      "file": "org/tech-team-nvc-conflict.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-062",
       "title": "做了 3 年知识博主，内容「有价值」但没护城河——创新五大构成帮你找到真正的差异化",
-      "domain": ["IP / 内容", "创业", "商业模式", "知识付费"],
-      "tags": ["创新五大构成", "认知组装者", "内容创业", "知识博主", "IP护城河", "人机协作", "创新框架", "差异化"],
-      "related_methods": ["CG05", "CG03", "GN01", "EV01", "CG20"],
+      "domain": [
+        "IP / 内容",
+        "创业",
+        "商业模式",
+        "知识付费"
+      ],
+      "tags": [
+        "创新五大构成",
+        "认知组装者",
+        "内容创业",
+        "知识博主",
+        "IP护城河",
+        "人机协作",
+        "创新框架",
+        "差异化"
+      ],
+      "related_methods": [
+        "CG05",
+        "CG03",
+        "GN01",
+        "EV01",
+        "CG20"
+      ],
       "summary": "创新五大构成最重要的洞察：绝大多数内容创业者死在「单维优化」上——林晓艺的护城河在人本+文化维度（复购率 68% 的真实原因），升级重点在科技+商业维度；认知组装者方法重构 AI 协作系统，让生产效率翻倍同时核心洞察价值完整保留",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "ip-content/creator-innovation-five-compositions.json"
+      "file": "ip-content/creator-innovation-five-compositions.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-063",
       "title": "企业花 500 万做「全员创新培训」，学完了大家照常上班——创造力评估和方法卡设计哪里出了问题？",
-      "domain": ["组织", "创新", "企业培训", "AI转型"],
-      "tags": ["创造力评估", "十段评估", "技能方法卡", "企业培训", "创新能力", "行为改变", "H3TII", "人才发展"],
-      "related_methods": ["CG04", "CG14", "CG11", "EV03", "DC07"],
+      "domain": [
+        "组织",
+        "创新",
+        "企业培训",
+        "AI转型"
+      ],
+      "tags": [
+        "创造力评估",
+        "十段评估",
+        "技能方法卡",
+        "企业培训",
+        "创新能力",
+        "行为改变",
+        "H3TII",
+        "人才发展"
+      ],
+      "related_methods": [
+        "CG04",
+        "CG14",
+        "CG11",
+        "EV03",
+        "DC07"
+      ],
       "summary": "创新培训失败的根本原因是「没有诊断个体起点就给统一答案」——创造力十段评估先找出真正有潜力的 5%（约 250 人），结构化方法卡（触发条件+步骤+判断锚点）让员工回到工作中能直接调用；三层体系（L1/L2/L3）让 600 万预算 ROI 提升 10 倍",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "org/enterprise-innovation-program-design.json"
+      "file": "org/enterprise-innovation-program-design.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-064",
       "title": "小众咖啡品牌在精品赛道和规模化之间撕裂：开 100 家店还是守住 5 家？",
-      "domain": ["战略", "消费品", "品牌", "商业模式"],
-      "tags": ["蓝海战略", "品牌定位", "小众品牌", "精品咖啡", "规模化悖论", "护城河", "竞争战略", "消费升级"],
-      "related_methods": ["ST06", "PD09", "EV01", "ST07", "CG20"],
+      "domain": [
+        "战略",
+        "消费品",
+        "品牌",
+        "商业模式"
+      ],
+      "tags": [
+        "蓝海战略",
+        "品牌定位",
+        "小众品牌",
+        "精品咖啡",
+        "规模化悖论",
+        "护城河",
+        "竞争战略",
+        "消费升级"
+      ],
+      "related_methods": [
+        "ST06",
+        "PD09",
+        "EV01",
+        "ST07",
+        "CG20"
+      ],
       "summary": "小众精品品牌的规模化悖论：护城河（稀缺性）恰恰是规模化的上限——Blue Bottle 被收购后扩张到 100 家的失败案例直接预演了「素语」A 路线的结局；正确路径是豆子订阅+培训体系，用不破坏稀缺性的方式扩大商业规模",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/niche-brand-positioning.json"
+      "file": "strategy/niche-brand-positioning.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-065",
       "title": "B2B SaaS 年费从 3000 调到 12000 会死吗？定价四倍涨价的正确姿势",
-      "domain": ["产品", "战略", "SaaS", "商业模式"],
-      "tags": ["定价策略", "SaaS定价", "价值定价", "B2B", "价格锚点", "客户分层", "涨价", "商业模式"],
-      "related_methods": ["EV01", "PD07", "DC07", "ST19", "CG20"],
+      "domain": [
+        "产品",
+        "战略",
+        "SaaS",
+        "商业模式"
+      ],
+      "tags": [
+        "定价策略",
+        "SaaS定价",
+        "价值定价",
+        "B2B",
+        "价格锚点",
+        "客户分层",
+        "涨价",
+        "商业模式"
+      ],
+      "related_methods": [
+        "EV01",
+        "PD07",
+        "DC07",
+        "ST19",
+        "CG20"
+      ],
       "summary": "B2B SaaS 定价的核心：定价是价值感知的信号，不是成本的倍数——在客户感知到价值之前涨价是加速流失；数据洞的 61% 续费率源于「用不好」而非「价格贵」，应先建立成功引导体系和月度价值报告，再对三层客户实施差异化定价",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/b2b-pricing-strategy.json"
+      "file": "product/b2b-pricing-strategy.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-066",
       "title": "房产中介平台的 AI 威胁：贝壳在用 AI 替代经纪人，我们 200 人的区域平台该怎么活？",
-      "domain": ["战略", "AI转型", "房产", "商业模式"],
-      "tags": ["AI颠覆", "哑铃型社会", "房产中介", "平台战略", "差异化", "本地服务", "B2B2C", "反效率护城河"],
-      "related_methods": ["ST05", "ST06", "DC01", "CG20", "EV01"],
+      "domain": [
+        "战略",
+        "AI转型",
+        "房产",
+        "商业模式"
+      ],
+      "tags": [
+        "AI颠覆",
+        "哑铃型社会",
+        "房产中介",
+        "平台战略",
+        "差异化",
+        "本地服务",
+        "B2B2C",
+        "反效率护城河"
+      ],
+      "related_methods": [
+        "ST05",
+        "ST06",
+        "DC01",
+        "CG20",
+        "EV01"
+      ],
       "summary": "当大平台用 AI 做到「标准化交易效率极致化」，区域中小平台的出路是做大平台做不了的事——稳家的护城河是 10 年本地隐性知识（学区、邻里、物业），聚焦 800 万以上置换客群，从传统佣金转向本地置换顾问模式",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/proptech-agent-platform.json"
+      "file": "strategy/proptech-agent-platform.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-067",
       "title": "社区团购平台年 GMV 2 亿却没有护城河：北极星指标选错了，飞轮永远转不起来",
-      "domain": ["战略", "产品", "平台", "商业模式"],
-      "tags": ["平台战略", "北极星指标", "数据飞轮", "护城河", "社区团购", "双边平台", "网络效应", "增长策略"],
-      "related_methods": ["ST20", "EV04", "EV02", "ST12", "CG20"],
+      "domain": [
+        "战略",
+        "产品",
+        "平台",
+        "商业模式"
+      ],
+      "tags": [
+        "平台战略",
+        "北极星指标",
+        "数据飞轮",
+        "护城河",
+        "社区团购",
+        "双边平台",
+        "网络效应",
+        "增长策略"
+      ],
+      "related_methods": [
+        "ST20",
+        "EV04",
+        "EV02",
+        "ST12",
+        "CG20"
+      ],
       "summary": "邻鲜汇 GMV 2 亿但竞品补贴一来三边全流失——根因是以「GMV」为北极星，驱动的是价格忠诚而非平台粘性；真正的护城河是「超级团长关系网络 × 小区需求数据飞轮」，北极星应切换为「团长月均服务户数 × 用户 30 天复购率」",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/community-platform-north-star.json"
+      "file": "strategy/community-platform-north-star.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-068",
       "title": "家电品牌 4 条产品线哪条该砍哪条该押？BCG 矩阵 + 安索夫打破战略幻觉",
-      "domain": ["战略", "消费品", "商业模式"],
-      "tags": ["BCG矩阵", "安索夫增长矩阵", "产品组合", "战略幻觉", "消费升级", "品牌战略", "家电", "资源分配"],
-      "related_methods": ["DC03", "ST13", "ST04", "ST08", "CG20"],
+      "domain": [
+        "战略",
+        "消费品",
+        "商业模式"
+      ],
+      "tags": [
+        "BCG矩阵",
+        "安索夫增长矩阵",
+        "产品组合",
+        "战略幻觉",
+        "消费升级",
+        "品牌战略",
+        "家电",
+        "资源分配"
+      ],
+      "related_methods": [
+        "DC03",
+        "ST13",
+        "ST04",
+        "ST08",
+        "CG20"
+      ],
       "summary": "南域电器 4 条产品线资源只够重点投 2 条——BCG 矩阵诊断出智能空调是「伪明星」（3% 市占+巨头主导），小家电才是真正的明星；安索夫规划小家电市场开发路径；战略幻觉诊断打破董事会的情感惯性偏误",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/consumer-brand-portfolio-bcg.json"
+      "file": "strategy/consumer-brand-portfolio-bcg.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-069",
       "title": "碳资产平台 A 轮路演投资人听完打瞌睡：三方共进化 + 战略路线图让故事活起来",
-      "domain": ["战略", "创业", "气候科技", "融资"],
-      "tags": ["投资叙事", "战略路线图", "三方共进化", "A轮融资", "碳市场", "因果回路", "ESG", "气候科技"],
-      "related_methods": ["CG02", "ST15", "ST14", "ST18", "EV01"],
+      "domain": [
+        "战略",
+        "创业",
+        "气候科技",
+        "融资"
+      ],
+      "tags": [
+        "投资叙事",
+        "战略路线图",
+        "三方共进化",
+        "A轮融资",
+        "碳市场",
+        "因果回路",
+        "ESG",
+        "气候科技"
+      ],
+      "related_methods": [
+        "CG02",
+        "ST15",
+        "ST14",
+        "ST18",
+        "EV01"
+      ],
       "summary": "碳聚 12 次 A 轮路演未成功，问题不是业务而是叙事——原有叙事讲「我们做了什么」，重构后用三方共进化（政策×企业×市场不可逆趋势）+ 战略路线图（三阶段从 SaaS 到数据基础设施）+ 因果回路可视化飞轮，让投资人看到必然会发生的未来",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/carbon-platform-investment-narrative.json"
+      "file": "strategy/carbon-platform-investment-narrative.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-070",
       "title": "理财 App 300 万用户付费率 0.8%：JTBD 发现用户买的不是「投资工具」而是「不焦虑」",
-      "domain": ["产品", "金融科技", "商业模式"],
-      "tags": ["JTBD", "用户工作理论", "九宫格分析", "产品定位", "理财App", "金融科技", "付费转化", "用户研究"],
-      "related_methods": ["PD15", "CG08", "DC08", "ST06", "CG20"],
+      "domain": [
+        "产品",
+        "金融科技",
+        "商业模式"
+      ],
+      "tags": [
+        "JTBD",
+        "用户工作理论",
+        "九宫格分析",
+        "产品定位",
+        "理财App",
+        "金融科技",
+        "付费转化",
+        "用户研究"
+      ],
+      "related_methods": [
+        "PD15",
+        "CG08",
+        "DC08",
+        "ST06",
+        "CG20"
+      ],
       "summary": "稳钱包 300 万用户付费率 0.8%——JTBD 挖掘发现用户真实工作是「市场波动时守住理性」而非「投资分析」；九宫格揭示核心使用场景是「焦虑×持有」；重定位后竞品从雪球变成「什么都不做靠意志力」，39 元/月对比顾问咨询 200 元/次有极高性价比",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/fintech-jtbd-repositioning.json"
+      "file": "product/fintech-jtbd-repositioning.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-071",
       "title": "企业健康福利 App 月活 5%：行为风暴 + 亲和图 + 用户画像找到「没人用」的真正原因",
-      "domain": ["产品", "企业服务", "用户研究"],
-      "tags": ["用户研究", "行为风暴", "亲和图", "用户画像", "设计民族志", "企业健康", "B2B产品", "用户洞察"],
-      "related_methods": ["CG17", "GN09", "GN08", "CG18", "PD04"],
+      "domain": [
+        "产品",
+        "企业服务",
+        "用户研究"
+      ],
+      "tags": [
+        "用户研究",
+        "行为风暴",
+        "亲和图",
+        "用户画像",
+        "设计民族志",
+        "企业健康",
+        "B2B产品",
+        "用户洞察"
+      ],
+      "related_methods": [
+        "CG17",
+        "GN09",
+        "GN08",
+        "CG18",
+        "PD04"
+      ],
       "summary": "活力通企业健康 App 月活 5%——设计民族志发现工厂工人根本无法使用 App（手机管控）；行为风暴让团队「戴手套」体验真实场景摩擦；亲和图聚类出「场景不可及」和「入口割裂」是核心问题；用户画像重建为三类完全不同的用户群",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/corporate-wellness-user-research.json"
+      "file": "product/corporate-wellness-user-research.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-072",
       "title": "教育 SaaS 如何在 6 周内从「模糊需求」走到「可测试原型」：认知组装 + 概念提炼 + 故事板完整创新循环",
-      "domain": ["产品", "教育科技", "创新方法"],
-      "tags": ["设计思维", "概念提炼", "原型法", "故事板", "认知组装", "产品创新", "教育SaaS", "快速迭代"],
-      "related_methods": ["GN05", "CG03", "GN10", "GN12", "GN11"],
+      "domain": [
+        "产品",
+        "教育科技",
+        "创新方法"
+      ],
+      "tags": [
+        "设计思维",
+        "概念提炼",
+        "原型法",
+        "故事板",
+        "认知组装",
+        "产品创新",
+        "教育SaaS",
+        "快速迭代"
+      ],
+      "related_methods": [
+        "GN05",
+        "CG03",
+        "GN10",
+        "GN12",
+        "GN11"
+      ],
       "summary": "学径企业培训 SaaS 面对 Z 世代员工不爱视频课的问题，用设计思维组织 6 周创新过程：认知组装把「抖音注意力+游戏反馈+师徒制」合成「微任务闯关」概念；概念提炼压缩为 3 个可测试方向；故事板对齐团队理解；原型测试让技能掌握率从 34% 升至 61%",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/edtech-feature-innovation-cycle.json"
+      "file": "product/edtech-feature-innovation-cycle.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-073",
       "title": "制造企业 2030 年 AI 威胁：未来雷达 + What If 把模糊焦虑变成具体战略行动",
-      "domain": ["战略", "制造业", "创新"],
-      "tags": ["未来雷达", "情景规划", "What If思维", "AI威胁", "制造业转型", "创造力评估", "颠覆性叙事", "战略预见"],
-      "related_methods": ["CG15", "GN07", "GN06", "CG04", "CG20"],
+      "domain": [
+        "战略",
+        "制造业",
+        "创新"
+      ],
+      "tags": [
+        "未来雷达",
+        "情景规划",
+        "What If思维",
+        "AI威胁",
+        "制造业转型",
+        "创造力评估",
+        "颠覆性叙事",
+        "战略预见"
+      ],
+      "related_methods": [
+        "CG15",
+        "GN07",
+        "GN06",
+        "CG04",
+        "CG20"
+      ],
       "summary": "浩达精密面对 AI 化威胁「知道方向但不知道时机」——未来雷达把 6 个维度的不确定性可视化；What If 推演极端情景（机器人降价 50%/客户转向东南亚）；颠覆性叙事说服保守股东；创造力评估揭示团队只适合成熟 AI 解决方案；优先视觉质检→工艺参数库数字化",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "strategy/manufacturing-future-radar.json"
+      "file": "strategy/manufacturing-future-radar.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-074",
       "title": "新能源车配件品牌想做爆款：价值机会分析 + 创新十环 + 人货场找到真正的差异化",
-      "domain": ["产品", "消费品", "新能源汽车", "品牌"],
-      "tags": ["价值机会分析", "创新十环", "人货场", "品牌资产", "新能源车", "配件", "差异化", "智能密度"],
-      "related_methods": ["PD12", "PD11", "PD08", "ST16", "PD03"],
+      "domain": [
+        "产品",
+        "消费品",
+        "新能源汽车",
+        "品牌"
+      ],
+      "tags": [
+        "价值机会分析",
+        "创新十环",
+        "人货场",
+        "品牌资产",
+        "新能源车",
+        "配件",
+        "差异化",
+        "智能密度"
+      ],
+      "related_methods": [
+        "PD12",
+        "PD11",
+        "PD08",
+        "ST16",
+        "PD03"
+      ],
       "summary": "驭感配件品牌 45 个 SKU 无差异化、复购率 14%——价值机会分析发现「情感维度」竞争空白；氛围灯用户 38% 复购率揭示真实核心用户；创新十环识别商业模式/社群等 9 个未被竞品占领的维度；智能密度评估指向「AI 联动氛围灯」为拳头产品方向",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "product/nev-accessory-value-opportunity.json"
+      "file": "product/nev-accessory-value-opportunity.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-075",
       "title": "两个 VP 死磕、董事会要答案：CEO 如何在 3 周内把分裂的领导层拧成一股绳并写出让董事会买单的方案",
-      "domain": ["组织", "领导力", "战略", "沟通"],
-      "tags": ["领导力", "组织决策", "马斯洛需求", "非暴力沟通", "六顶思考帽", "金字塔原理", "董事会汇报", "冲突管理"],
-      "related_methods": ["CG10", "DC09", "CG09", "CG12", "CG13"],
+      "domain": [
+        "组织",
+        "领导力",
+        "战略",
+        "沟通"
+      ],
+      "tags": [
+        "领导力",
+        "组织决策",
+        "马斯洛需求",
+        "非暴力沟通",
+        "六顶思考帽",
+        "金字塔原理",
+        "董事会汇报",
+        "冲突管理"
+      ],
+      "related_methods": [
+        "CG10",
+        "DC09",
+        "CG09",
+        "CG12",
+        "CG13"
+      ],
       "summary": "智云 SaaS 增长放缓，销售 VP（下沉规模化）和产品 VP（聚焦大客户 PLG）公开撕裂——马斯洛诊断冲突根因是安全/尊重 vs 归属/自我实现的需求之争；非暴力沟通化解对抗；六顶思考帽催生「第三条路」；金字塔原理+推导式写作构建董事会方案。组织决策成功=正确判断×对齐的人×清晰沟通",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "org/leadership-restructure-communication.json"
+      "file": "org/leadership-restructure-communication.json",
+      "authenticity": "demo"
     },
     {
       "id": "case-076",
       "title": "创新培训师在 AI 时代被「免费课程」围剿：杰文斯悖论 + 具身生产法重构一门卖不动的课",
-      "domain": ["IP内容", "教育", "创新方法", "商业模式"],
-      "tags": ["杰文斯悖论", "具身生产法", "创新五大构成", "技能方法卡", "商业折纸", "知识付费", "培训师", "AI时代转型"],
-      "related_methods": ["CG19", "CG05", "GN03", "CG14", "PD13"],
+      "domain": [
+        "IP内容",
+        "教育",
+        "创新方法",
+        "商业模式"
+      ],
+      "tags": [
+        "杰文斯悖论",
+        "具身生产法",
+        "创新五大构成",
+        "技能方法卡",
+        "商业折纸",
+        "知识付费",
+        "培训师",
+        "AI时代转型"
+      ],
+      "related_methods": [
+        "CG19",
+        "CG05",
+        "GN03",
+        "CG14",
+        "PD13"
+      ],
       "summary": "创新培训师陈默的课被 AI 和免费内容平替、年收入腰斩——杰文斯悖论揭示知识越免费、转化能力越稀缺；创新五大构成解构出实践转化/现场协作/心智激发是 AI 无法触及的层；具身生产法设计不可替代体验；技能方法卡把隐性经验产品化；商业折纸重构「卖结果+卖体系」的新模式",
       "added_date": "2026-05-29",
       "added_by": "邱懿武",
-      "file": "ip-content/innovation-training-productization.json"
+      "file": "ip-content/innovation-training-productization.json",
+      "authenticity": "demo"
     }
   ]
 }

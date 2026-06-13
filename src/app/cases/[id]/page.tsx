@@ -211,11 +211,27 @@ export default async function CaseDetailPage({ params }: Props) {
               复原分析
             </span>
           )}
+          {c.authenticity === "real" ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-volt/50 bg-volt/[0.08] px-2 py-0.5 text-[10px] text-volt">
+              真实案例
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded-full border border-fog-3 px-2 py-0.5 text-[10px] text-dust">
+              方法演示
+            </span>
+          )}
         </div>
         <h1 className="display mt-4 text-3xl text-bone sm:text-5xl">
           {c.title}
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-ash">{c.summary}</p>
+        {c.authenticity !== "real" && (
+          <p className="mt-4 rounded-lg border border-fog-2 bg-soot px-4 py-2.5 text-xs leading-relaxed text-dust">
+            说明：这是一个<strong className="text-ash">方法应用演示</strong>——
+            用一个典型场景展示 InnoLab 的方法论如何推演。其中的公司名与数字为示意，
+            重点在于「思路怎么走」，而非案例本身的真实性。
+          </p>
+        )}
         {(c.analysis_flow?.context || c.applicable_to) && (
           <p className="mt-4 text-sm text-dust">
             <span className="numeral text-[10px] uppercase tracking-widest mr-2">

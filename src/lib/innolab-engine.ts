@@ -49,7 +49,9 @@ export function buildSystemPrompt(): string {
       const chainStr = flow
         ? flow.method_chain.map((m) => m.id).join("→")
         : (c.related_methods ?? []).join("→");
-      return `- ${c.id} ${c.title}（${chainStr}）`;
+      // 标注真实性：real=真实先例(可作可信引用)，其余=方法演示(只示意思路，不可当真实证据引用)
+      const tag = c.authenticity === "real" ? "[真实]" : "[演示]";
+      return `- ${c.id}${tag} ${c.title}（${chainStr}）`;
     })
     .join("\n");
 
@@ -64,6 +66,10 @@ export function buildSystemPrompt(): string {
 ${methodIndex}
 
 ## 案例目录（仅 ID·标题·方法链；与本次问题最相关的案例全文会在用户消息里单独给你）
+
+标注说明：[真实] = 邱懿武真实做过的案例，可作为可信先例引用（"我之前帮一家……"）；
+[演示] = 方法应用的虚拟示范场景，**只能用来启发你的思路，绝不可当作真实发生过的事去引用或向用户声称"我做过"**。
+引用演示案例时，只谈"这个方法在类似场景怎么用"，不要把虚构的公司名/数字当事实抛给用户。
 
 ${caseIndex}
 

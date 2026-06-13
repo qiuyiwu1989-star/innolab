@@ -12,6 +12,13 @@ export interface CaseIndexEntry {
   added_date: string;
   file: string | null; // 相对于 cases/ 的路径，null 表示仅索引、无详情
   wiki_obj_token?: string;
+  /**
+   * 案例真实性：
+   *   "real" = 邱懿武真实做过的项目/咨询（可作可信「引用源」对外展示）
+   *   "demo" = 方法应用的虚拟演示场景（公司名/数字为示意，不冒充真实）
+   * 默认全部 demo（保守诚实），真实案例由主人逐个点名升级为 real。
+   */
+  authenticity?: "real" | "demo";
 }
 
 /** 分析流程节点：还原一次完整的 InnoLab 推演 */
