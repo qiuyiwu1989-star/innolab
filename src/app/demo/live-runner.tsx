@@ -1534,6 +1534,7 @@ ${mdToHtml(output)}
               if (output.includes("## 落地动作")) return "落地动作";
               if (output.includes("## 我的判断")) return "我的判断";
               if (output.includes("## 我的推演")) return "我的推演";
+              if (output.includes("## 我打算怎么切")) return "确定切入方向";
               if (output.includes("## 真正的问题")) return "真正的问题";
               return "分析中";
             })();
