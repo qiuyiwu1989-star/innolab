@@ -13,6 +13,7 @@ import {
   Copy,
   Check,
   Share2,
+  Download,
   ThumbsUp,
   ThumbsDown,
   History,
@@ -699,6 +700,97 @@ export function LiveRunner({
     } catch {
       /* 浏览器拒绝 — 忽略 */
     }
+  }, [submittedPrompt, output]);
+
+  /** 导出报告：打开打印优化的新窗口，用浏览器原生「打印 → 存为 PDF」生成交付级报告 */
+  const exportReport = useCallback(() => {
+    const today = new Date().toLocaleDateString("zh-CN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    // 极简 markdown → HTML（标题/加粗/列表/表格已足够覆盖推演输出）
+    const esc = (s: string) =>
+      s
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    const mdToHtml = (md: string) => {
+      const lines = md.split("\n");
+      const html: string[] = [];
+      let inList = false;
+      const closeList = () => {
+        if (inList) {
+          html.push("</ul>");
+          inList = false;
+        }
+      };
+      for (const raw of lines) {
+        const line = raw.trimEnd();
+        if (/^##\s+/.test(line)) {
+          closeList();
+          html.push(`<h2>${esc(line.replace(/^##\s+/, ""))}</h2>`);
+        } else if (/^###\s+/.test(line)) {
+          closeList();
+          html.push(`<h3>${esc(line.replace(/^###\s+/, ""))}</h3>`);
+        } else if (/^[-✓✗·]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
+          if (!inList) {
+            html.push("<ul>");
+            inList = true;
+          }
+          const item = line.replace(/^[-✓✗·]\s+/, "").replace(/^\d+\.\s+/, "");
+          const mark = line.startsWith("✓")
+            ? "✓ "
+            : line.startsWith("✗")
+              ? "✗ "
+              : "";
+          html.push(`<li>${mark}${inlineMd(item)}</li>`);
+        } else if (line === "") {
+          closeList();
+        } else {
+          closeList();
+          html.push(`<p>${inlineMd(line)}</p>`);
+        }
+      }
+      closeList();
+      return html.join("\n");
+    };
+    const inlineMd = (s: string) =>
+      esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+    const win = window.open("", "_blank");
+    if (!win) return;
+    win.document.write(`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>InnoLab 战略推演报告</title>
+<style>
+  @page { margin: 22mm 18mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "PingFang SC","Microsoft YaHei",-apple-system,sans-serif; color:#1a1a1a; line-height:1.75; max-width:760px; margin:0 auto; padding:24px; }
+  .rpt-head { border-bottom:2px solid #1a1a1a; padding-bottom:16px; margin-bottom:28px; }
+  .rpt-brand { font-size:13px; letter-spacing:2px; color:#5b8a00; font-weight:600; }
+  .rpt-title { font-size:24px; font-weight:700; margin:10px 0 6px; line-height:1.3; }
+  .rpt-meta { font-size:12px; color:#888; }
+  .rpt-q { background:#f6f7f3; border-left:3px solid #5b8a00; padding:12px 16px; margin-bottom:24px; font-size:14px; color:#333; }
+  h2 { font-size:18px; margin:26px 0 10px; padding-bottom:4px; border-bottom:1px solid #eee; }
+  h3 { font-size:15px; margin:18px 0 8px; }
+  p { margin:8px 0; font-size:14px; }
+  ul { margin:8px 0; padding-left:22px; }
+  li { margin:5px 0; font-size:14px; }
+  strong { color:#000; }
+  .rpt-foot { margin-top:40px; padding-top:16px; border-top:1px solid #eee; font-size:12px; color:#999; }
+  @media print { body { padding:0; } button { display:none; } }
+</style></head><body>
+<div class="rpt-head">
+  <div class="rpt-brand">INNOLAB · 战略创新推演</div>
+  <div class="rpt-title">战略推演报告</div>
+  <div class="rpt-meta">${today} · 由 InnoLab 推演引擎生成 · 方法论 by 邱懿武</div>
+</div>
+<div class="rpt-q"><strong>你的问题：</strong>${esc(submittedPrompt)}</div>
+${mdToHtml(output)}
+<div class="rpt-foot">本报告由 InnoLab（innolab.cc）基于邱懿武的 83 个战略创新方法生成。<br>如需邱懿武本人就此议题做深度咨询，请通过 innolab.cc/about 联系。</div>
+</body></html>`);
+    win.document.close();
+    setTimeout(() => win.print(), 400);
   }, [submittedPrompt, output]);
 
   /** 复制分享链接 */
@@ -1664,6 +1756,14 @@ export function LiveRunner({
                       <span>
                         {copied === "link" ? "已复制" : "分享给朋友"}
                       </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={exportReport}
+                      className="inline-flex items-center gap-1 rounded-md border border-volt/40 bg-volt/[0.06] px-2.5 py-1 text-volt transition hover:bg-volt/[0.12]"
+                    >
+                      <Download className="size-3" />
+                      <span>导出报告 PDF</span>
                     </button>
 
                     {feedback && !showNoteInput && (
