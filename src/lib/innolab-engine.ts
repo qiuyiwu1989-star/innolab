@@ -10,6 +10,7 @@ import path from "node:path";
 import { getAllMethods } from "./methods";
 import { getAllCases } from "./cases";
 import { engines } from "./engines";
+import { shouldSearch, webSearch, formatSearchContext } from "./web-search";
 
 // SYSTEM_PROMPT.md = lean web-optimized prompt (~2KB vs SKILL.md ~15KB)
 // SKILL.md 保留作为 Claude Code agent 的完整知识库，不用于 web API
@@ -241,6 +242,7 @@ export interface AnalyzeOptions {
 
 export type AnalyzeEvent =
   | { type: "delta"; text: string }
+  | { type: "status"; text: string }
   | { type: "usage"; input: number; output: number; total: number }
   | { type: "error"; message: string };
 
@@ -348,14 +350,23 @@ export async function* analyzeStream({
   const client = new OpenAI({ apiKey, baseURL });
   const system = buildSystemPrompt();
 
+  // 联网搜索（可选）：问题涉及实时事实时，先检索再推演。无 key / 不需要时静默跳过。
+  let searchCtx = "";
+  if (shouldSearch(prompt)) {
+    yield { type: "status", text: "联网检索实时资料中…" };
+    const results = await webSearch(prompt, signal);
+    searchCtx = formatSearchContext(results);
+  }
+
   // 构建 userMessage：
-  // 1. 可选：领域案例参考（动态注入，system prompt 不变→缓存复用）
-  // 2. 可选：thread 续问前文精要
-  // 3. 用户实际问题
+  // 1. 可选：联网检索到的实时事实（最前，作为权威事实）
+  // 2. 可选：领域案例参考（动态注入，system prompt 不变→缓存复用）
+  // 3. 可选：thread 续问前文精要
+  // 4. 用户实际问题
   const domainCtx = buildDomainContext(domain, prompt);
   const userMessage = priorSummary?.trim()
-    ? `${domainCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
-    : `${domainCtx}${prompt}`;
+    ? `${searchCtx}${domainCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
+    : `${searchCtx}${domainCtx}${prompt}`;
 
   try {
     const stream = await client.chat.completions.create(
