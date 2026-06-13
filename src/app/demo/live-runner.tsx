@@ -1126,9 +1126,38 @@ ${mdToHtml(output)}
 
             {contextOpen && (
               <div className="rounded-lg border border-volt/30 bg-volt/[0.03] p-3">
-                <div className="text-[11px] uppercase tracking-widest text-volt mb-2">
+                <div className="text-[11px] uppercase tracking-widest text-volt mb-1">
                   你的背景（保存后自动加入每次分析）
                 </div>
+                <div className="mb-2 text-[11px] leading-relaxed text-dust">
+                  填得越具体，推演越准。建议覆盖这几项：
+                  <span className="text-ash">行业 · 规模/营收 · 现在卡在哪 · 已经试过什么</span>
+                </div>
+                {/* 一键插入字段骨架，降低"不知道填什么"的门槛 */}
+                {!userContextDraft.trim() && (
+                  <div className="mb-2 flex flex-wrap gap-1.5">
+                    {[
+                      "行业：",
+                      "团队规模：",
+                      "年营收：",
+                      "现在最大的卡点：",
+                      "已经试过：",
+                    ].map((field) => (
+                      <button
+                        key={field}
+                        type="button"
+                        onClick={() =>
+                          setUserContextDraft((prev) =>
+                            prev ? `${prev}\n${field}` : field,
+                          )
+                        }
+                        className="rounded-full border border-fog-2 px-2 py-0.5 text-[11px] text-ash transition hover:border-volt/40 hover:text-volt"
+                      >
+                        + {field.replace("：", "")}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <textarea
                   value={userContextDraft}
                   onChange={(e) => setUserContextDraft(e.target.value)}
@@ -1141,8 +1170,8 @@ ${mdToHtml(output)}
                       saveUserContext(userContextDraft);
                     }
                   }}
-                  placeholder="例：我是一家 50 人设计公司的 CEO，主营 IP 周边，年营收 2000 万，正在考虑 AI 转型"
-                  rows={3}
+                  placeholder="例：教育培训行业，50 人，年营收 2000 万；现在卡在客户都问 AI 培训但团队没人懂 AI；已经试过外包讲师但口碑翻车"
+                  rows={4}
                   className="w-full resize-none bg-transparent text-sm text-bone outline-none placeholder:text-dust/60"
                   autoFocus
                 />
