@@ -6,7 +6,9 @@ import {
   candidateTsSet,
   candidateCount,
   feedbackQuality,
+  methodUsageStats,
 } from "@/lib/conversation-log";
+import { getAllMethods } from "@/lib/methods";
 import { MarkCandidate } from "@/components/admin/mark-candidate";
 
 const DOMAIN_LABELS: Record<string, string> = {
@@ -49,6 +51,9 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
   const insights = conversationInsights();
   const profiles = conversationProfiles();
   const quality = feedbackQuality();
+  const methods = methodUsageStats(
+    getAllMethods().map((m) => ({ id: m.id, titleCn: m.titleCn })),
+  );
   const recent = readRecentConversations(80);
   const candidates = candidateTsSet();
   const candTotal = candidateCount();
@@ -258,6 +263,90 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
       <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Distribution title="按领域" data={stats.byDomain} labels={DOMAIN_LABELS} />
         <Distribution title="按身份（谁在用）" data={stats.byLabel} />
+      </section>
+
+      {/* ═══ 方法使用：哪些方法常用 / 是僵尸 / AI 引用了库里没有的 ═══ */}
+      <section className="mt-10">
+        <h2 className="text-sm font-semibold text-bone">
+          方法使用 · 哪些被真实推演调用
+        </h2>
+        <p className="mt-1 text-[11px] text-dust">
+          基于 {methods.totalRuns} 次真实推演统计 → 常用方法是核心资产；
+          僵尸方法该打磨或删；AI 引用了库里没有的方法 = 你该补的缺口
+        </p>
+
+        {/* AI 引用了库里不存在的方法 ID —— 最该关注：暴露方法缺口 */}
+        {methods.unknownIds.length > 0 && (
+          <div className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/[0.04] p-3">
+            <div className="text-xs font-medium text-rose-400">
+              ⚠ AI 引用了库里不存在的方法 ID（可能是它编的，也可能提示你该补这些方法）
+            </div>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              {methods.unknownIds.map((id) => (
+                <span
+                  key={id}
+                  className="numeral rounded border border-rose-500/40 px-1.5 py-0.5 text-[11px] text-rose-400"
+                >
+                  {id}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* 常用 Top 10 */}
+          <div className="rounded-lg border border-fog-2 bg-soot p-4">
+            <div className="text-[11px] uppercase tracking-widest text-volt">
+              最常调用 Top 10
+            </div>
+            <div className="mt-2 space-y-1.5">
+              {methods.counts
+                .filter((m) => m.count > 0)
+                .slice(0, 10)
+                .map((m) => (
+                  <div
+                    key={m.id}
+                    className="flex items-center gap-2 text-xs"
+                  >
+                    <span className="numeral w-12 shrink-0 text-volt">
+                      {m.id}
+                    </span>
+                    <span className="flex-1 truncate text-ash">
+                      {m.titleCn}
+                    </span>
+                    <span className="numeral text-bone">{m.count}</span>
+                  </div>
+                ))}
+              {methods.counts.filter((m) => m.count > 0).length === 0 && (
+                <div className="text-xs text-dust">还没有推演数据</div>
+              )}
+            </div>
+          </div>
+
+          {/* 僵尸方法 */}
+          <div className="rounded-lg border border-fog-2 bg-soot p-4">
+            <div className="text-[11px] uppercase tracking-widest text-dust">
+              从未被调用（{methods.zombies.length} / {methods.counts.length}）
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {methods.zombies.slice(0, 40).map((m) => (
+                <span
+                  key={m.id}
+                  title={m.titleCn}
+                  className="numeral rounded border border-fog-2 px-1.5 py-0.5 text-[10px] text-dust"
+                >
+                  {m.id}
+                </span>
+              ))}
+            </div>
+            {methods.zombies.length > 40 && (
+              <div className="mt-1 text-[10px] text-dust">
+                …还有 {methods.zombies.length - 40} 个
+              </div>
+            )}
+          </div>
+        </div>
       </section>
 
       {/* 最近对话 */}

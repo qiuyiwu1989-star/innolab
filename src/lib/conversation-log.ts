@@ -419,3 +419,61 @@ export function feedbackQuality(): {
     .sort((a, b) => (a.ts < b.ts ? 1 : -1));
   return { up, down, downs };
 }
+
+// ── 方法使用统计（方法库的飞轮：哪些方法常用、哪些是僵尸、缺什么方法）──────────
+
+/** 从一段推演 output 里提取实际用到的方法 ID（兼容「## 本次方法」行 + ### 标题） */
+function extractMethodIdsFromOutput(output: string): string[] {
+  const ids: string[] = [];
+  const tag = output.match(/##\s*本次方法\s*\n+([\s\S]*?)(?=\n##|$)/);
+  if (tag) ids.push(...(tag[1].match(/[A-Z]{2}\d{2}/g) ?? []));
+  ids.push(
+    ...(output.match(/###\s+([A-Z]{2}\d{2})/g) ?? []).map((m) =>
+      m.replace(/###\s+/, "").trim(),
+    ),
+  );
+  return Array.from(new Set(ids));
+}
+
+export interface MethodUsage {
+  /** 全部方法 ID → 被真实推演调用的次数（含 0） */
+  counts: { id: string; titleCn: string; count: number }[];
+  /** 从未被调用的「僵尸方法」 */
+  zombies: { id: string; titleCn: string }[];
+  /** 推演调用过、但方法库里不存在的 ID（AI 可能引用了不存在的方法 → 需排查/补充） */
+  unknownIds: string[];
+  totalRuns: number;
+}
+
+/**
+ * 统计方法被真实推演调用的次数。
+ * 入参 allMethods 由调用方传入（避免 lib 层互相 import 造成耦合）。
+ */
+export function methodUsageStats(
+  allMethods: { id: string; titleCn: string }[],
+): MethodUsage {
+  const known = new Map(allMethods.map((m) => [m.id, m.titleCn]));
+  const count = new Map<string, number>();
+  const unknown = new Set<string>();
+
+  const convs = readRecentConversations(100000);
+  let totalRuns = 0;
+  for (const c of convs) {
+    const ids = extractMethodIdsFromOutput(c.output ?? "");
+    if (ids.length === 0) continue;
+    totalRuns += 1;
+    for (const id of ids) {
+      if (known.has(id)) count.set(id, (count.get(id) ?? 0) + 1);
+      else unknown.add(id);
+    }
+  }
+
+  const counts = allMethods
+    .map((m) => ({ id: m.id, titleCn: m.titleCn, count: count.get(m.id) ?? 0 }))
+    .sort((a, b) => b.count - a.count);
+  const zombies = counts
+    .filter((c) => c.count === 0)
+    .map((c) => ({ id: c.id, titleCn: c.titleCn }));
+
+  return { counts, zombies, unknownIds: Array.from(unknown), totalRuns };
+}
