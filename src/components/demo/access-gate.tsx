@@ -39,6 +39,11 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  // 个性化记忆：欢迎横幅文案 + 注入推演的上下文摘要
+  const [memoryFocus, setMemoryFocus] = useState<string[]>([]);
+  const [memoryCount, setMemoryCount] = useState(0);
+  const [memoryContext, setMemoryContext] = useState("");
+
   // 恢复本地授权
   useEffect(() => {
     try {
@@ -54,6 +59,33 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
     }
     setReady(true);
   }, []);
+
+  // 已授权 + 有 userKey → 拉取这个人的「记忆」
+  useEffect(() => {
+    const uk = userKey.trim();
+    if (!passcode || !uk) return;
+    let alive = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/memory", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userKey: uk }),
+        });
+        const m = await res.json().catch(() => ({}));
+        if (alive && m?.hasMemory) {
+          setMemoryFocus(m.focusLabels ?? []);
+          setMemoryCount(m.count ?? 0);
+          setMemoryContext(m.contextSummary ?? "");
+        }
+      } catch {
+        /* 记忆拉取失败不影响使用 */
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [passcode, userKey]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -117,6 +149,7 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
 
   // 已授权 → 推演工作台
   if (passcode) {
+    const hasMemory = memoryCount > 0;
     return (
       <div>
         <div className="mb-4 flex items-center justify-between rounded-lg border border-fog-2 bg-soot px-4 py-2 text-xs">
@@ -132,11 +165,32 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
             退出
           </button>
         </div>
+
+        {/* 个性化记忆横幅 —— 明示「我记得你」 */}
+        {hasMemory && (
+          <div className="mb-4 rounded-lg border border-volt/30 bg-volt/[0.05] px-4 py-3 text-sm">
+            <div className="font-medium text-bone">
+              欢迎回来{name ? `，${name}` : ""} 👋
+            </div>
+            <div className="mt-1 text-xs text-ash">
+              这是你第 {memoryCount + 1} 次来。
+              {memoryFocus.length > 0 && (
+                <>
+                  {" "}记得你一直在关注{" "}
+                  <span className="text-volt">{memoryFocus.join(" / ")}</span>
+                  ——这次的推演我会带上你之前的思路。
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         <LiveRunner
           methodsIndex={methodsIndex}
           casesIndex={casesIndex}
           clientToken={passcode}
           userKey={userKey}
+          memoryContext={memoryContext}
         />
       </div>
     );

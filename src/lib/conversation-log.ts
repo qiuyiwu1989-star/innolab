@@ -229,6 +229,88 @@ export function conversationProfiles(): UserProfile[] {
   return profiles.sort((a, b) => b.count - a.count);
 }
 
+// ── 个性化记忆（飞轮第①圈：让产品「记得」回头用户，越用越懂这个人）──────────
+
+const DOMAIN_LABEL: Record<string, string> = {
+  "ai-transform": "AI 转型",
+  product: "产品",
+  "ip-content": "IP / 内容",
+  org: "组织",
+  strategy: "战略",
+  all: "综合",
+  free: "自由",
+  unknown: "战略",
+};
+
+export interface UserMemory {
+  /** 是否有可用记忆（来过且有历史） */
+  hasMemory: boolean;
+  name: string;
+  /** 关注领域的可读标签，最多 3 个，如 ["战略","产品"] */
+  focusLabels: string[];
+  /** 历史提问次数 */
+  count: number;
+  /** 注入推演上下文的「记忆摘要」——最近 2 次的问题 + 判断精华 */
+  contextSummary: string;
+}
+
+/**
+ * 按 user_key 取该用户的「记忆」：用于
+ *   ① 顶部「欢迎回来 X，记得你在关注…」横幅
+ *   ② 推演时作为上下文注入，让 AI 真的记得他之前在想什么
+ * 取最近 2 次推演（含完整判断/落地段）做精华，避免过长 + 串味。
+ */
+export function getMemoryForUser(userKey: string): UserMemory {
+  const empty: UserMemory = {
+    hasMemory: false,
+    name: "",
+    focusLabels: [],
+    count: 0,
+    contextSummary: "",
+  };
+  if (!userKey || !userKey.trim()) return empty;
+
+  const all = readRecentConversations(100000); // 最新在前
+  const mine = all.filter((c) => c.user_key === userKey);
+  if (mine.length === 0) {
+    // 没有对话历史，但可能注册过 → 至少认得名字
+    const reg = readRegistrations().find((r) => r.user_key === userKey);
+    if (!reg) return empty;
+    return { ...empty, hasMemory: false, name: reg.name };
+  }
+
+  const reg = readRegistrations().find((r) => r.user_key === userKey);
+  const name = reg?.name ?? "";
+
+  // 关注领域 top 3
+  const domainCount: Record<string, number> = {};
+  for (const c of mine) domainCount[c.domain] = (domainCount[c.domain] ?? 0) + 1;
+  const focusLabels = Object.entries(domainCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([d]) => DOMAIN_LABEL[d] ?? d)
+    .filter((v, i, arr) => arr.indexOf(v) === i);
+
+  // 最近 2 次推演的「问题 + 判断/落地精华」做记忆摘要（注入用）
+  const recent = mine.slice(0, 2);
+  const parts = recent.map((c) => {
+    const out = c.output ?? "";
+    const judge =
+      out.match(/##\s*(?:我的判断|关键判断)\s*\n+([\s\S]*?)(?=\n##|$)/)?.[1] ??
+      "";
+    const summary = judge.trim().slice(0, 200);
+    return `· 上次问："${(c.prompt ?? "").slice(0, 60)}"${summary ? `\n  当时的核心判断：${summary}` : ""}`;
+  });
+
+  return {
+    hasMemory: true,
+    name,
+    focusLabels,
+    count: mine.length,
+    contextSummary: parts.join("\n"),
+  };
+}
+
 // ── 候选案例（飞轮第②圈：把高价值真实推演沉淀成案例库素材）──────────────
 
 /** 已标记为候选案例的对话 ts 集合（去重用） */

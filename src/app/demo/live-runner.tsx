@@ -256,6 +256,8 @@ interface LiveRunnerProps {
   clientToken?: string;
   /** 留资派生的稳定用户标识：随推演上报 → 飞轮按人归属画像 */
   userKey?: string;
+  /** 个性化记忆：该用户历史推演精要，首轮注入让 AI「记得他」 */
+  memoryContext?: string;
 }
 
 export function LiveRunner({
@@ -263,6 +265,7 @@ export function LiveRunner({
   casesIndex = [],
   clientToken,
   userKey,
+  memoryContext,
 }: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [prompt, setPrompt] = useState("");
@@ -777,7 +780,7 @@ export function LiveRunner({
 
       // 续 thread：构建 prior_summary（前文压缩精要）
       const isFollowUp = !!kind && threadHistory.length > 0;
-      const priorSummary = isFollowUp
+      let priorSummary = isFollowUp
         ? buildPriorSummary({
             id: currentThread?.id ?? "transient",
             domain: activeDomain,
@@ -787,6 +790,10 @@ export function LiveRunner({
             updatedAt: new Date().toISOString(),
           })
         : "";
+      // 个性化记忆：本会话首轮（非续问）时，注入该用户的历史推演精要，让 AI「记得他」
+      if (!isFollowUp && memoryContext) {
+        priorSummary = `【这位用户的历史背景，你之前帮他分析过】\n${memoryContext}\n\n请在这次回答里自然地体现你记得他之前的思路（但这次问题独立处理，不要硬套）。`;
+      }
 
       setFollowUpKind(kind);
       setSubmittedPrompt(trimmed);

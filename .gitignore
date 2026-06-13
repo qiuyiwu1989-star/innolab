@@ -1,5 +1,6 @@
 # InnoLab skill memory (do not commit private analysis archive)
-memory/
+# 只忽略根目录私有归档，不误伤源码 src/app/api/memory/
+/memory/
 wiki-mapping.json
 *.log
 
