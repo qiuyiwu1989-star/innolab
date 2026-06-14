@@ -57,7 +57,13 @@ function walk(dir: string): string[] {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...walk(full));
-    else if (entry.isFile() && entry.name.endsWith(".md")) out.push(full);
+    // 排除 *.guide.md（人类讲解版，单独加载，不当作方法卡）
+    else if (
+      entry.isFile() &&
+      entry.name.endsWith(".md") &&
+      !entry.name.endsWith(".guide.md")
+    )
+      out.push(full);
   }
   return out;
 }
@@ -182,6 +188,24 @@ export function getAllMethods(): Method[] {
 
 export function getMethodBySlug(slug: string): Method | undefined {
   return getAllMethods().find((m) => m.slug === slug);
+}
+
+/**
+ * 取某方法的「人类讲解版」（说明书/论文式，给人看）。
+ * 存在 methods/<engineDir>/<slug>.guide.md 则返回其内容，否则 null。
+ */
+export function getMethodGuide(
+  engineDir: string,
+  slug: string,
+): string | null {
+  try {
+    const p = path.join(METHODS_ROOT, engineDir, `${slug}.guide.md`);
+    if (!fs.existsSync(p)) return null;
+    const raw = fs.readFileSync(p, "utf8").trim();
+    return raw || null;
+  } catch {
+    return null;
+  }
 }
 
 export function getMethodsByEngine(engine: EngineKey): Method[] {

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { getAllMethods, getMethodBySlug } from "@/lib/methods";
+import { getAllMethods, getMethodBySlug, getMethodGuide } from "@/lib/methods";
 import { engines } from "@/lib/engines";
 import { getCasesByMethodId } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
 import { cleanMarkdownBody } from "@/components/site/markdown";
 import { MethodModules } from "@/components/site/method-modules";
+import { MethodChannels } from "@/components/site/method-channels";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -71,6 +72,7 @@ export default async function MethodDetailPage({ params }: Props) {
     fullIdx < allMethods.length - 1 ? allMethods[fullIdx + 1] : null;
 
   const body = cleanMarkdownBody(method.raw);
+  const guide = getMethodGuide(method.engineDir, method.slug);
   const usedInCases = getCasesByMethodId(method.id);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
@@ -146,7 +148,11 @@ export default async function MethodDetailPage({ params }: Props) {
       {/* 双栏 */}
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]">
         <main className="min-w-0">
-          <MethodModules body={body} />
+          {guide ? (
+            <MethodChannels guide={guide} body={body} />
+          ) : (
+            <MethodModules body={body} />
+          )}
         </main>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">
