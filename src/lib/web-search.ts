@@ -33,7 +33,7 @@ export interface SearchResult {
  * 纯判断题（"我该不该转型"）不触发；涉及最新数据/政策/竞品的才触发。
  */
 export function shouldSearch(prompt: string): boolean {
-  if (!process.env.WEB_SEARCH_API_KEY) return false; // 没 key 直接不搜
+  // 纯关键词启发式（是否「该不该搜」）；具体走哪条搜索通路由调用方按 key 决定。
   return SEARCH_SIGNALS.some((s) => prompt.includes(s));
 }
 
@@ -81,4 +81,85 @@ export function formatSearchContext(results: SearchResult[]): string {
     (r, i) => `[来源${i + 1}] ${r.title}\n${r.content}\n（${r.url}）`,
   );
   return `【联网检索到的实时参考资料（请在推演中用到时标注"据来源N"，并对信息可靠性保持判断）】\n${lines.join("\n\n")}\n\n`;
+}
+
+// ── MiMo 官方端点联网搜索（推演走 TP 套餐，搜索单独走 sk- 标准 key）──────────
+//
+// 架构：主推演用 TP 套餐（token-plan-cn + tp- token，大额度、便宜），但 TP 那条线
+// 没联网插件；需要实时事实时，单独用官方端点（api.xiaomimimo.com）+ 标准 sk- key
+// 调一次 web_search，把检索到的「事实摘要 + 来源」喂回主推演。两条线计费分开。
+//
+// 配置（服务器 .env.local）：
+//   MIMO_SEARCH_API_KEY=sk-...                         # 官方标准 key（已开通联网插件）；没配=不搜
+//   MIMO_SEARCH_BASE_URL=https://api.xiaomimimo.com/v1 # 选填
+//   MIMO_SEARCH_MODEL=mimo-v2.5-pro                    # 选填，默认同 MIMO_MODEL
+
+const MIMO_OFFICIAL_BASE = "https://api.xiaomimimo.com/v1";
+
+export interface MimoSearchResult {
+  /** 检索到的实时事实摘要（注入主推演） */
+  summary: string;
+  /** 来源（url_citation），用于报告末尾「参考来源」 */
+  sources: { url: string; title: string }[];
+}
+
+/** 是否已配置 MiMo 官方搜索 key */
+export function mimoSearchEnabled(): boolean {
+  return !!process.env.MIMO_SEARCH_API_KEY;
+}
+
+/**
+ * 用 MiMo 官方端点 + sk- key 做一次联网搜索，返回事实摘要 + 来源。
+ * 失败/无 key → 返回空（静默降级，绝不影响主推演）。
+ */
+export async function mimoSearch(
+  query: string,
+  signal?: AbortSignal,
+): Promise<MimoSearchResult> {
+  const key = process.env.MIMO_SEARCH_API_KEY;
+  if (!key) return { summary: "", sources: [] };
+  const base = process.env.MIMO_SEARCH_BASE_URL ?? MIMO_OFFICIAL_BASE;
+  const model =
+    process.env.MIMO_SEARCH_MODEL ?? process.env.MIMO_MODEL ?? "mimo-v2.5-pro";
+  try {
+    const res = await fetch(`${base}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 900,
+        tools: [{ type: "web_search", force_search: true, max_keyword: 3 }],
+        messages: [
+          {
+            role: "user",
+            content: `联网检索与下面问题相关的最新事实/数据/动态，用简洁要点汇总（每条尽量标注时间），只给客观事实、不要展开分析：\n\n${query}`,
+          },
+        ],
+      }),
+      signal,
+    });
+    if (!res.ok) return { summary: "", sources: [] };
+    const data = (await res.json()) as {
+      choices?: { message?: { content?: string; annotations?: unknown[] } }[];
+    };
+    const msg = data.choices?.[0]?.message ?? {};
+    const summary = (msg.content ?? "").toString().slice(0, 2000);
+    const sources: { url: string; title: string }[] = [];
+    const seen = new Set<string>();
+    for (const a of (msg.annotations ?? []) as Array<Record<string, unknown>>) {
+      const cite = (a.url_citation as Record<string, unknown>) ?? {};
+      const url = (a.url ?? cite.url) as string | undefined;
+      const title = (a.title ?? cite.title ?? "") as string;
+      if (url && !seen.has(url)) {
+        seen.add(url);
+        sources.push({ url, title });
+      }
+    }
+    return { summary, sources };
+  } catch {
+    return { summary: "", sources: [] };
+  }
 }

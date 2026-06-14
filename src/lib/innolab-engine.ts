@@ -10,7 +10,7 @@ import path from "node:path";
 import { getAllMethods } from "./methods";
 import { getAllCases } from "./cases";
 import { engines } from "./engines";
-import { shouldSearch, webSearch, formatSearchContext } from "./web-search";
+import { shouldSearch, mimoSearch, mimoSearchEnabled } from "./web-search";
 
 // SYSTEM_PROMPT.md = lean web-optimized prompt (~2KB vs SKILL.md ~15KB)
 // SKILL.md 保留作为 Claude Code agent 的完整知识库，不用于 web API
@@ -350,20 +350,19 @@ export async function* analyzeStream({
   const client = new OpenAI({ apiKey, baseURL });
   const system = buildSystemPrompt();
 
-  // ── 联网搜索：两条独立通路，按 env 开关，默认都关（行为不变）──────────────
-  //
-  // A) MiMo 原生搜索（推荐）：MIMO_WEB_SEARCH=on 时，给请求挂 web_search 工具，
-  //    由 MiMo 服务端自行联网。前提：该 token 已在控制台开通 webSearchEnabled，
-  //    否则网关会对每个请求回 400 —— 所以默认关，开通确认后才置 on。
-  // B) Tavily 兜底：配了 WEB_SEARCH_API_KEY 时，命中实时信号就先检索再注入。
-  //    与 MiMo 解耦，二者互不依赖；都没开 = 纯推演。
-  const mimoWebSearch = process.env.MIMO_WEB_SEARCH === "on";
-
+  // ── 联网搜索：推演走 TP 套餐，搜索单独走官方 sk- key ──────────────────────
+  // 命中实时信号(shouldSearch) 且配了 MIMO_SEARCH_API_KEY 时：用 MiMo 官方端点
+  // (sk-) 单独调一次 web_search，把「实时事实摘要」注入主推演上下文、来源汇成末尾
+  // 「参考来源」。主推演本身不挂 web_search 工具（TP 那条线没联网插件，挂了会 400）。
   let searchCtx = "";
-  if (!mimoWebSearch && shouldSearch(prompt)) {
+  let searchSources: { url: string; title: string }[] = [];
+  if (mimoSearchEnabled() && shouldSearch(prompt)) {
     yield { type: "status", text: "联网检索实时资料中…" };
-    const results = await webSearch(prompt, signal);
-    searchCtx = formatSearchContext(results);
+    const r = await mimoSearch(prompt, signal);
+    if (r.summary) {
+      searchCtx = `【联网检索到的实时参考资料（请在推演中用到时标注，并对可靠性保持判断）】\n${r.summary}\n\n`;
+    }
+    searchSources = r.sources;
   }
 
   // 构建 userMessage：
@@ -387,16 +386,8 @@ export async function* analyzeStream({
           { role: "system", content: system },
           { role: "user", content: userMessage },
         ],
-        // MiMo 原生联网搜索：开关 on 时挂内置 web_search 工具（MiMo 协议扩展，非标准
-        // OpenAI function，故 cast）。force_search:false = 意图识别，模型按需才搜（省钱省时）。
-        // 需用官方端点 api.xiaomimimo.com + 已开通联网插件的标准 key（MIMO_BASE_URL/KEY）。
-        ...(mimoWebSearch
-          ? {
-              tools: [
-                { type: "web_search", force_search: false, max_keyword: 3 },
-              ] as unknown as OpenAI.Chat.Completions.ChatCompletionTool[],
-            }
-          : {}),
+        // 主推演走 TP 套餐，不挂 web_search 工具（TP 那条线没联网插件，挂了会 400）。
+        // 实时事实已通过上面的 mimoSearch(官方 sk-) 检索好、注入 searchCtx。
       },
       {
         signal,
@@ -405,30 +396,12 @@ export async function* analyzeStream({
 
     let lastUsage: { input: number; output: number; total: number } | null =
       null;
-    // 联网搜索来源：annotations(url_citation) 在流里早返回，累积去重，末尾补「参考来源」段。
-    const sources: { url: string; title: string }[] = [];
-    const seenUrls = new Set<string>();
 
     for await (const chunk of stream) {
-      const choice = chunk.choices?.[0];
       // 标准 OpenAI 增量：choices[0].delta.content
-      const delta = choice?.delta?.content;
+      const delta = chunk.choices?.[0]?.delta?.content;
       if (delta) {
         yield { type: "delta", text: delta };
-      }
-      // 联网搜索溯源（MiMo 协议扩展字段，类型外，故 cast）
-      const anns = (choice?.delta as unknown as { annotations?: unknown[] })
-        ?.annotations;
-      if (Array.isArray(anns)) {
-        for (const a of anns as Array<Record<string, unknown>>) {
-          const cite = (a.url_citation as Record<string, unknown>) ?? {};
-          const url = (a.url ?? cite.url) as string | undefined;
-          const title = (a.title ?? cite.title ?? "") as string;
-          if (url && !seenUrls.has(url)) {
-            seenUrls.add(url);
-            sources.push({ url, title });
-          }
-        }
       }
       // 末尾 chunk 携带 usage（stream_options: include_usage）
       if (chunk.usage) {
@@ -440,9 +413,9 @@ export async function* analyzeStream({
       }
     }
 
-    // 有联网来源就补一段「参考来源」（进 output → 落库 + 前端可见 + 可溯源）
-    if (sources.length > 0) {
-      const lines = sources
+    // 联网搜索到的来源 → 末尾补「参考来源」（进 output → 落库 + 前端可见 + 可溯源）
+    if (searchSources.length > 0) {
+      const lines = searchSources
         .map((s, i) => `${i + 1}. [${s.title || s.url}](${s.url})`)
         .join("\n");
       yield { type: "delta", text: `\n\n## 参考来源\n${lines}\n` };
