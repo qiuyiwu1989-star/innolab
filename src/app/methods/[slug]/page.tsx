@@ -6,7 +6,8 @@ import { getAllMethods, getMethodBySlug } from "@/lib/methods";
 import { engines } from "@/lib/engines";
 import { getCasesByMethodId } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
-import { Markdown, cleanMarkdownBody } from "@/components/site/markdown";
+import { cleanMarkdownBody } from "@/components/site/markdown";
+import { MethodModules } from "@/components/site/method-modules";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -145,7 +146,7 @@ export default async function MethodDetailPage({ params }: Props) {
       {/* 双栏 */}
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]">
         <main className="min-w-0">
-          <Markdown source={body} />
+          <MethodModules body={body} />
         </main>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">
