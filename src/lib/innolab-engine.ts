@@ -387,13 +387,13 @@ export async function* analyzeStream({
           { role: "system", content: system },
           { role: "user", content: userMessage },
         ],
-        // MiMo 原生联网搜索：开关 on 时挂上内置 web_search 工具（MiMo 协议扩展，
-        // 非标准 OpenAI function，故 cast）。token 未开通 webSearchEnabled 时会 400，
-        // 因此由 MIMO_WEB_SEARCH 严格控制，默认不挂。
+        // MiMo 原生联网搜索：开关 on 时挂内置 web_search 工具（MiMo 协议扩展，非标准
+        // OpenAI function，故 cast）。force_search:false = 意图识别，模型按需才搜（省钱省时）。
+        // 需用官方端点 api.xiaomimimo.com + 已开通联网插件的标准 key（MIMO_BASE_URL/KEY）。
         ...(mimoWebSearch
           ? {
               tools: [
-                { type: "web_search" },
+                { type: "web_search", force_search: false, max_keyword: 3 },
               ] as unknown as OpenAI.Chat.Completions.ChatCompletionTool[],
             }
           : {}),
@@ -405,12 +405,30 @@ export async function* analyzeStream({
 
     let lastUsage: { input: number; output: number; total: number } | null =
       null;
+    // 联网搜索来源：annotations(url_citation) 在流里早返回，累积去重，末尾补「参考来源」段。
+    const sources: { url: string; title: string }[] = [];
+    const seenUrls = new Set<string>();
 
     for await (const chunk of stream) {
+      const choice = chunk.choices?.[0];
       // 标准 OpenAI 增量：choices[0].delta.content
-      const delta = chunk.choices?.[0]?.delta?.content;
+      const delta = choice?.delta?.content;
       if (delta) {
         yield { type: "delta", text: delta };
+      }
+      // 联网搜索溯源（MiMo 协议扩展字段，类型外，故 cast）
+      const anns = (choice?.delta as unknown as { annotations?: unknown[] })
+        ?.annotations;
+      if (Array.isArray(anns)) {
+        for (const a of anns as Array<Record<string, unknown>>) {
+          const cite = (a.url_citation as Record<string, unknown>) ?? {};
+          const url = (a.url ?? cite.url) as string | undefined;
+          const title = (a.title ?? cite.title ?? "") as string;
+          if (url && !seenUrls.has(url)) {
+            seenUrls.add(url);
+            sources.push({ url, title });
+          }
+        }
       }
       // 末尾 chunk 携带 usage（stream_options: include_usage）
       if (chunk.usage) {
@@ -420,6 +438,14 @@ export async function* analyzeStream({
           total: chunk.usage.total_tokens ?? 0,
         };
       }
+    }
+
+    // 有联网来源就补一段「参考来源」（进 output → 落库 + 前端可见 + 可溯源）
+    if (sources.length > 0) {
+      const lines = sources
+        .map((s, i) => `${i + 1}. [${s.title || s.url}](${s.url})`)
+        .join("\n");
+      yield { type: "delta", text: `\n\n## 参考来源\n${lines}\n` };
     }
 
     if (lastUsage) yield { type: "usage", ...lastUsage };
