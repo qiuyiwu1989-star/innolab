@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
   const userKey = deriveUserKey(contact);
 
-  appendRegistration({
+  await appendRegistration({
     ts: new Date().toISOString(),
     user_key: userKey,
     name,

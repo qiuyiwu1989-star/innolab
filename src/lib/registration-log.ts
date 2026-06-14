@@ -1,12 +1,16 @@
 // 留资注册落盘 — 飞轮的「人」维度。
-// 用户输公开暗号 + 留手机/邮箱 + 称呼/公司 → 写入 registrations.jsonl。
-// 配合 conversations.jsonl 的 user_key，飞轮即可「按人看画像」。
+// 用户输公开暗号 + 留手机/邮箱 + 称呼/公司 → 写入存储。
+// 配合 conversations 的 user_key，飞轮即可「按人看画像」。
 //
-// 隐私：仅授权熟人场景；联系方式仅用于邱懿武回访。append-only，不进 git。
+// 双后端（见 db.ts）：配了 Supabase → innolab_registrations（user_key 唯一，upsert 保留最新）；
+//                      没配 → 本地 registrations.jsonl（append，读时按 user_key 去重保留最新）。
+//
+// 隐私：仅授权熟人场景；联系方式仅用于邱懿武回访。不进 git。
 
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { db, dbEnabled, dbSelectAll, T } from "./db";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const REG_FILE = path.join(DATA_DIR, "registrations.jsonl");
@@ -43,7 +47,27 @@ export function contactType(contact: string): "phone" | "email" | "other" {
 }
 
 /** 追加一条注册记录（失败静默，不阻塞用户进入工作台） */
-export function appendRegistration(rec: Registration): void {
+export async function appendRegistration(rec: Registration): Promise<void> {
+  if (dbEnabled) {
+    try {
+      await db()!
+        .from(T.registrations)
+        .upsert(
+          {
+            ts: rec.ts,
+            user_key: rec.user_key,
+            name: rec.name,
+            company: rec.company,
+            contact: rec.contact,
+            contact_type: rec.contact_type,
+          },
+          { onConflict: "user_key" }, // 同一人再次留资 → 覆盖为最新
+        );
+    } catch {
+      /* noop */
+    }
+    return;
+  }
   try {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     fs.appendFileSync(REG_FILE, JSON.stringify(rec) + "\n", "utf8");
@@ -53,7 +77,11 @@ export function appendRegistration(rec: Registration): void {
 }
 
 /** 读取所有注册记录（去重：同 user_key 保留最新） */
-export function readRegistrations(): Registration[] {
+export async function readRegistrations(): Promise<Registration[]> {
+  if (dbEnabled) {
+    // user_key 唯一，DB 里天然去重
+    return dbSelectAll<Registration>(T.registrations, "ts");
+  }
   try {
     if (!fs.existsSync(REG_FILE)) return [];
     const raw = fs.readFileSync(REG_FILE, "utf8");
@@ -74,6 +102,8 @@ export function readRegistrations(): Registration[] {
 }
 
 /** 按 user_key 取注册信息 */
-export function getRegistration(userKey: string): Registration | null {
-  return readRegistrations().find((r) => r.user_key === userKey) ?? null;
+export async function getRegistration(
+  userKey: string,
+): Promise<Registration | null> {
+  return (await readRegistrations()).find((r) => r.user_key === userKey) ?? null;
 }

@@ -26,6 +26,6 @@ export async function POST(request: Request) {
   if (!ts) {
     return NextResponse.json({ ok: false, error: "missing ts" }, { status: 400 });
   }
-  const ok = markCandidateByTs(ts);
+  const ok = await markCandidateByTs(ts);
   return NextResponse.json({ ok, marked: ok });
 }

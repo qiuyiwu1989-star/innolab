@@ -1,12 +1,18 @@
 // 对话落盘 — 飞轮燃料。把每次完整推演（prompt + output + 授权人 + 领域 + 时间）
-// 追加写到服务器 JSONL 文件。用于：① 懂用户画像 ② 迭代引擎 ③ 沉淀成新案例。
+// 持久化。用于：① 懂用户画像 ② 迭代引擎 ③ 沉淀成新案例。
 //
-// 零数据库、零依赖：append-only JSONL，每行一条 JSON。
-// 文件位置：项目根 data/conversations.jsonl（不进 git；pm2 长进程可持续写）。
+// 双后端（见 db.ts）：
+//   · 配了 Supabase（SUPABASE_URL + SERVICE_ROLE_KEY）→ 写/读 innolab_* 表
+//   · 没配 → 回落本地 JSONL（data/*.jsonl），行为与迁移前完全一致
+// 所有读写函数因此是 async（DB 调用是异步的）。
+//
 // 隐私：仅授权用户（暗号/VIP）能触发推演，属熟人场景；不存原始 IP，只存哈希。
 
 import fs from "node:fs";
 import path from "node:path";
+import { db, dbEnabled, dbSelectAll, T } from "./db";
+import { readRegistrations } from "./registration-log";
+import type { Registration } from "./registration-log";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const LOG_FILE = path.join(DATA_DIR, "conversations.jsonl");
@@ -38,68 +44,94 @@ export interface ConversationRecord {
   user_key?: string;
 }
 
-/**
- * 追加一条对话记录到 JSONL。失败不抛错（不能因为日志写失败影响用户拿到推演结果）。
- */
-export function appendConversation(rec: ConversationRecord): void {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    fs.appendFileSync(LOG_FILE, JSON.stringify(rec) + "\n", "utf8");
-  } catch {
-    /* 写失败静默 —— 飞轮燃料丢一条不影响业务 */
-  }
-}
+// ── JSONL 工具（DB 未配置时的兜底） ──────────────────────────────────────
 
-/** 读取最近 N 条对话记录（倒序，最新在前）。供 /admin 看板用。 */
-export function readRecentConversations(limit = 100): ConversationRecord[] {
+function readJsonl<T>(file: string): T[] {
   try {
-    if (!fs.existsSync(LOG_FILE)) return [];
-    const raw = fs.readFileSync(LOG_FILE, "utf8");
-    const lines = raw.split("\n").filter((l) => l.trim());
-    const recs: ConversationRecord[] = [];
-    // 从尾部往前取 limit 条
-    for (let i = lines.length - 1; i >= 0 && recs.length < limit; i--) {
+    if (!fs.existsSync(file)) return [];
+    const raw = fs.readFileSync(file, "utf8");
+    const out: T[] = [];
+    for (const line of raw.split("\n")) {
+      if (!line.trim()) continue;
       try {
-        recs.push(JSON.parse(lines[i]) as ConversationRecord);
+        out.push(JSON.parse(line) as T);
       } catch {
         /* 跳过损坏行 */
       }
     }
-    return recs;
+    return out;
   } catch {
     return [];
   }
 }
 
+function appendJsonl(file: string, rec: unknown): void {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.appendFileSync(file, JSON.stringify(rec) + "\n", "utf8");
+  } catch {
+    /* 写失败静默 —— 飞轮燃料丢一条不影响业务 */
+  }
+}
+
+// ── 写：追加一条对话 ────────────────────────────────────────────────────
+
+/** 追加一条对话记录。失败不抛错（不能因为日志写失败影响用户拿到推演结果）。 */
+export async function appendConversation(rec: ConversationRecord): Promise<void> {
+  if (dbEnabled) {
+    try {
+      await db()!
+        .from(T.conversations)
+        .insert({
+          ts: rec.ts,
+          access_label: rec.access_label,
+          domain: rec.domain,
+          source: rec.source,
+          is_follow_up: rec.is_follow_up,
+          follow_up_kind: rec.follow_up_kind,
+          prompt: rec.prompt,
+          output: rec.output,
+          prompt_length: rec.prompt_length,
+          output_length: rec.output_length,
+          ip_hash: rec.ip_hash,
+          completed: rec.completed ?? false,
+          user_key: rec.user_key ?? null,
+        });
+    } catch {
+      /* 静默 */
+    }
+    return;
+  }
+  appendJsonl(LOG_FILE, rec);
+}
+
+/** 读取最近 N 条对话记录（倒序，最新在前）。供 /admin 看板用。 */
+export async function readRecentConversations(
+  limit = 100,
+): Promise<ConversationRecord[]> {
+  if (dbEnabled) {
+    const rows = await dbSelectAll<ConversationRecord>(T.conversations, "ts");
+    return rows.slice(0, limit);
+  }
+  const all = readJsonl<ConversationRecord>(LOG_FILE);
+  // JSONL 是追加写（最旧在前）→ 倒序取最新 limit 条
+  return all.reverse().slice(0, limit);
+}
+
 /** 统计：总对话数 + 按领域/授权人聚合。供看板概览。 */
-export function conversationStats(): {
+export async function conversationStats(): Promise<{
   total: number;
   byDomain: Record<string, number>;
   byLabel: Record<string, number>;
-} {
+}> {
   const byDomain: Record<string, number> = {};
   const byLabel: Record<string, number> = {};
-  let total = 0;
-  try {
-    if (!fs.existsSync(LOG_FILE)) return { total: 0, byDomain, byLabel };
-    const raw = fs.readFileSync(LOG_FILE, "utf8");
-    for (const line of raw.split("\n")) {
-      if (!line.trim()) continue;
-      try {
-        const r = JSON.parse(line) as ConversationRecord;
-        total += 1;
-        byDomain[r.domain] = (byDomain[r.domain] ?? 0) + 1;
-        byLabel[r.access_label] = (byLabel[r.access_label] ?? 0) + 1;
-      } catch {
-        /* skip */
-      }
-    }
-  } catch {
-    /* noop */
+  const recs = await readRecentConversations(100000);
+  for (const r of recs) {
+    byDomain[r.domain] = (byDomain[r.domain] ?? 0) + 1;
+    byLabel[r.access_label] = (byLabel[r.access_label] ?? 0) + 1;
   }
-  return { total, byDomain, byLabel };
+  return { total: recs.length, byDomain, byLabel };
 }
 
 // ── 洞察层：领域热度 + 高频关键词 + 完成率 ──────────────────────────────
@@ -119,8 +151,8 @@ const KEYWORD_STOPWORDS = new Set([
  *  - completionRate: 完整推演占比
  *  - followUpRate: 续问占比（用户愿意深聊 = 价值信号）
  */
-export function conversationInsights(topK = 24) {
-  const recs = readRecentConversations(100000);
+export async function conversationInsights(topK = 24) {
+  const recs = await readRecentConversations(100000);
   const total = recs.length;
   const kw: Record<string, number> = {};
   const byDomain: Record<string, number> = {};
@@ -164,9 +196,6 @@ export function conversationInsights(topK = 24) {
 
 // ── 画像层：按人（user_key）聚合提问史 ──────────────────────────────────
 
-import { readRegistrations } from "./registration-log";
-import type { Registration } from "./registration-log";
-
 export interface UserProfile {
   user_key: string;
   name: string;
@@ -189,10 +218,10 @@ export interface UserProfile {
  * 按 user_key 聚合出用户画像列表（关联注册留资信息）。
  * 没有 user_key 的旧/匿名对话归到一个 "anonymous" 桶。
  */
-export function conversationProfiles(): UserProfile[] {
-  const recs = readRecentConversations(100000); // 已是最新在前
+export async function conversationProfiles(): Promise<UserProfile[]> {
+  const recs = await readRecentConversations(100000); // 已是最新在前
   const regs = new Map<string, Registration>();
-  for (const r of readRegistrations()) regs.set(r.user_key, r);
+  for (const r of await readRegistrations()) regs.set(r.user_key, r);
 
   const byUser = new Map<string, ConversationRecord[]>();
   for (const c of recs) {
@@ -260,7 +289,7 @@ export interface UserMemory {
  *   ② 推演时作为上下文注入，让 AI 真的记得他之前在想什么
  * 取最近 2 次推演（含完整判断/落地段）做精华，避免过长 + 串味。
  */
-export function getMemoryForUser(userKey: string): UserMemory {
+export async function getMemoryForUser(userKey: string): Promise<UserMemory> {
   const empty: UserMemory = {
     hasMemory: false,
     name: "",
@@ -270,16 +299,16 @@ export function getMemoryForUser(userKey: string): UserMemory {
   };
   if (!userKey || !userKey.trim()) return empty;
 
-  const all = readRecentConversations(100000); // 最新在前
+  const all = await readRecentConversations(100000); // 最新在前
   const mine = all.filter((c) => c.user_key === userKey);
   if (mine.length === 0) {
     // 没有对话历史，但可能注册过 → 至少认得名字
-    const reg = readRegistrations().find((r) => r.user_key === userKey);
+    const reg = (await readRegistrations()).find((r) => r.user_key === userKey);
     if (!reg) return empty;
     return { ...empty, hasMemory: false, name: reg.name };
   }
 
-  const reg = readRegistrations().find((r) => r.user_key === userKey);
+  const reg = (await readRegistrations()).find((r) => r.user_key === userKey);
   const name = reg?.name ?? "";
 
   // 关注领域 top 3
@@ -312,50 +341,61 @@ export function getMemoryForUser(userKey: string): UserMemory {
 }
 
 // ── 候选案例（飞轮第②圈：把高价值真实推演沉淀成案例库素材）──────────────
+//   DB 后端：用 innolab_conversations.is_candidate 布尔位标记（更干净）。
+//   JSONL 后端：复制整条到 candidate-cases.jsonl（保持旧行为）。
 
 /** 已标记为候选案例的对话 ts 集合（去重用） */
-export function candidateTsSet(): Set<string> {
+export async function candidateTsSet(): Promise<Set<string>> {
   const set = new Set<string>();
-  try {
-    if (!fs.existsSync(CANDIDATE_FILE)) return set;
-    const raw = fs.readFileSync(CANDIDATE_FILE, "utf8");
-    for (const line of raw.split("\n")) {
-      if (!line.trim()) continue;
-      try {
-        const r = JSON.parse(line) as ConversationRecord;
-        if (r.ts) set.add(r.ts);
-      } catch {
-        /* skip */
-      }
+  if (dbEnabled) {
+    const { data } = await db()!
+      .from(T.conversations)
+      .select("ts")
+      .eq("is_candidate", true);
+    for (const r of (data as { ts: string }[] | null) ?? []) {
+      if (r.ts) set.add(r.ts);
     }
-  } catch {
-    /* noop */
+    return set;
+  }
+  for (const r of readJsonl<ConversationRecord>(CANDIDATE_FILE)) {
+    if (r.ts) set.add(r.ts);
   }
   return set;
 }
 
 /**
- * 把某条对话（按 ts 唯一定位）标记为候选案例：复制整条记录到 candidate-cases.jsonl。
- * 返回 true=成功标记，false=未找到或已存在。
+ * 把某条对话（按 ts 唯一定位）标记为候选案例。
+ * 返回 true=成功标记，false=未找到或已标记。
  */
-export function markCandidateByTs(ts: string): boolean {
+export async function markCandidateByTs(ts: string): Promise<boolean> {
   if (!ts) return false;
-  if (candidateTsSet().has(ts)) return false; // 已标记
-  const all = readRecentConversations(100000);
+  if (dbEnabled) {
+    const { data, error } = await db()!
+      .from(T.conversations)
+      .update({ is_candidate: true })
+      .eq("ts", ts)
+      .eq("is_candidate", false) // 已标记 → 不命中 → 返回 false
+      .select("ts");
+    return !error && Array.isArray(data) && data.length > 0;
+  }
+  if ((await candidateTsSet()).has(ts)) return false; // 已标记
+  const all = await readRecentConversations(100000);
   const rec = all.find((r) => r.ts === ts);
   if (!rec) return false;
-  try {
-    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.appendFileSync(CANDIDATE_FILE, JSON.stringify(rec) + "\n", "utf8");
-    return true;
-  } catch {
-    return false;
-  }
+  appendJsonl(CANDIDATE_FILE, rec);
+  return true;
 }
 
 /** 候选案例数量 */
-export function candidateCount(): number {
-  return candidateTsSet().size;
+export async function candidateCount(): Promise<number> {
+  if (dbEnabled) {
+    const { count } = await db()!
+      .from(T.conversations)
+      .select("ts", { count: "exact", head: true })
+      .eq("is_candidate", true);
+    return count ?? 0;
+  }
+  return (await candidateTsSet()).size;
 }
 
 // ── 质量层（飞轮第③圈：用 👍/👎 反馈反推优化引擎）──────────────
@@ -372,46 +412,43 @@ export interface FeedbackRecord {
 }
 
 /** 落盘一条反馈 */
-export function appendFeedback(rec: FeedbackRecord): void {
-  try {
-    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.appendFileSync(FEEDBACK_FILE, JSON.stringify(rec) + "\n", "utf8");
-  } catch {
-    /* 落盘失败不影响业务 */
+export async function appendFeedback(rec: FeedbackRecord): Promise<void> {
+  if (dbEnabled) {
+    try {
+      await db()!.from(T.feedback).insert({
+        ts: rec.ts,
+        kind: rec.kind,
+        prompt: rec.prompt,
+        domain: rec.domain ?? null,
+        note: rec.note ?? null,
+        ip_hash: rec.ip_hash ?? null,
+      });
+    } catch {
+      /* 静默 */
+    }
+    return;
   }
+  appendJsonl(FEEDBACK_FILE, rec);
 }
 
-/** 读全部反馈 */
-export function readFeedback(): FeedbackRecord[] {
-  try {
-    if (!fs.existsSync(FEEDBACK_FILE)) return [];
-    return fs
-      .readFileSync(FEEDBACK_FILE, "utf8")
-      .split("\n")
-      .filter((l) => l.trim())
-      .map((l) => {
-        try {
-          return JSON.parse(l) as FeedbackRecord;
-        } catch {
-          return null;
-        }
-      })
-      .filter((r): r is FeedbackRecord => !!r);
-  } catch {
-    return [];
+/** 读全部反馈（最新在前） */
+export async function readFeedback(): Promise<FeedbackRecord[]> {
+  if (dbEnabled) {
+    return dbSelectAll<FeedbackRecord>(T.feedback, "ts");
   }
+  return readJsonl<FeedbackRecord>(FEEDBACK_FILE).reverse();
 }
 
 /**
  * 质量层汇总：总赞/踩数 + 所有 👎（含吐槽,按时间倒序）。
  * 👎 是迭代引擎最直接的信号 —— 哪些 prompt 答得差、用户嫌哪里不对。
  */
-export function feedbackQuality(): {
+export async function feedbackQuality(): Promise<{
   up: number;
   down: number;
   downs: FeedbackRecord[];
-} {
-  const all = readFeedback();
+}> {
+  const all = await readFeedback();
   const up = all.filter((f) => f.kind === "up").length;
   const down = all.filter((f) => f.kind === "down").length;
   const downs = all
@@ -449,14 +486,14 @@ export interface MethodUsage {
  * 统计方法被真实推演调用的次数。
  * 入参 allMethods 由调用方传入（避免 lib 层互相 import 造成耦合）。
  */
-export function methodUsageStats(
+export async function methodUsageStats(
   allMethods: { id: string; titleCn: string }[],
-): MethodUsage {
+): Promise<MethodUsage> {
   const known = new Map(allMethods.map((m) => [m.id, m.titleCn]));
   const count = new Map<string, number>();
   const unknown = new Set<string>();
 
-  const convs = readRecentConversations(100000);
+  const convs = await readRecentConversations(100000);
   let totalRuns = 0;
   for (const c of convs) {
     const ids = extractMethodIdsFromOutput(c.output ?? "");

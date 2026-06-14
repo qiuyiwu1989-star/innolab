@@ -350,9 +350,17 @@ export async function* analyzeStream({
   const client = new OpenAI({ apiKey, baseURL });
   const system = buildSystemPrompt();
 
-  // 联网搜索（可选）：问题涉及实时事实时，先检索再推演。无 key / 不需要时静默跳过。
+  // ── 联网搜索：两条独立通路，按 env 开关，默认都关（行为不变）──────────────
+  //
+  // A) MiMo 原生搜索（推荐）：MIMO_WEB_SEARCH=on 时，给请求挂 web_search 工具，
+  //    由 MiMo 服务端自行联网。前提：该 token 已在控制台开通 webSearchEnabled，
+  //    否则网关会对每个请求回 400 —— 所以默认关，开通确认后才置 on。
+  // B) Tavily 兜底：配了 WEB_SEARCH_API_KEY 时，命中实时信号就先检索再注入。
+  //    与 MiMo 解耦，二者互不依赖；都没开 = 纯推演。
+  const mimoWebSearch = process.env.MIMO_WEB_SEARCH === "on";
+
   let searchCtx = "";
-  if (shouldSearch(prompt)) {
+  if (!mimoWebSearch && shouldSearch(prompt)) {
     yield { type: "status", text: "联网检索实时资料中…" };
     const results = await webSearch(prompt, signal);
     searchCtx = formatSearchContext(results);
@@ -379,6 +387,16 @@ export async function* analyzeStream({
           { role: "system", content: system },
           { role: "user", content: userMessage },
         ],
+        // MiMo 原生联网搜索：开关 on 时挂上内置 web_search 工具（MiMo 协议扩展，
+        // 非标准 OpenAI function，故 cast）。token 未开通 webSearchEnabled 时会 400，
+        // 因此由 MIMO_WEB_SEARCH 严格控制，默认不挂。
+        ...(mimoWebSearch
+          ? {
+              tools: [
+                { type: "web_search" },
+              ] as unknown as OpenAI.Chat.Completions.ChatCompletionTool[],
+            }
+          : {}),
       },
       {
         signal,

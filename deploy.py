@@ -27,7 +27,7 @@ SITE_URL = "https://innolab.cc/"
 
 # 需要同步的源码路径（白名单，避免误传 .next/node_modules/data）
 SYNC_PATHS = [
-    "src", "cases", "methods", "public",
+    "src", "cases", "methods", "public", "db", "scripts",
     "package.json", "package-lock.json", "next.config.ts",
     "tsconfig.json", "postcss.config.mjs", "SYSTEM_PROMPT.md",
 ]
@@ -98,6 +98,17 @@ def main():
                 sftp.put(p, f"{REMOTE}/{p}")
         sftp.close()
     ok("源码已同步")
+
+    # ── 2.5 安装依赖（package.json 可能新增依赖，如 @supabase/supabase-js）──
+    step("服务器安装依赖…")
+    inst = run("cd " + REMOTE + " && source ~/.nvm/nvm.sh && "
+               "npm install --no-audit --no-fund 2>&1 | tail -3; "
+               "echo RC=${PIPESTATUS[0]}")
+    print(inst.strip())
+    if "RC=0" not in inst:
+        ssh.close()
+        die("依赖安装失败 —— 旧 .next 与运行进程未动，站点仍在线")
+    ok("依赖就绪")
 
     # ── 3. 服务器 build（失败保留旧站点）─────────────
     step("服务器 build…")

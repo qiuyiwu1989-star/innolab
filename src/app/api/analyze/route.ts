@@ -175,7 +175,7 @@ export async function POST(request: Request) {
         }
         // 对话落盘 —— 只要产出了内容就记录（即使用户中途关页面/断开，
         // 已累积的部分也会落盘，不丢飞轮燃料）。失败静默，不影响业务。
-        persistConversation();
+        await persistConversation();
       }
     },
     cancel() {
@@ -188,11 +188,11 @@ export async function POST(request: Request) {
   // access 在此一定非 null（上面无授权已 return 403），用局部变量固化类型
   const accessLabel = access.label;
   let persisted = false;
-  function persistConversation() {
+  async function persistConversation() {
     if (persisted) return;
     persisted = true;
     if (!outputAccumulator.trim()) return;
-    appendConversation({
+    await appendConversation({
       ts: new Date().toISOString(),
       access_label: accessLabel,
       domain: body.domain ?? "unknown",

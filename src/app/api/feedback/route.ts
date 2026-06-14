@@ -72,7 +72,7 @@ export async function POST(request: Request) {
   );
 
   // 落盘到飞轮 —— 质量层用它反推优化引擎
-  appendFeedback({
+  await appendFeedback({
     ts: new Date().toISOString(),
     kind,
     prompt,

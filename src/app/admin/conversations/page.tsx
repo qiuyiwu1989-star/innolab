@@ -47,16 +47,19 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
     );
   }
 
-  const stats = conversationStats();
-  const insights = conversationInsights();
-  const profiles = conversationProfiles();
-  const quality = feedbackQuality();
-  const methods = methodUsageStats(
-    getAllMethods().map((m) => ({ id: m.id, titleCn: m.titleCn })),
-  );
-  const recent = readRecentConversations(80);
-  const candidates = candidateTsSet();
-  const candTotal = candidateCount();
+  const [stats, insights, profiles, quality, methods, recent, candidates, candTotal] =
+    await Promise.all([
+      conversationStats(),
+      conversationInsights(),
+      conversationProfiles(),
+      feedbackQuality(),
+      methodUsageStats(
+        getAllMethods().map((m) => ({ id: m.id, titleCn: m.titleCn })),
+      ),
+      readRecentConversations(80),
+      candidateTsSet(),
+      candidateCount(),
+    ]);
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">

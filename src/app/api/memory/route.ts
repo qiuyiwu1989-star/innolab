@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const userKey = (body.userKey ?? "").trim();
   if (!userKey) return NextResponse.json({ hasMemory: false });
 
-  const mem = getMemoryForUser(userKey);
+  const mem = await getMemoryForUser(userKey);
   // contextSummary 只在服务端注入用，但前端也需要它来回传给 /api/analyze
   return NextResponse.json(mem);
 }
