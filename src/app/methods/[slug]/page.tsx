@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { getAllMethods, getMethodBySlug, getMethodGuide } from "@/lib/methods";
+import { getMethodViz } from "@/lib/method-viz";
+import { MethodViz } from "@/components/site/method-viz";
 import { engines } from "@/lib/engines";
 import { getCasesByMethodId } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
@@ -73,6 +75,7 @@ export default async function MethodDetailPage({ params }: Props) {
 
   const body = cleanMarkdownBody(method.raw);
   const guide = getMethodGuide(method.engineDir, method.slug);
+  const viz = getMethodViz(method.slug);
   const usedInCases = getCasesByMethodId(method.id);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
@@ -148,6 +151,11 @@ export default async function MethodDetailPage({ params }: Props) {
       {/* 双栏 */}
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px]">
         <main className="min-w-0">
+          {viz && (
+            <div className="mb-8">
+              <MethodViz spec={viz} />
+            </div>
+          )}
           {guide ? (
             <MethodChannels guide={guide} body={body} />
           ) : (
