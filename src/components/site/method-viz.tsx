@@ -2,11 +2,17 @@ import type { VizSpec } from "@/lib/method-viz";
 
 // 「一图看懂」—— 按方法的结构图型渲染 SVG，主题自适应（currentColor + text-* 分组）。
 
-export function MethodViz({ spec }: { spec: VizSpec }) {
+export function MethodViz({
+  spec,
+  caption = "一图看懂",
+}: {
+  spec: VizSpec;
+  caption?: string;
+}) {
   return (
     <figure className="rounded-xl border border-fog-2 bg-soot/40 p-5 sm:p-6">
-      <figcaption className="mb-4 flex items-center gap-2 text-xs uppercase tracking-widest text-volt">
-        <span className="inline-block size-1.5 rounded-full bg-volt" /> 一图看懂
+      <figcaption className="mb-4 flex items-center gap-2 text-xs font-medium tracking-wide text-volt">
+        <span className="inline-block size-1.5 rounded-full bg-volt" /> {caption}
       </figcaption>
       <div className="mx-auto max-w-md">
         {spec.type === "matrix2x2" && <Matrix2x2 s={spec} />}

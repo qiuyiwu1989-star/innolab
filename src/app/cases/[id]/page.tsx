@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { getAllCases, getCaseById } from "@/lib/cases";
 import { getAllMethods, type Method } from "@/lib/methods";
+import { getMethodViz } from "@/lib/method-viz";
+import { MethodViz } from "@/components/site/method-viz";
 import { engines } from "@/lib/engines";
 import { Badge } from "@/components/ui/badge";
 import { CaseFlow } from "@/components/site/case-flow";
@@ -271,6 +273,40 @@ export default async function CaseDetailPage({ params }: Props) {
       ) : (
         <LegacyDetail c={c} methodsById={methodsById} />
       )}
+
+      {/* 方法图解 —— 这个案例用到的方法，一图看懂各自的结构 */}
+      {(() => {
+        const seen = new Set<string>();
+        const vizMethods = (c.related_methods ?? [])
+          .map((mid) => methodsById[mid.toUpperCase()])
+          .filter((m): m is Method => {
+            if (!m || seen.has(m.slug)) return false;
+            seen.add(m.slug);
+            return !!getMethodViz(m.slug);
+          })
+          .slice(0, 6);
+        if (vizMethods.length === 0) return null;
+        return (
+          <section className="mt-16">
+            <div className="mb-6 flex items-baseline gap-3">
+              <span className="numeral text-xs uppercase tracking-widest text-volt">
+                Method Maps · 方法图解
+              </span>
+              <span className="text-xs text-dust">本案例用到的方法，一图看懂</span>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {vizMethods.map((m) => (
+                <Link key={m.slug} href={`/methods/${m.slug}`} className="block">
+                  <MethodViz
+                    spec={getMethodViz(m.slug)!}
+                    caption={`${m.id} ${m.titleCn}`}
+                  />
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* 试一次同类问题 CTA */}
       <section className="mt-16 rounded-xl border border-volt bg-volt/[0.04] p-6 sm:p-8">

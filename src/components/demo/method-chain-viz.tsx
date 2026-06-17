@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getMethodViz } from "@/lib/method-viz";
+import { MethodViz } from "@/components/site/method-viz";
 
 // ── 类型（也被 page.tsx / live-runner.tsx 使用） ──────────────────────────
 
@@ -176,6 +178,37 @@ export function MethodChainViz({ methodIds, methodsIndex }: Props) {
       <div className="mt-3 text-[11px] text-dust">
         点击方法卡查看详细定义 · 想深挖某个方法？用下方「深入某方法」追问
       </div>
+
+      {/* 方法结构图解 —— 本次用到的方法各自一图看懂 */}
+      {(() => {
+        const seen = new Set<string>();
+        const vizCards = methodIds
+          .map((id) => ({ id, m: methodsIndex[id] }))
+          .filter(({ m }) => {
+            if (!m || seen.has(m.slug) || !getMethodViz(m.slug)) return false;
+            seen.add(m.slug);
+            return true;
+          })
+          .slice(0, 6);
+        if (vizCards.length === 0) return null;
+        return (
+          <div className="mt-5 border-t border-fog-2 pt-5">
+            <div className="mb-3 text-[11px] uppercase tracking-widest text-dust">
+              方法图解
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {vizCards.map(({ id, m }) => (
+                <Link key={id} href={`/methods/${m.slug}`} className="block">
+                  <MethodViz
+                    spec={getMethodViz(m.slug)!}
+                    caption={`${id} ${m.titleCn}`}
+                  />
+                </Link>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
     </section>
   );
 }
