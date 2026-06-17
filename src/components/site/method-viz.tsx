@@ -69,7 +69,7 @@ function Matrix2x2({ s }: { s: Extract<VizSpec, { type: "matrix2x2" }> }) {
         />
       )}
       {/* 外框 + 十字轴 */}
-      <g className="text-fog-1" stroke="currentColor" strokeWidth={1.5}>
+      <g className="text-dust" stroke="currentColor" strokeWidth={1.5}>
         <rect x={80} y={40} width={320} height={300} fill="none" />
         <line x1={240} y1={40} x2={240} y2={340} />
         <line x1={80} y1={190} x2={400} y2={190} />
@@ -142,7 +142,7 @@ function Pyramid({ layers }: { layers: string[] }) {
           <g key={i}>
             <polygon
               points={pts}
-              className={top ? "text-volt" : "text-fog-1"}
+              className={top ? "text-volt" : "text-dust"}
               fill="currentColor"
               fillOpacity={top ? 0.18 : 0.05 + i * 0.03}
               stroke="currentColor"
@@ -444,12 +444,12 @@ function Grid({
               width={cellW}
               height={cellH}
               rx={9}
-              className={isHot ? "text-volt" : "text-fog-1"}
+              className={isHot ? "text-volt" : "text-dust"}
               fill="currentColor"
               fillOpacity={isHot ? 0.16 : 0.05}
               stroke="currentColor"
               strokeWidth={1.5}
-              strokeOpacity={isHot ? 0.7 : 0.45}
+              strokeOpacity={isHot ? 0.85 : 0.6}
             />
             <text
               x={x + cellW / 2}
@@ -548,11 +548,11 @@ function Radial({ center, nodes }: { center: string; nodes: string[] }) {
               cx={x}
               cy={y}
               r={nodeR}
-              className="text-bone"
+              className="text-dust"
               fill="var(--color-soot, #1a1a1a)"
               stroke="currentColor"
               strokeWidth={1.5}
-              strokeOpacity={0.25}
+              strokeOpacity={0.55}
             />
             <text
               x={x}
@@ -603,12 +603,12 @@ function Bmc() {
             width={b.w}
             height={b.h}
             rx={6}
-            className={b.hot ? "text-volt" : "text-fog-1"}
+            className={b.hot ? "text-volt" : "text-dust"}
             fill="currentColor"
             fillOpacity={b.hot ? 0.14 : 0.04}
             stroke="currentColor"
             strokeWidth={1.5}
-            strokeOpacity={b.hot ? 0.7 : 0.45}
+            strokeOpacity={b.hot ? 0.85 : 0.6}
           />
           <text
             x={b.x + b.w / 2}
@@ -632,7 +632,7 @@ function Bmc() {
 function Kano() {
   return (
     <svg viewBox="0 0 440 330" className="w-full" role="img">
-      <g className="text-fog-1" stroke="currentColor" strokeWidth={1.5}>
+      <g className="text-dust" stroke="currentColor" strokeWidth={1.5}>
         <line x1={64} y1={36} x2={64} y2={300} />
         <line x1={64} y1={168} x2={416} y2={168} />
       </g>
@@ -752,11 +752,11 @@ function Porter() {
             width={b.w}
             height={b.h}
             rx={8}
-            className="text-bone"
+            className="text-dust"
             fill="var(--color-soot, #16181d)"
             stroke="currentColor"
             strokeWidth={1.5}
-            strokeOpacity={0.3}
+            strokeOpacity={0.55}
           />
           <text
             x={b.x + b.w / 2}
@@ -816,7 +816,7 @@ function Journey({ stages }: { stages: string[] }) {
             y1={yi(i)}
             x2={xi(i)}
             y2={196}
-            className="text-fog-1"
+            className="text-dust"
             stroke="currentColor"
             strokeWidth={1}
             strokeDasharray="3 3"
@@ -866,7 +866,7 @@ function Journey({ stages }: { stages: string[] }) {
         y1={196}
         x2={x1 + 4}
         y2={196}
-        className="text-fog-1"
+        className="text-dust"
         stroke="currentColor"
         strokeWidth={1.5}
       />
