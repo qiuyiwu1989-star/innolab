@@ -17,6 +17,14 @@ export function MethodViz({ spec }: { spec: VizSpec }) {
           <Radial center={spec.center} nodes={spec.nodes} />
         )}
         {spec.type === "flow" && <Flow steps={spec.steps} />}
+        {spec.type === "grid" && (
+          <Grid
+            cols={spec.cols}
+            cells={spec.cells}
+            rowLabels={spec.rowLabels}
+            hot={spec.hot}
+          />
+        )}
       </div>
     </figure>
   );
@@ -364,6 +372,84 @@ function Flow({ steps }: { steps: string[] }) {
               fontWeight={500}
               fill="currentColor"
               className="text-bone"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+// ── 网格（如九宫格、十种创新）────────────────────────────
+function Grid({
+  cols,
+  cells,
+  rowLabels,
+  hot,
+}: {
+  cols: number;
+  cells: string[];
+  rowLabels?: string[];
+  hot?: number;
+}) {
+  const W = 420,
+    gap = 8,
+    top = 6,
+    cellH = 54;
+  const gutter = rowLabels ? 60 : 10;
+  const right = 410;
+  const cellW = (right - gutter - (cols - 1) * gap) / cols;
+  const rows = Math.ceil(cells.length / cols);
+  const H = top + rows * cellH + (rows - 1) * gap + 6;
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img">
+      {rowLabels?.map((rl, r) => (
+        <text
+          key={`rl${r}`}
+          x={gutter / 2 + 2}
+          y={top + r * (cellH + gap) + cellH / 2 + 1}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize={11}
+          fontWeight={600}
+          fill="currentColor"
+          className="text-volt"
+        >
+          {rl}
+        </text>
+      ))}
+      {cells.map((label, i) => {
+        const r = Math.floor(i / cols),
+          c = i % cols;
+        const x = gutter + c * (cellW + gap);
+        const y = top + r * (cellH + gap);
+        const isHot = hot === i;
+        return (
+          <g key={i}>
+            <rect
+              x={x}
+              y={y}
+              width={cellW}
+              height={cellH}
+              rx={9}
+              className={isHot ? "text-volt" : "text-fog-1"}
+              fill="currentColor"
+              fillOpacity={isHot ? 0.16 : 0.05}
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeOpacity={isHot ? 0.7 : 0.45}
+            />
+            <text
+              x={x + cellW / 2}
+              y={y + cellH / 2 + 1}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={12}
+              fontWeight={isHot ? 700 : 500}
+              fill="currentColor"
+              className={isHot ? "text-volt" : "text-bone"}
             >
               {label}
             </text>

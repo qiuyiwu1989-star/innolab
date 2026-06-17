@@ -15,7 +15,14 @@ export type VizSpec =
   | { type: "funnel"; stages: string[] } // 自顶向下
   | { type: "cycle"; nodes: string[] } // 顺时针闭环
   | { type: "radial"; center: string; nodes: string[] }
-  | { type: "flow"; steps: string[] };
+  | { type: "flow"; steps: string[] }
+  | {
+      type: "grid";
+      cols: number;
+      cells: string[];
+      rowLabels?: string[]; // 选填：每行左侧的分层标签
+      hot?: number; // 选填：高亮第几个格子（0 起）
+    };
 
 // slug → 规格。先放 5 张样板，覆盖 5 种图型；认可后批量补齐 83 个。
 export const METHOD_VIZ: Record<string, VizSpec> = {

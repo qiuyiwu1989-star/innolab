@@ -61,18 +61,25 @@ export const COGNITION_VIZ: Record<string, VizSpec> = {
     steps: ["问题对齐", "结构提炼", "步骤具体化", "建立分级", "补案例", "标陷阱", "接入系统"],
   },
   "nine-grid": {
-    type: "radial",
-    center: "中心问题",
-    nodes: ["用户需求", "技术可行", "商业模式", "竞争格局", "时机窗口", "差异化"],
+    type: "grid",
+    cols: 3,
+    cells: ["维度①", "维度②", "维度③", "维度④", "中心问题", "维度⑤", "维度⑥", "维度⑦", "维度⑧"],
+    hot: 4,
   },
   pyramid: {
     type: "pyramid",
     layers: ["论据", "论点", "核心结论"],
   },
   "six-hats": {
-    type: "radial",
-    center: "议题",
-    nodes: ["蓝 控场", "白 事实", "红 直觉", "黄 价值", "黑 风险", "绿 创意"],
+    type: "flow",
+    steps: [
+      "蓝帽 · 控场定向",
+      "白帽 · 摆事实",
+      "红帽 · 说直觉",
+      "黄帽 · 找亮点",
+      "黑帽 · 挑风险",
+      "绿帽 · 出新意",
+    ],
   },
   "ten-level-creativity": {
     type: "pyramid",
