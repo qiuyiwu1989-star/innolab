@@ -35,6 +35,12 @@ export function MethodViz({
         {spec.type === "kano" && <Kano />}
         {spec.type === "porter" && <Porter />}
         {spec.type === "journey" && <Journey stages={spec.stages} />}
+        {spec.type === "dumbbell" && <Dumbbell />}
+        {spec.type === "vpc" && <Vpc />}
+        {spec.type === "forces" && <Forces />}
+        {spec.type === "triangle" && (
+          <Triangle nodes={spec.nodes} center={spec.center} />
+        )}
       </div>
     </figure>
   );
@@ -870,6 +876,195 @@ function Journey({ stages }: { stages: string[] }) {
         stroke="currentColor"
         strokeWidth={1.5}
       />
+    </svg>
+  );
+}
+
+// ── 哑铃型社会（两端重、中间被 AI 挤压，画成哑铃本体）──────────
+function Dumbbell() {
+  const ends = [
+    { cx: 92, t1: "底端", t2: "规模 · 性价比" },
+    { cx: 368, t1: "顶端", t2: "稀缺 · 精品" },
+  ];
+  return (
+    <svg viewBox="0 0 460 210" className="w-full" role="img">
+      {/* 连接杆 = 被挤压的中间层 */}
+      <rect
+        x={150}
+        y={97}
+        width={160}
+        height={16}
+        rx={4}
+        className="text-dust"
+        fill="currentColor"
+        fillOpacity={0.1}
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeOpacity={0.6}
+      />
+      {ends.map((d, i) => (
+        <g key={i}>
+          <circle
+            cx={d.cx}
+            cy={105}
+            r={66}
+            className="text-dust"
+            fill="currentColor"
+            fillOpacity={0.06}
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeOpacity={0.6}
+          />
+          <text
+            x={d.cx}
+            y={99}
+            textAnchor="middle"
+            fontSize={16}
+            fontWeight={700}
+            fill="currentColor"
+            className="text-bone"
+          >
+            {d.t1}
+          </text>
+          <text
+            x={d.cx}
+            y={120}
+            textAnchor="middle"
+            fontSize={11}
+            fill="currentColor"
+            className="text-ash"
+          >
+            {d.t2}
+          </text>
+        </g>
+      ))}
+      <text
+        x={230}
+        y={64}
+        textAnchor="middle"
+        fontSize={12}
+        fontWeight={700}
+        fill="currentColor"
+        className="text-volt"
+      >
+        中间层 · 被 AI 挤压
+      </text>
+      <text
+        x={230}
+        y={150}
+        textAnchor="middle"
+        fontSize={10}
+        fill="currentColor"
+        className="text-dust"
+      >
+        中等技能 / 中等企业 / 中等质量 正在消失
+      </text>
+    </svg>
+  );
+}
+
+// ── 价值主张画布（方块价值图 + 圆形客户档案，Osterwalder 原貌）──
+function Vpc() {
+  const sq = { x: 26, y: 50, w: 176, h: 176 };
+  const midX = sq.x + sq.w / 2;
+  const midY = sq.y + sq.h / 2;
+  const cc = { cx: 360, cy: 138, r: 90 };
+  return (
+    <svg viewBox="0 0 470 268" className="w-full" role="img">
+      <text x={midX} y={36} textAnchor="middle" fontSize={12} fontWeight={600} fill="currentColor" className="text-bone">
+        价值地图
+      </text>
+      <text x={cc.cx} y={36} textAnchor="middle" fontSize={12} fontWeight={600} fill="currentColor" className="text-bone">
+        客户档案
+      </text>
+      {/* 方块：产品服务 | 收益创造 / 痛点缓解 */}
+      <rect x={sq.x} y={sq.y} width={sq.w} height={sq.h} rx={8} className="text-dust" fill="currentColor" fillOpacity={0.05} stroke="currentColor" strokeWidth={1.5} strokeOpacity={0.6} />
+      <line x1={midX} y1={sq.y} x2={midX} y2={sq.y + sq.h} className="text-dust" stroke="currentColor" strokeWidth={1} strokeOpacity={0.5} />
+      <line x1={midX} y1={midY} x2={sq.x + sq.w} y2={midY} className="text-dust" stroke="currentColor" strokeWidth={1} strokeOpacity={0.5} />
+      <text x={sq.x + 44} y={midY + 1} textAnchor="middle" dominantBaseline="middle" fontSize={11.5} fontWeight={600} fill="currentColor" className="text-bone">产品服务</text>
+      <text x={midX + 44} y={sq.y + 44} textAnchor="middle" dominantBaseline="middle" fontSize={11} fill="currentColor" className="text-ash">收益创造</text>
+      <text x={midX + 44} y={midY + 44} textAnchor="middle" dominantBaseline="middle" fontSize={11} fill="currentColor" className="text-ash">痛点缓解</text>
+      {/* 圆：客户任务 | 收益 / 痛点 */}
+      <circle cx={cc.cx} cy={cc.cy} r={cc.r} className="text-dust" fill="currentColor" fillOpacity={0.05} stroke="currentColor" strokeWidth={1.5} strokeOpacity={0.6} />
+      <line x1={cc.cx} y1={cc.cy - cc.r} x2={cc.cx} y2={cc.cy + cc.r} className="text-dust" stroke="currentColor" strokeWidth={1} strokeOpacity={0.5} />
+      <line x1={cc.cx - cc.r} y1={cc.cy} x2={cc.cx} y2={cc.cy} className="text-dust" stroke="currentColor" strokeWidth={1} strokeOpacity={0.5} />
+      <text x={cc.cx + 42} y={cc.cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize={11.5} fontWeight={600} fill="currentColor" className="text-bone">客户任务</text>
+      <text x={cc.cx - 40} y={cc.cy - 42} textAnchor="middle" dominantBaseline="middle" fontSize={11} fill="currentColor" className="text-ash">收益</text>
+      <text x={cc.cx - 40} y={cc.cy + 44} textAnchor="middle" dominantBaseline="middle" fontSize={11} fill="currentColor" className="text-ash">痛点</text>
+      {/* 契合 */}
+      <text x={236} y={cc.cy + 1} textAnchor="middle" dominantBaseline="middle" fontSize={11} fontWeight={700} fill="currentColor" className="text-volt">契合</text>
+    </svg>
+  );
+}
+
+// ── JTBD 进步四力（推力/拉力 驱动改变 vs 惯性/焦虑 阻碍改变）────
+function Forces() {
+  return (
+    <svg viewBox="0 0 460 250" className="w-full" role="img">
+      <defs>
+        <marker id="fV" markerWidth={9} markerHeight={9} refX={5} refY={3} orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" className="text-volt" fill="currentColor" />
+        </marker>
+        <marker id="fD" markerWidth={9} markerHeight={9} refX={5} refY={3} orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" className="text-dust" fill="currentColor" />
+        </marker>
+      </defs>
+      <rect x={186} y={94} width={88} height={62} rx={10} className="text-volt" fill="currentColor" fillOpacity={0.14} stroke="currentColor" strokeWidth={1.5} strokeOpacity={0.7} />
+      <text x={230} y={118} textAnchor="middle" fontSize={13} fontWeight={700} fill="currentColor" className="text-volt">换不换</text>
+      <text x={230} y={138} textAnchor="middle" fontSize={10} fill="currentColor" className="text-ash">雇佣决策</text>
+      <g className="text-volt" stroke="currentColor" strokeWidth={2.5} strokeOpacity={0.75}>
+        <line x1={58} y1={74} x2={182} y2={106} markerEnd="url(#fV)" />
+        <line x1={58} y1={176} x2={182} y2={146} markerEnd="url(#fV)" />
+      </g>
+      <g className="text-dust" stroke="currentColor" strokeWidth={2.5} strokeOpacity={0.7}>
+        <line x1={402} y1={74} x2={278} y2={106} markerEnd="url(#fD)" />
+        <line x1={402} y1={176} x2={278} y2={146} markerEnd="url(#fD)" />
+      </g>
+      <g fontSize={12.5} fontWeight={700} fill="currentColor">
+        <text x={50} y={60} className="text-volt">推力</text>
+        <text x={50} y={198} className="text-volt">拉力</text>
+        <text x={410} y={60} textAnchor="end" className="text-dust">惯性</text>
+        <text x={410} y={198} textAnchor="end" className="text-dust">焦虑</text>
+      </g>
+      <text x={118} y={234} textAnchor="middle" fontSize={10.5} fontWeight={600} fill="currentColor" className="text-volt">驱动改变 →</text>
+      <text x={342} y={234} textAnchor="middle" fontSize={10.5} fontWeight={600} fill="currentColor" className="text-dust">← 阻碍改变</text>
+    </svg>
+  );
+}
+
+// ── 三角咬合（人货场等三要素互相支撑）────────────────────────
+function Triangle({
+  nodes,
+  center,
+}: {
+  nodes: [string, string, string];
+  center?: string;
+}) {
+  const A = { x: 210, y: 50 },
+    B = { x: 74, y: 256 },
+    C = { x: 346, y: 256 };
+  const r = 46;
+  const pts = [A, B, C];
+  return (
+    <svg viewBox="0 0 420 320" className="w-full" role="img">
+      <g className="text-dust" stroke="currentColor" strokeWidth={1.5} strokeOpacity={0.55}>
+        <line x1={A.x} y1={A.y} x2={B.x} y2={B.y} />
+        <line x1={B.x} y1={B.y} x2={C.x} y2={C.y} />
+        <line x1={C.x} y1={C.y} x2={A.x} y2={A.y} />
+      </g>
+      {center && (
+        <text x={210} y={187} textAnchor="middle" dominantBaseline="middle" fontSize={12} fontWeight={600} fill="currentColor" className="text-volt">
+          {center}
+        </text>
+      )}
+      {pts.map((p, i) => (
+        <g key={i}>
+          <circle cx={p.x} cy={p.y} r={r} className="text-dust" fill="var(--color-soot, #16181d)" stroke="currentColor" strokeWidth={1.5} strokeOpacity={0.6} />
+          <text x={p.x} y={p.y + 1} textAnchor="middle" dominantBaseline="middle" fontSize={20} fontWeight={700} fill="currentColor" className="text-bone">
+            {nodes[i]}
+          </text>
+        </g>
+      ))}
     </svg>
   );
 }

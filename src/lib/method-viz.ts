@@ -27,7 +27,11 @@ export type VizSpec =
   | { type: "bmc" } // 商业模式画布：9 模块经典布局
   | { type: "kano" } // KANO：满意度 × 功能实现 三曲线
   | { type: "porter" } // 波特五力：四力围绕中心竞争
-  | { type: "journey"; stages: string[] }; // 客户旅程：阶段 + 情绪曲线
+  | { type: "journey"; stages: string[] } // 客户旅程：阶段 + 情绪曲线
+  | { type: "dumbbell" } // 哑铃型社会：两端重、中间被挤压
+  | { type: "vpc" } // 价值主张画布：方块价值图 + 圆形客户档案
+  | { type: "forces" } // JTBD 四力：推力/拉力 vs 惯性/焦虑
+  | { type: "triangle"; nodes: [string, string, string]; center?: string }; // 三角咬合（人货场等）
 
 // slug → 规格。先放 5 张样板，覆盖 5 种图型；认可后批量补齐 83 个。
 export const METHOD_VIZ: Record<string, VizSpec> = {

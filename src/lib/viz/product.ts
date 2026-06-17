@@ -35,22 +35,18 @@ export const PRODUCT_VIZ: Record<string, VizSpec> = {
     type: "pyramid",
     layers: ["文化符号层", "审美规则层", "角色人格层", "商业应用层"],
   },
-  // 三维工作 + 转换两力，环绕核心 Job
-  "jobs-to-be-done": {
-    type: "radial",
-    center: "核心 Job",
-    nodes: ["功能工作", "情感工作", "社交工作", "推力", "拉力", "焦虑·惯性"],
-  },
+  // JTBD 进步四力：推力/拉力 推向新方案，惯性/焦虑 拉回现状
+  "jobs-to-be-done": { type: "forces" },
   // Build-Measure-Learn 验证闭环
   "mvp": {
     type: "cycle",
     nodes: ["假设", "构建 Build", "测量 Measure", "学习 Learn"],
   },
-  // 场连接人与货，三要素咬合
+  // 人货场三角咬合
   "people-goods-field": {
-    type: "radial",
-    center: "场",
-    nodes: ["人 People", "货 Goods", "场景触发", "智能匹配"],
+    type: "triangle",
+    nodes: ["人", "货", "场"],
+    center: "高效匹配",
   },
   // 三层九维网格：为什么→在哪里→如何成立
   "product-definition-nine-grid": {
@@ -98,10 +94,6 @@ export const PRODUCT_VIZ: Record<string, VizSpec> = {
     center: "情感价值",
     nodes: ["情感", "美学", "身份", "影响力", "核心品质"],
   },
-  // 客户画像 ↔ 价值地图，六模块对齐于 Fit
-  "value-proposition-canvas": {
-    type: "radial",
-    center: "Fit 契合",
-    nodes: ["待办任务", "痛点", "收益", "产品服务", "痛点缓解器", "收益制造器"],
-  },
+  // 价值主张画布：方块价值图 + 圆形客户档案（Osterwalder 原貌）
+  "value-proposition-canvas": { type: "vpc" },
 };

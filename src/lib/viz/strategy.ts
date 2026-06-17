@@ -41,11 +41,8 @@ export const STRATEGY_VIZ: Record<string, VizSpec> = {
     nodes: ["知识传递", "项目协作", "能力认证", "文化塑造"],
   },
 
-  // 社会结构三层，中间被AI挤压
-  "dumbbell-society": {
-    type: "pyramid",
-    layers: ["底端 · 规模性价比", "中间 · 被挤压", "顶端 · 稀缺精品"],
-  },
+  // 哑铃型社会：两端重、中间被 AI 挤压（画成哑铃本体）
+  "dumbbell-society": { type: "dumbbell" },
 
   // 第一性原理四模块顺序分析
   "industry-first-principles": {
