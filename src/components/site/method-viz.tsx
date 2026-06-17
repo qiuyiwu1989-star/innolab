@@ -2,45 +2,58 @@ import type { VizSpec } from "@/lib/method-viz";
 
 // 「一图看懂」—— 按方法的结构图型渲染 SVG，主题自适应（currentColor + text-* 分组）。
 
+function Diagram({ spec }: { spec: VizSpec }) {
+  return (
+    <>
+      {spec.type === "matrix2x2" && <Matrix2x2 s={spec} />}
+      {spec.type === "pyramid" && <Pyramid layers={spec.layers} />}
+      {spec.type === "funnel" && <Funnel stages={spec.stages} />}
+      {spec.type === "cycle" && <Cycle nodes={spec.nodes} />}
+      {spec.type === "radial" && (
+        <Radial center={spec.center} nodes={spec.nodes} />
+      )}
+      {spec.type === "flow" && <Flow steps={spec.steps} />}
+      {spec.type === "grid" && (
+        <Grid
+          cols={spec.cols}
+          cells={spec.cells}
+          rowLabels={spec.rowLabels}
+          hot={spec.hot}
+        />
+      )}
+      {spec.type === "bmc" && <Bmc />}
+      {spec.type === "kano" && <Kano />}
+      {spec.type === "porter" && <Porter />}
+      {spec.type === "journey" && <Journey stages={spec.stages} />}
+      {spec.type === "dumbbell" && <Dumbbell />}
+      {spec.type === "vpc" && <Vpc />}
+      {spec.type === "forces" && <Forces />}
+      {spec.type === "triangle" && (
+        <Triangle nodes={spec.nodes} center={spec.center} />
+      )}
+    </>
+  );
+}
+
+// 「一图看懂」—— 按方法的结构图型渲染 SVG，主题自适应（currentColor + text-* 分组）。
+// bare: 只出裸图（无标题框），用于卡片/首页缩略（外层容器用 [&_svg] 控制尺寸）。
 export function MethodViz({
   spec,
   caption = "一图看懂",
+  bare,
 }: {
   spec: VizSpec;
   caption?: string;
+  bare?: boolean;
 }) {
+  if (bare) return <Diagram spec={spec} />;
   return (
     <figure className="rounded-xl border border-fog-2 bg-soot/40 p-5 sm:p-6">
       <figcaption className="mb-4 flex items-center gap-2 text-xs font-medium tracking-wide text-volt">
         <span className="inline-block size-1.5 rounded-full bg-volt" /> {caption}
       </figcaption>
       <div className="mx-auto max-w-md">
-        {spec.type === "matrix2x2" && <Matrix2x2 s={spec} />}
-        {spec.type === "pyramid" && <Pyramid layers={spec.layers} />}
-        {spec.type === "funnel" && <Funnel stages={spec.stages} />}
-        {spec.type === "cycle" && <Cycle nodes={spec.nodes} />}
-        {spec.type === "radial" && (
-          <Radial center={spec.center} nodes={spec.nodes} />
-        )}
-        {spec.type === "flow" && <Flow steps={spec.steps} />}
-        {spec.type === "grid" && (
-          <Grid
-            cols={spec.cols}
-            cells={spec.cells}
-            rowLabels={spec.rowLabels}
-            hot={spec.hot}
-          />
-        )}
-        {spec.type === "bmc" && <Bmc />}
-        {spec.type === "kano" && <Kano />}
-        {spec.type === "porter" && <Porter />}
-        {spec.type === "journey" && <Journey stages={spec.stages} />}
-        {spec.type === "dumbbell" && <Dumbbell />}
-        {spec.type === "vpc" && <Vpc />}
-        {spec.type === "forces" && <Forces />}
-        {spec.type === "triangle" && (
-          <Triangle nodes={spec.nodes} center={spec.center} />
-        )}
+        <Diagram spec={spec} />
       </div>
     </figure>
   );

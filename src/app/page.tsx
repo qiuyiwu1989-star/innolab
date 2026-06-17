@@ -4,6 +4,18 @@ import { engines, layers } from "@/lib/engines";
 import { getAllMethods, type Method } from "@/lib/methods";
 import { getAllCases, type CaseDetail } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
+import { getMethodViz } from "@/lib/method-viz";
+import { MethodViz } from "@/components/site/method-viz";
+
+// 首页精选可视化（覆盖 哑铃/画布/五力/曲线/旅程/三角 不同图型）
+const VIZ_SHOWCASE = [
+  "dumbbell-society",
+  "bmc",
+  "porter-five",
+  "kano",
+  "customer-journey",
+  "people-goods-field",
+];
 
 // 首页 demo 三案例 — 选最能体现 InnoLab 深度的近期案例（覆盖战略/组织/产品三领域）
 const HOMEPAGE_DEMO_CASE_IDS = ["case-016", "case-018", "case-019"];
@@ -171,6 +183,45 @@ export default function Home() {
             <Stat n={engines.length} l="引擎" />
             <Stat n={5} l="认知层级" />
             <Stat n={cases.length} l="真实案例" />
+          </div>
+
+          {/* 每个方法都「一图看懂」—— 精选示例 */}
+          <div className="mt-16">
+            <div className="mb-6 flex items-baseline justify-between">
+              <h3 className="text-lg font-semibold text-bone">
+                每个方法，一图看懂
+              </h3>
+              <Link
+                href="/methods"
+                className="text-sm text-volt hover:underline"
+              >
+                浏览全部 83 个 →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {VIZ_SHOWCASE.map((slug) => {
+                const m = methods.find((x) => x.slug === slug);
+                const viz = getMethodViz(slug);
+                if (!m || !viz) return null;
+                return (
+                  <Link
+                    key={slug}
+                    href={`/methods/${slug}`}
+                    className="group flex flex-col gap-3 rounded-xl border border-fog-2 bg-soot/60 p-4 transition hover:-translate-y-0.5 hover:border-volt"
+                  >
+                    <div className="h-32 overflow-hidden rounded-md bg-ink/40 p-2 text-dust transition group-hover:text-ash [&_svg]:!h-full [&_svg]:!w-full">
+                      <MethodViz spec={viz} bare />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-bone">
+                        {m.titleCn}
+                      </span>
+                      <span className="numeral text-xs text-volt">{m.id}</span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
