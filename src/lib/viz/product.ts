@@ -1,12 +1,8 @@
 import type { VizSpec } from "../method-viz";
 
 export const PRODUCT_VIZ: Record<string, VizSpec> = {
-  // 九模块以「价值主张」为中心，前台价值面 + 后台效率面环绕
-  "bmc": {
-    type: "radial",
-    center: "价值主张",
-    nodes: ["客户细分", "渠道通路", "客户关系", "收入来源", "核心资源", "成本结构"],
-  },
+  // 商业模式画布：还原 Osterwalder 九模块经典布局
+  "bmc": { type: "bmc" },
   // Aaker 五维度盘点，无序，环绕「品牌资产」
   "brand-equity": {
     type: "radial",
@@ -24,9 +20,9 @@ export const PRODUCT_VIZ: Record<string, VizSpec> = {
     center: "商业系统",
     nodes: ["用户⭕", "产品⬜", "渠道🔺", "价值⭐", "流向➡️"],
   },
-  // 五阶段逐级收窄
+  // 客户旅程：五阶段 + 情绪曲线（旅程不是漏斗）
   "customer-journey": {
-    type: "funnel",
+    type: "journey",
     stages: ["认知", "考虑", "决策", "使用", "忠诚"],
   },
   // 四步上瘾闭环

@@ -31,6 +31,10 @@ export function MethodViz({
             hot={spec.hot}
           />
         )}
+        {spec.type === "bmc" && <Bmc />}
+        {spec.type === "kano" && <Kano />}
+        {spec.type === "porter" && <Porter />}
+        {spec.type === "journey" && <Journey stages={spec.stages} />}
       </div>
     </figure>
   );
@@ -565,6 +569,307 @@ function Radial({ center, nodes }: { center: string; nodes: string[] }) {
           </g>
         );
       })}
+    </svg>
+  );
+}
+
+// ── 商业模式画布（还原 Osterwalder 九模块经典布局）──────────────
+function Bmc() {
+  const blocks: {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    t: string;
+    hot?: boolean;
+  }[] = [
+    { x: 6, y: 6, w: 86, h: 204, t: "重要伙伴" },
+    { x: 96, y: 6, w: 86, h: 100, t: "关键业务" },
+    { x: 96, y: 110, w: 86, h: 100, t: "核心资源" },
+    { x: 186, y: 6, w: 86, h: 204, t: "价值主张", hot: true },
+    { x: 276, y: 6, w: 86, h: 100, t: "客户关系" },
+    { x: 276, y: 110, w: 86, h: 100, t: "渠道通路" },
+    { x: 366, y: 6, w: 86, h: 204, t: "客户细分" },
+    { x: 6, y: 214, w: 220, h: 78, t: "成本结构" },
+    { x: 230, y: 214, w: 222, h: 78, t: "收入来源" },
+  ];
+  return (
+    <svg viewBox="0 0 464 300" className="w-full" role="img">
+      {blocks.map((b, i) => (
+        <g key={i}>
+          <rect
+            x={b.x}
+            y={b.y}
+            width={b.w}
+            height={b.h}
+            rx={6}
+            className={b.hot ? "text-volt" : "text-fog-1"}
+            fill="currentColor"
+            fillOpacity={b.hot ? 0.14 : 0.04}
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeOpacity={b.hot ? 0.7 : 0.45}
+          />
+          <text
+            x={b.x + b.w / 2}
+            y={b.y + (b.h > 120 ? 18 : b.h / 2 + 1)}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontSize={11}
+            fontWeight={b.hot ? 700 : 600}
+            fill="currentColor"
+            className={b.hot ? "text-volt" : "text-bone"}
+          >
+            {b.t}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// ── KANO 模型（满意度 × 功能实现，三类需求曲线）──────────────
+function Kano() {
+  return (
+    <svg viewBox="0 0 440 330" className="w-full" role="img">
+      <g className="text-fog-1" stroke="currentColor" strokeWidth={1.5}>
+        <line x1={64} y1={36} x2={64} y2={300} />
+        <line x1={64} y1={168} x2={416} y2={168} />
+      </g>
+      <g className="text-dust" fill="currentColor" fontSize={11}>
+        <text x={64} y={26} textAnchor="middle">
+          满意 ↑
+        </text>
+        <text x={50} y={304} textAnchor="middle">
+          不满
+        </text>
+        <text x={416} y={186} textAnchor="end">
+          功能实现 →
+        </text>
+      </g>
+      {/* 期望型：线性 */}
+      <path
+        d="M64,294 L410,44"
+        className="text-ash"
+        stroke="currentColor"
+        strokeWidth={2}
+        fill="none"
+      />
+      {/* 基本型：升后趋平（封顶于中性线下方）*/}
+      <path
+        d="M64,294 Q116,182 410,174"
+        className="text-dust"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeDasharray="5 4"
+        fill="none"
+      />
+      {/* 魅力型：平后陡升 */}
+      <path
+        d="M64,164 Q322,150 410,48"
+        className="text-volt"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        fill="none"
+      />
+      <g fontSize={11} fontWeight={600} fill="currentColor">
+        <text x={296} y={70} className="text-volt">
+          魅力型
+        </text>
+        <text x={332} y={150} className="text-ash">
+          期望型
+        </text>
+        <text x={250} y={190} className="text-dust">
+          基本型
+        </text>
+      </g>
+    </svg>
+  );
+}
+
+// ── 波特五力（四力围绕中心竞争）────────────────────────────
+function Porter() {
+  const boxes = [
+    { x: 140, y: 22, w: 160, h: 54, t: "潜在进入者" },
+    { x: 140, y: 304, w: 160, h: 54, t: "替代品威胁" },
+    { x: 6, y: 163, w: 122, h: 54, t: "供应商议价力" },
+    { x: 312, y: 163, w: 122, h: 54, t: "购买者议价力" },
+  ];
+  return (
+    <svg viewBox="0 0 440 384" className="w-full" role="img">
+      <defs>
+        <marker
+          id="aPorter"
+          markerWidth={9}
+          markerHeight={9}
+          refX={5}
+          refY={3}
+          orient="auto"
+        >
+          <path d="M0,0 L6,3 L0,6 Z" className="text-dust" fill="currentColor" />
+        </marker>
+      </defs>
+      <g
+        className="text-dust"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeOpacity={0.6}
+      >
+        <line x1={220} y1={76} x2={220} y2={156} markerEnd="url(#aPorter)" />
+        <line x1={220} y1={304} x2={220} y2={226} markerEnd="url(#aPorter)" />
+        <line x1={128} y1={190} x2={138} y2={190} markerEnd="url(#aPorter)" />
+        <line x1={312} y1={190} x2={302} y2={190} markerEnd="url(#aPorter)" />
+      </g>
+      <rect
+        x={140}
+        y={158}
+        width={160}
+        height={66}
+        rx={8}
+        className="text-volt"
+        fill="currentColor"
+        fillOpacity={0.14}
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+      <text
+        x={220}
+        y={191}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize={12.5}
+        fontWeight={700}
+        fill="currentColor"
+        className="text-volt"
+      >
+        现有竞争者的竞争
+      </text>
+      {boxes.map((b, i) => (
+        <g key={i}>
+          <rect
+            x={b.x}
+            y={b.y}
+            width={b.w}
+            height={b.h}
+            rx={8}
+            className="text-bone"
+            fill="var(--color-soot, #16181d)"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeOpacity={0.3}
+          />
+          <text
+            x={b.x + b.w / 2}
+            y={b.y + b.h / 2 + 1}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontSize={12}
+            fontWeight={600}
+            fill="currentColor"
+            className="text-ash"
+          >
+            {b.t}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// ── 客户旅程（阶段 + 情绪曲线，旅程不是漏斗）──────────────────
+function Journey({ stages }: { stages: string[] }) {
+  const n = stages.length;
+  const x0 = 44,
+    x1 = 416;
+  const xi = (i: number) => (n === 1 ? (x0 + x1) / 2 : x0 + (i * (x1 - x0)) / (n - 1));
+  // 情绪高度（0..1，越大越正向）：好奇→纠结→谷底→满意→高
+  const preset: Record<number, number[]> = {
+    3: [0.5, 0.35, 0.85],
+    4: [0.55, 0.35, 0.65, 0.88],
+    5: [0.55, 0.4, 0.28, 0.72, 0.9],
+    6: [0.55, 0.42, 0.3, 0.5, 0.75, 0.9],
+  };
+  const emo = preset[n] ?? stages.map((_, i) => 0.4 + 0.5 * (i / (n - 1 || 1)));
+  const topY = 46,
+    botY = 150;
+  const yi = (i: number) => topY + (1 - emo[i]) * (botY - topY);
+  const pts = stages.map((_, i) => `${xi(i)},${yi(i)}`).join(" ");
+  const lowI = emo.indexOf(Math.min(...emo));
+  const highI = emo.indexOf(Math.max(...emo));
+  return (
+    <svg viewBox="0 0 460 240" className="w-full" role="img">
+      <text x={18} y={topY - 16} fontSize={11} fill="currentColor" className="text-dust">
+        情绪
+      </text>
+      <polyline
+        points={pts}
+        className="text-volt"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        fill="none"
+        strokeLinejoin="round"
+      />
+      {stages.map((s, i) => (
+        <g key={i}>
+          <line
+            x1={xi(i)}
+            y1={yi(i)}
+            x2={xi(i)}
+            y2={196}
+            className="text-fog-1"
+            stroke="currentColor"
+            strokeWidth={1}
+            strokeDasharray="3 3"
+          />
+          <circle
+            cx={xi(i)}
+            cy={yi(i)}
+            r={5}
+            className={i === highI ? "text-volt" : i === lowI ? "text-dust" : "text-ash"}
+            fill="currentColor"
+          />
+          <text
+            x={xi(i)}
+            y={214}
+            textAnchor="middle"
+            fontSize={12}
+            fontWeight={600}
+            fill="currentColor"
+            className="text-bone"
+          >
+            {s}
+          </text>
+        </g>
+      ))}
+      <text
+        x={xi(highI)}
+        y={yi(highI) - 12}
+        textAnchor="middle"
+        fontSize={10}
+        fill="currentColor"
+        className="text-volt"
+      >
+        峰值
+      </text>
+      <text
+        x={xi(lowI)}
+        y={yi(lowI) + 20}
+        textAnchor="middle"
+        fontSize={10}
+        fill="currentColor"
+        className="text-dust"
+      >
+        低谷
+      </text>
+      <line
+        x1={x0 - 4}
+        y1={196}
+        x2={x1 + 4}
+        y2={196}
+        className="text-fog-1"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
     </svg>
   );
 }

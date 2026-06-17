@@ -21,10 +21,7 @@ export const DECISION_VIZ: Record<string, VizSpec> = {
     y: { label: "关键因素 A", lo: "低", hi: "高" },
     q: { tl: "情景③", tr: "情景①", bl: "情景④", br: "情景②" },
   },
-  kano: {
-    type: "flow",
-    steps: ["基本型 不做会死", "期望型 越好越满意", "魅力型 惊喜加分", "无差异 不做", "反向 别做"],
-  },
+  kano: { type: "kano" }, // 满意度 × 功能实现 三曲线（还原 KANO 模型图）
   "ai-product-value-assessment": {
     type: "pyramid",
     layers: ["价值成立度 基础", "价值放大度 杠杆", "价值持续度 保障"],

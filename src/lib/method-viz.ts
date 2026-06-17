@@ -22,7 +22,12 @@ export type VizSpec =
       cells: string[];
       rowLabels?: string[]; // 选填：每行左侧的分层标签
       hot?: number; // 选填：高亮第几个格子（0 起）
-    };
+    }
+  // ── 忠于原貌的方法专属图型（标签内置，画法还原该方法经典形态）──────
+  | { type: "bmc" } // 商业模式画布：9 模块经典布局
+  | { type: "kano" } // KANO：满意度 × 功能实现 三曲线
+  | { type: "porter" } // 波特五力：四力围绕中心竞争
+  | { type: "journey"; stages: string[] }; // 客户旅程：阶段 + 情绪曲线
 
 // slug → 规格。先放 5 张样板，覆盖 5 种图型；认可后批量补齐 83 个。
 export const METHOD_VIZ: Record<string, VizSpec> = {
@@ -45,11 +50,7 @@ export const METHOD_VIZ: Record<string, VizSpec> = {
     type: "cycle",
     nodes: ["核心场景", "数据", "AI 模型", "更好的场景"],
   },
-  "porter-five": {
-    type: "radial",
-    center: "行业盈利能力",
-    nodes: ["现有竞争", "潜在进入者", "替代品威胁", "供应商议价", "买方议价"],
-  },
+  "porter-five": { type: "porter" },
 };
 
 // 各引擎的规格分文件维护（便于并行补齐），在此合并。
