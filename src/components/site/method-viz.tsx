@@ -16,6 +16,7 @@ export function MethodViz({ spec }: { spec: VizSpec }) {
         {spec.type === "radial" && (
           <Radial center={spec.center} nodes={spec.nodes} />
         )}
+        {spec.type === "flow" && <Flow steps={spec.steps} />}
       </div>
     </figure>
   );
@@ -271,6 +272,96 @@ function Cycle({ nodes }: { nodes: string[] }) {
               dominantBaseline="middle"
               fontSize={12.5}
               fontWeight={600}
+              fill="currentColor"
+              className="text-bone"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+// ── 线性流程（自上而下分步）──────────────────────────────
+function Flow({ steps }: { steps: string[] }) {
+  const n = steps.length;
+  const boxH = 50,
+    gap = 26,
+    top = 6;
+  const H = top + n * boxH + (n - 1) * gap + 6;
+  return (
+    <svg viewBox={`0 0 360 ${H}`} className="w-full" role="img">
+      <defs>
+        <marker
+          id="arrowFlow"
+          markerWidth={9}
+          markerHeight={9}
+          refX={5}
+          refY={3}
+          orient="auto"
+        >
+          <path d="M0,0 L6,3 L0,6 Z" className="text-volt" fill="currentColor" />
+        </marker>
+      </defs>
+      {steps.map((label, i) => {
+        const y = top + i * (boxH + gap);
+        return (
+          <g key={i}>
+            {i > 0 && (
+              <line
+                x1={180}
+                y1={y - gap + 2}
+                x2={180}
+                y2={y - 4}
+                className="text-volt"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeOpacity={0.55}
+                markerEnd="url(#arrowFlow)"
+              />
+            )}
+            <rect
+              x={30}
+              y={y}
+              width={300}
+              height={boxH}
+              rx={10}
+              className="text-volt"
+              fill="currentColor"
+              fillOpacity={0.1}
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeOpacity={0.5}
+            />
+            <circle
+              cx={58}
+              cy={y + boxH / 2}
+              r={13}
+              className="text-volt"
+              fill="currentColor"
+              fillOpacity={0.2}
+            />
+            <text
+              x={58}
+              y={y + boxH / 2 + 1}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={12}
+              fontWeight={700}
+              fill="currentColor"
+              className="text-volt"
+            >
+              {i + 1}
+            </text>
+            <text
+              x={84}
+              y={y + boxH / 2 + 1}
+              textAnchor="start"
+              dominantBaseline="middle"
+              fontSize={13}
+              fontWeight={500}
               fill="currentColor"
               className="text-bone"
             >

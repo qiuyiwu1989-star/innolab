@@ -45,6 +45,24 @@ export const METHOD_VIZ: Record<string, VizSpec> = {
   },
 };
 
+// 各引擎的规格分文件维护（便于并行补齐），在此合并。
+import { COGNITION_VIZ } from "./viz/cognition";
+import { STRATEGY_VIZ } from "./viz/strategy";
+import { GENERATION_VIZ } from "./viz/generation";
+import { DECISION_VIZ } from "./viz/decision";
+import { PRODUCT_VIZ } from "./viz/product";
+import { EVOLUTION_VIZ } from "./viz/evolution";
+
+const ALL_VIZ: Record<string, VizSpec> = {
+  ...METHOD_VIZ,
+  ...COGNITION_VIZ,
+  ...STRATEGY_VIZ,
+  ...GENERATION_VIZ,
+  ...DECISION_VIZ,
+  ...PRODUCT_VIZ,
+  ...EVOLUTION_VIZ,
+};
+
 export function getMethodViz(slug: string): VizSpec | null {
-  return METHOD_VIZ[slug] ?? null;
+  return ALL_VIZ[slug] ?? null;
 }
