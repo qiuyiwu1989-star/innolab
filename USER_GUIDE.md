@@ -99,7 +99,7 @@
 
 ```bash
 # SSH 登录
-ssh ubuntu@43.159.171.3        # 密码 Zaowu@806
+ssh ubuntu@43.159.171.3        # 密码 <服务器密码:见密码管理器,勿写入仓库>
 nano /home/ubuntu/innolab/.env.local
 ```
 
@@ -124,7 +124,7 @@ ADMIN_TOKEN="innolab-admin"
 
 ```bash
 cd ~/Documents/innolab-repo
-INNOLAB_SSH_PASS='Zaowu@806' python3 deploy.py
+INNOLAB_SSH_PASS='<服务器密码:见密码管理器,勿写入仓库>' python3 deploy.py
 ```
 
 脚本会自动：① 本地 build 验证（失败则中止，不碰服务器）② 同步代码 ③ 服务器 build（失败则保留旧站点不挂）④ 重启 ⑤ 健康检查。**这是根除 502 的安全部署方式，不要手动 rm .next + 重启。**

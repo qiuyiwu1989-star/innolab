@@ -118,7 +118,7 @@ pm2 reload innolab
 
 聊天里露过的：
 - GitHub PAT `ghp_9k...QNGvg`
-- 服务器 ubuntu 密码 `Zaowu@806`
+- 服务器 ubuntu 密码 `<服务器密码:见密码管理器,勿写入仓库>`
 - MiMo API key `tp-cwxh...nbhv`
 
 **全去后台 rotate**。代码本身没引用任何明文，但聊天记录被截图过就等于泄露。

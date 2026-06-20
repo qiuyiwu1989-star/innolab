@@ -112,7 +112,7 @@ ${BOLD}${YELLOW}必须做：去 Vercel Dashboard 加 3 个环境变量${NC}
   2. 选 innolab 项目 → Settings → Environment Variables
   3. 加这三个（Production + Preview + Development 全勾）：
 
-     ${BOLD}MIMO_API_KEY${NC}      = tp-cwxhnnn1oh0fzpm0h8uk8mey7342gfalfj3qev0p5nmpnbhv
+     ${BOLD}MIMO_API_KEY${NC}      = <MIMO_TP_TOKEN:见服务器 .env.local,勿写入仓库>
      ${BOLD}MIMO_BASE_URL${NC}     = https://token-plan-cn.xiaomimimo.com/v1
      ${BOLD}MIMO_MODEL${NC}        = mimo-v2.5-pro
 
