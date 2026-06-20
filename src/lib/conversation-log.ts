@@ -275,11 +275,15 @@ export interface UserMemory {
   /** 是否有可用记忆（来过且有历史） */
   hasMemory: boolean;
   name: string;
+  /** 公司 / 身份（留资填的） */
+  company: string;
   /** 关注领域的可读标签，最多 3 个，如 ["战略","产品"] */
   focusLabels: string[];
+  /** 反复出现的核心关键词主题（如 "AI转型"/"IP变现"），用于「你一直在琢磨…」 */
+  recurringFocus: string;
   /** 历史提问次数 */
   count: number;
-  /** 注入推演上下文的「记忆摘要」——最近 2 次的问题 + 判断精华 */
+  /** 注入推演上下文的「记忆摘要」——用户档案头 + 最近 3 次问题与判断精华 */
   contextSummary: string;
 }
 
@@ -293,7 +297,9 @@ export async function getMemoryForUser(userKey: string): Promise<UserMemory> {
   const empty: UserMemory = {
     hasMemory: false,
     name: "",
+    company: "",
     focusLabels: [],
+    recurringFocus: "",
     count: 0,
     contextSummary: "",
   };
@@ -305,11 +311,12 @@ export async function getMemoryForUser(userKey: string): Promise<UserMemory> {
     // 没有对话历史，但可能注册过 → 至少认得名字
     const reg = (await readRegistrations()).find((r) => r.user_key === userKey);
     if (!reg) return empty;
-    return { ...empty, hasMemory: false, name: reg.name };
+    return { ...empty, hasMemory: false, name: reg.name, company: reg.company ?? "" };
   }
 
   const reg = (await readRegistrations()).find((r) => r.user_key === userKey);
   const name = reg?.name ?? "";
+  const company = reg?.company ?? "";
 
   // 关注领域 top 3
   const domainCount: Record<string, number> = {};
@@ -320,23 +327,51 @@ export async function getMemoryForUser(userKey: string): Promise<UserMemory> {
     .map(([d]) => DOMAIN_LABEL[d] ?? d)
     .filter((v, i, arr) => arr.indexOf(v) === i);
 
-  // 最近 2 次推演的「问题 + 判断/落地精华」做记忆摘要（注入用）
-  const recent = mine.slice(0, 2);
+  // 反复出现的关键词主题：跨他的全部提问，取出现 ≥2 次的最高频词
+  const kw: Record<string, number> = {};
+  for (const c of mine) {
+    const tokens = (c.prompt ?? "").match(/[一-龥]{2,6}|[a-zA-Z0-9]{2,}/g) ?? [];
+    const seen = new Set<string>();
+    for (const t of tokens) {
+      const k = t.toLowerCase();
+      if (KEYWORD_STOPWORDS.has(t) || k.length < 2 || seen.has(k)) continue;
+      seen.add(k);
+      kw[k] = (kw[k] ?? 0) + 1;
+    }
+  }
+  const topKw = Object.entries(kw)
+    .filter(([, n]) => n >= 2)
+    .sort((a, b) => b[1] - a[1])[0];
+  const recurringFocus = topKw ? topKw[0] : "";
+
+  // 最近 3 次推演的「问题 + 判断/落地精华」
+  const recent = mine.slice(0, 3);
   const parts = recent.map((c) => {
     const out = c.output ?? "";
     const judge =
       out.match(/##\s*(?:我的判断|关键判断)\s*\n+([\s\S]*?)(?=\n##|$)/)?.[1] ??
       "";
-    const summary = judge.trim().slice(0, 200);
+    const summary = judge.trim().slice(0, 180);
     return `· 上次问："${(c.prompt ?? "").slice(0, 60)}"${summary ? `\n  当时的核心判断：${summary}` : ""}`;
   });
+
+  // 档案头 + 历史脉络 —— 让 AI 真的"记得这个人"，延续上下文而非从零问
+  const header =
+    `【回访用户档案】称呼：${name || "（未填）"}` +
+    `${company ? `（${company}）` : ""}；累计来过 ${mine.length} 次` +
+    `${recurringFocus ? `；反复在琢磨「${recurringFocus}」` : ""}` +
+    `${focusLabels.length ? `；关注领域：${focusLabels.join("、")}` : ""}。`;
+  const contextSummary =
+    `${header}\n历史脉络（推演时请延续，不要让他从零解释背景）：\n${parts.join("\n")}`;
 
   return {
     hasMemory: true,
     name,
+    company,
     focusLabels,
+    recurringFocus,
     count: mine.length,
-    contextSummary: parts.join("\n"),
+    contextSummary,
   };
 }
 
