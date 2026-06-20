@@ -50,12 +50,18 @@ def main():
     pw = os.environ.get("INNOLAB_SSH_PASS") or getpass.getpass("服务器密码: ")
 
     # ── 1. 本地 build 守门 ──────────────────────────
-    step("本地 build 验证…")
-    r = subprocess.run("npm run build", shell=True, capture_output=True, text=True)
-    if r.returncode != 0 or "Compiled successfully" not in (r.stdout + r.stderr):
-        print((r.stdout + r.stderr)[-1500:])
-        die("本地 build 失败 —— 已中止，服务器未受影响")
-    ok("本地 build 通过")
+    # 逃生口：本地 Google Fonts 偶发抓不到会导致 build 失败（非代码问题）。
+    # 已用 `npx tsc --noEmit` 验证类型时，可 SKIP_LOCAL_BUILD=1 跳过；
+    # 服务器 build 仍是真实门禁（失败保留旧站点），所以安全。
+    if os.environ.get("SKIP_LOCAL_BUILD") == "1":
+        step("跳过本地 build（SKIP_LOCAL_BUILD=1，依赖服务器 build 守门）")
+    else:
+        step("本地 build 验证…")
+        r = subprocess.run("npm run build", shell=True, capture_output=True, text=True)
+        if r.returncode != 0 or "Compiled successfully" not in (r.stdout + r.stderr):
+            print((r.stdout + r.stderr)[-1500:])
+            die("本地 build 失败 —— 已中止，服务器未受影响")
+        ok("本地 build 通过")
 
     # ── 连接 ────────────────────────────────────────
     ssh = paramiko.SSHClient()
