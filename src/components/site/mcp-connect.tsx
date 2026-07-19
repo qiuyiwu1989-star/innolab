@@ -97,6 +97,20 @@ export function McpConnect() {
         </div>
         <Field label="③ 命令行自测（应返回 5 个工具）" value={curl} />
       </div>
+
+      <div className="mt-5 rounded-lg border border-fog-2 bg-ink/40 p-4 text-xs leading-relaxed text-dust">
+        <span className="font-medium text-ash">怎么加进 Claude：</span>
+        claude.ai → 设置 → 连接器 → 添加自定义连接器 → 粘贴上面 ② A 的地址（个人版
+        Pro/Max 即可，无需 OAuth）。桌面版 Claude / 自建 agent 用 ② B 的 URL + 请求头。
+        <a
+          href="https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+          target="_blank"
+          rel="noreferrer"
+          className="ml-1 text-volt hover:underline"
+        >
+          官方步骤 ↗
+        </a>
+      </div>
     </div>
   );
 }
