@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     template: "%s — InnoLab",
   },
   description:
-    "邱懿武的方法论 × AI 推演引擎。83 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。先免费体验，需要时找他本人做 1:1 战略咨询。",
+    "邱懿武的方法论 × AI 推演引擎。86 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。先免费体验，需要时找他本人做 1:1 战略咨询。",
   keywords: [
     "AI 战略咨询",
     "创新方法论",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "InnoLab — 把战略难题，想透 | 邱懿武",
-    description: "邱懿武的方法论 × AI 推演引擎。83 方法 + 76 案例，先免费体验，需要时找他本人。",
+    description: "邱懿武的方法论 × AI 推演引擎。86 方法 + 76 案例，先免费体验，需要时找他本人。",
   },
   robots: {
     index: true,

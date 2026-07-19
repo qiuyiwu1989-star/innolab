@@ -1,4 +1,4 @@
-// InnoLab MCP 工具层 —— 把「邱懿武的 83 方法战略推演能力」暴露成可被任何 agent 调用的原语。
+// InnoLab MCP 工具层 —— 把「邱懿武的 86 方法战略推演能力」暴露成可被任何 agent 调用的原语。
 //
 // 设计原则（见 docs/mcp-architecture.md）：
 //   · 私有优先：调用方凭 INNOLAB_MCP_KEY 鉴权（路由层校验），工具层默认已授权。
@@ -7,7 +7,7 @@
 //
 // 工具清单：
 //   innolab_analyze       跑一次深度战略推演（核心能力）
-//   innolab_list_methods  列/筛 83 个方法（id·标题·引擎·层级·一句话）
+//   innolab_list_methods  列/筛 86 个方法（id·标题·引擎·层级·一句话）
 //   innolab_get_method    取某方法完整卡片 + 人类讲解版
 //   innolab_list_cases    列/筛案例库（可按方法/领域/关键词）
 //   innolab_sediment      把外部洞察/案例沉淀回飞轮（候选，待人工晋升）
@@ -68,7 +68,7 @@ export const TOOLS: ToolDef[] = [
   {
     name: "innolab_analyze",
     description:
-      "用邱懿武的战略创新方法体系（6 引擎 83 方法 + 真实案例库）对一个战略/产品/组织难题做深度推演，返回一份结构化的顾问级分析报告（真正的问题 / 推演 / 判断 / 风险 / 落地动作）。适合：定战略、拆商业模式、做产品决策、AI 转型、组织与增长诊断。给的信息越具体（数字、规模、卡点）结论越有用。每次调用都会沉淀回 InnoLab 飞轮。",
+      "用邱懿武的战略创新方法体系（6 引擎 86 方法 + 真实案例库）对一个战略/产品/组织难题做深度推演，返回一份结构化的顾问级分析报告（真正的问题 / 推演 / 判断 / 风险 / 落地动作）。适合：定战略、拆商业模式、做产品决策、AI 转型、组织与增长诊断。给的信息越具体（数字、规模、卡点）结论越有用。每次调用都会沉淀回 InnoLab 飞轮。",
     inputSchema: {
       type: "object",
       properties: {
@@ -160,7 +160,7 @@ export const TOOLS: ToolDef[] = [
   {
     name: "innolab_list_methods",
     description:
-      "列出 / 筛选 InnoLab 的 83 个战略创新方法（返回 id · 中文名 · 英文名 · 引擎 · 层级 · 一句话定义）。用来发现有哪些方法、拿到方法 ID 供 innolab_get_method 或 innolab_analyze 的 emphasis_methods 使用。",
+      "列出 / 筛选 InnoLab 的 86 个战略创新方法（返回 id · 中文名 · 英文名 · 引擎 · 层级 · 一句话定义）。用来发现有哪些方法、拿到方法 ID 供 innolab_get_method 或 innolab_analyze 的 emphasis_methods 使用。",
     inputSchema: {
       type: "object",
       properties: {

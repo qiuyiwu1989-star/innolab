@@ -224,7 +224,7 @@ const SUGGESTIONS: { label: string; tag: string; domain: DomainKey }[] = [
  */
 const THINKING_STAGES: { label: string; detail: string }[] = [
   { label: "读懂你的问题", detail: "拆解表面诉求，定位真正要解决的决策点" },
-  { label: "检索方法库", detail: "在 83 个方法中筛选最相关的几个" },
+  { label: "检索方法库", detail: "在 86 个方法中筛选最相关的几个" },
   { label: "匹配实战案例", detail: "从 76 个真实案例里找可参照的先例" },
   { label: "编排推演链", detail: "把方法按逻辑顺序串成分析路径" },
   { label: "生成判断", detail: "逐法推演，准备给出 do / don't 结论" },
@@ -793,7 +793,7 @@ export function LiveRunner({
 </div>
 <div class="rpt-q"><strong>你的问题：</strong>${esc(submittedPrompt)}</div>
 ${mdToHtml(output)}
-<div class="rpt-foot">本报告由 InnoLab（innolab.cc）基于邱懿武的 83 个战略创新方法生成。<br>如需邱懿武本人就此议题做深度咨询，请通过 innolab.cc/about 联系。</div>
+<div class="rpt-foot">本报告由 InnoLab（innolab.cc）基于邱懿武的 86 个战略创新方法生成。<br>如需邱懿武本人就此议题做深度咨询，请通过 innolab.cc/about 联系。</div>
 </body></html>`);
     win.document.close();
     setTimeout(() => win.print(), 400);
@@ -1258,7 +1258,7 @@ ${mdToHtml(output)}
               <div className="mt-3 flex items-center justify-between border-t border-fog-1 pt-3">
                 <span className="flex items-center gap-2 text-[11px] text-dust">
                   <Cpu className="size-3" />
-                  MiMo v2.5 Pro · 83 方法 + 76 案例
+                  MiMo v2.5 Pro · 86 方法 + 76 案例
                   {clientToken ? (
                     <span className="ml-2 text-volt">专属不限次</span>
                   ) : (
@@ -1275,7 +1275,7 @@ ${mdToHtml(output)}
                       className="ml-2 text-volt/70 hover:text-volt transition underline-offset-2 hover:underline"
                       title="查看方法探索地图"
                     >
-                      · 已探索 {seenMethodIds.size} / 83 个方法
+                      · 已探索 {seenMethodIds.size} / 86 个方法
                     </button>
                   )}
                 </span>
@@ -2070,7 +2070,7 @@ ${mdToHtml(output)}
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   方法探索地图 — 显示 83 个方法 ID，已探索的亮 volt 色
+   方法探索地图 — 显示 86 个方法 ID，已探索的亮 volt 色
    ────────────────────────────────────────────────────────────────────────── */
 
 const ENGINE_META: { prefix: string; label: string; color: string }[] = [

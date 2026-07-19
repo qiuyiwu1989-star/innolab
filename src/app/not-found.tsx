@@ -60,7 +60,7 @@ export default function NotFound() {
           <EntryLink
             href="/methods"
             icon={Hash}
-            title="83 个方法"
+            title="86 个方法"
             sub="按引擎 / 层级筛选"
           />
           <EntryLink

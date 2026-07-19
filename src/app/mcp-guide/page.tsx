@@ -6,19 +6,19 @@ import { McpConnect } from "@/components/site/mcp-connect";
 export const metadata: Metadata = {
   title: "MCP 对接指南",
   description:
-    "把 InnoLab 的战略推演能力（6 引擎 83 方法）作为 MCP 接入任何 agent——一个 URL 就能调用。",
+    "把 InnoLab 的战略推演能力（6 引擎 86 方法）作为 MCP 接入任何 agent——一个 URL 就能调用。",
 };
 
 // 5 个工具的展示清单（与 src/lib/mcp/tools.ts 对应）
 const TOOLS = [
   {
     name: "innolab_analyze",
-    desc: "核心：用 83 方法体系对一个战略/产品/组织难题做深度推演，返回顾问级报告。支持指定强调的方法、为某客户定制。每次调用自动沉淀回飞轮。",
+    desc: "核心：用 86 方法体系对一个战略/产品/组织难题做深度推演，返回顾问级报告。支持指定强调的方法、为某客户定制。每次调用自动沉淀回飞轮。",
     write: true,
   },
   {
     name: "innolab_list_methods",
-    desc: "列 / 筛 83 个方法（id · 标题 · 引擎 · 层级 · 一句话）。",
+    desc: "列 / 筛 86 个方法（id · 标题 · 引擎 · 层级 · 一句话）。",
     write: false,
   },
   {
@@ -68,7 +68,7 @@ export default function McpGuidePage() {
         </h1>
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ash">
           InnoLab 真正的资产不是这个网站，是那套{" "}
-          <strong className="font-semibold text-bone">6 引擎 83 方法的战略推演能力</strong>
+          <strong className="font-semibold text-bone">6 引擎 86 方法的战略推演能力</strong>
           。通过 MCP，这套能力从界面里解耦出来，变成一个
           <strong className="font-semibold text-bone">可被任何 agent 用 URL 调用的原语</strong>
           ——你自己的 Claude、deepagent、其它项目，都能直接调用你的战略推演大脑。
@@ -142,7 +142,7 @@ export default function McpGuidePage() {
           href="/methods"
           className="group inline-flex items-center gap-2 text-sm text-dust transition-colors hover:text-volt"
         >
-          先看看能调用的 83 个方法
+          先看看能调用的 86 个方法
           <ArrowRight
             size={15}
             className="transition-transform group-hover:translate-x-0.5"

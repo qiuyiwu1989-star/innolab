@@ -96,7 +96,7 @@ export default function Home() {
             <b className="font-semibold text-bone">邱懿武的方法论</b> ×{" "}
             <b className="font-semibold text-bone">AI 推演引擎</b>。
             <br className="hidden sm:block" />
-            83 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。
+            86 个方法、76 个真实案例，把模糊的商业难题切准、推演、给出下一步。
             先免费体验，需要时找他本人。
           </p>
 
@@ -176,7 +176,7 @@ export default function Home() {
           <SectionHead
             kicker="03 · 弹药库"
             title="不是空话。这是支撑 AI 推演的体系。"
-            sub="83 个方法论按六大引擎组织，每个方法标注它工作的认知层级。AI 调度它们，你也可以手动浏览。"
+            sub="86 个方法论按六大引擎组织，每个方法标注它工作的认知层级。AI 调度它们，你也可以手动浏览。"
           />
           <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-4">
             <Stat n={totalMethods} l="方法卡" highlight />
@@ -233,7 +233,7 @@ export default function Home() {
             kicker="04 · Six Engines"
             title="六大引擎，串成一条生产线"
             sub="每个引擎解决生产链上一个环节。你卡在哪一环，就调哪一环的方法。"
-            link={{ href: "/methods", text: "全部 83 个方法" }}
+            link={{ href: "/methods", text: "全部 86 个方法" }}
           />
           <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fog-2 bg-fog-2 sm:grid-cols-2 lg:grid-cols-3">
             {countsByEngine.map((e, i) => (
@@ -313,7 +313,7 @@ export default function Home() {
               title="推演引擎 · 已上线"
               when="当前"
               items={[
-                "83 方法 + 76 案例编入系统提示",
+                "86 方法 + 76 案例编入系统提示",
                 "多轮会话 · 带着前文判断续问",
                 "方法调用链可视化 · 引导追问",
               ]}

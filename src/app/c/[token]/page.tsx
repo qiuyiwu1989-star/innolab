@@ -89,7 +89,7 @@ export default async function ClientWorkspacePage({ params }: Props) {
               <InfinityIcon className="size-3.5" /> 专属不限次
             </span>
             <span>·</span>
-            <span>83 方法 + 76 案例 · 多轮会话</span>
+            <span>86 方法 + 76 案例 · 多轮会话</span>
           </div>
         </header>
 

@@ -10,7 +10,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://innolab.cc";
 export const metadata: Metadata = {
   title: "方法论体系 — InnoLab 战略创新智能体",
   description:
-    "InnoLab 把 83 个创新与战略方法封装成可被 AI 调用的「方法链」，对你的具体处境做结构化推演。了解 6 大引擎、推演五步法，以及它为什么比通用 AI 更可靠。",
+    "InnoLab 把 86 个创新与战略方法封装成可被 AI 调用的「方法链」，对你的具体处境做结构化推演。了解 6 大引擎、推演五步法，以及它为什么比通用 AI 更可靠。",
   alternates: { canonical: "/methodology" },
 };
 

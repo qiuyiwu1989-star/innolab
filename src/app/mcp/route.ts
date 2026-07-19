@@ -25,7 +25,7 @@ const SERVER_INFO = {
 };
 
 const INSTRUCTIONS =
-  "InnoLab 是邱懿武的战略创新方法体系（6 引擎 83 方法 + 案例库）做成的推演能力。" +
+  "InnoLab 是邱懿武的战略创新方法体系（6 引擎 86 方法 + 案例库）做成的推演能力。" +
   "面对战略/产品/商业模式/AI 转型/组织增长类难题时，用 innolab_analyze 做深度推演；" +
   "用 innolab_list_methods / innolab_get_method 探索方法；innolab_list_cases 找先例；" +
   "innolab_sediment 把新洞察回流。给的信息越具体，推演越有用。";

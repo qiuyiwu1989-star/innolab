@@ -11,7 +11,7 @@ import type { MethodMeta } from "@/components/demo/method-chain-viz";
 export const metadata: Metadata = {
   title: "战略推演工作台 · 免费试用",
   description:
-    "免费试一发深度战略推演——输入真实商业问题，InnoLab 用 83 个方法编排出问题重构 → 方法链 → 关键判断 → 推演结论。深度价值在邱懿武 1:1 咨询。",
+    "免费试一发深度战略推演——输入真实商业问题，InnoLab 用 86 个方法编排出问题重构 → 方法链 → 关键判断 → 推演结论。深度价值在邱懿武 1:1 咨询。",
 };
 
 export default function DemoPage() {
@@ -68,7 +68,7 @@ export default function DemoPage() {
             怎么推演。
           </h1>
           <p className="mt-6 max-w-xl text-base text-ash sm:text-lg">
-            输入真实商业问题，InnoLab 用 <b className="font-semibold text-bone">83 个方法</b>
+            输入真实商业问题，InnoLab 用 <b className="font-semibold text-bone">86 个方法</b>
             编排出问题重构 → 方法链 → 关键判断 → 推演结论。
             <span className="text-dust"> 免费试，深度价值在 1:1 咨询。</span>
           </p>
@@ -78,7 +78,7 @@ export default function DemoPage() {
               MiMo v2.5 Pro
             </span>
             <span>·</span>
-            <span>83 方法 + 76 案例编入 system prompt</span>
+            <span>86 方法 + 76 案例编入 system prompt</span>
             <span>·</span>
             <span>多轮会话 · 方法链可视化</span>
           </div>
@@ -118,7 +118,7 @@ export default function DemoPage() {
             免费试用，深度价值在 1:1 咨询
           </h3>
           <p className="mt-3 leading-relaxed">
-            InnoLab 的深度推演免费给你试——每次调用 MiMo v2.5 Pro，把 83 个方法 + 76 案例编入上下文，成本由邱懿武承担。
+            InnoLab 的深度推演免费给你试——每次调用 MiMo v2.5 Pro，把 86 个方法 + 76 案例编入上下文，成本由邱懿武承担。
             想多用几次，留个联系方式即可；而真正值钱的判断——针对你处境的取舍、落地路径——
             邱懿武会亲自和你 1:1 深聊。这套工具是他战略咨询的交付增强，不是公开的免费 AI 问答。
           </p>
