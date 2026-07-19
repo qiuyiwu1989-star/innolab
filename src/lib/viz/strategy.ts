@@ -1,6 +1,11 @@
 import type { VizSpec } from "../method-viz";
 
 export const STRATEGY_VIZ: Record<string, VizSpec> = {
+  "pricing-strategy": {
+    // 三种定价逻辑自底向上：成本(地板)→竞争(随行)→价值(高手玩法)
+    type: "pyramid",
+    layers: ["成本加成 · 定价地板", "竞争对标 · 随行就市", "价值定价 · 高手玩法"],
+  },
   // 产品（现有/新）× 市场（现有/新）四象限
   "ansoff": {
     type: "matrix2x2",

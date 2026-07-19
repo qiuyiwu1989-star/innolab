@@ -42,4 +42,17 @@ export const DECISION_VIZ: Record<string, VizSpec> = {
     type: "flow",
     steps: ["列方案定维度", "分配权重", "逐项打分", "计算排序", "讨论偏差"],
   },
+  "probabilistic-decision": {
+    // 期望值(高/低) × 最坏结果(可承受/毁灭性)——点破"EV 再高，毁灭性下行也别赌"
+    type: "matrix2x2",
+    x: { label: "最坏结果", lo: "可承受", hi: "毁灭性" },
+    y: { label: "期望值 EV", lo: "低", hi: "高" },
+    q: {
+      tl: "放心下注 ✓",
+      tr: "别赌上全部 ⚠",
+      bl: "不值得",
+      br: "离它远点",
+    },
+    hot: "tr",
+  },
 };

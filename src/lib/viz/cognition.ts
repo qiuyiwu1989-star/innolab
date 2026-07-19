@@ -1,6 +1,11 @@
 import type { VizSpec } from "../method-viz";
 
 export const COGNITION_VIZ: Record<string, VizSpec> = {
+  "first-principles-thinking": {
+    // 第一性原理三步：质疑假设 → 拆到底层事实 → 从底层重组
+    type: "flow",
+    steps: ["质疑所有假设", "拆到不可再拆的底层事实", "从底层重新组装方案"],
+  },
   "affinity-diagram": {
     type: "flow",
     steps: ["制卡原子化", "沉默分组", "二轮精修", "集体命名", "层级整理", "总结洞察"],
