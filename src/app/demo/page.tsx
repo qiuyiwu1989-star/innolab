@@ -9,9 +9,9 @@ import { AccessGate } from "@/components/demo/access-gate";
 import type { MethodMeta } from "@/components/demo/method-chain-viz";
 
 export const metadata: Metadata = {
-  title: "战略推演工作台 · 授权专属",
+  title: "战略推演工作台 · 免费试用",
   description:
-    "InnoLab 推演工作台是邱懿武战略咨询的专属交付工具，需要授权暗号。下方可看手写示范了解推演结构。",
+    "免费试一发深度战略推演——输入真实商业问题，InnoLab 用 83 个方法编排出问题重构 → 方法链 → 关键判断 → 推演结论。深度价值在邱懿武 1:1 咨询。",
 };
 
 export default function DemoPage() {
@@ -55,7 +55,7 @@ export default function DemoPage() {
         <header>
           <div className="inline-flex items-center gap-2 rounded-full border border-volt/40 bg-volt/[0.05] px-3 py-1.5 text-[11px] font-medium text-volt">
             <Beaker className="size-3.5" />
-            <span>授权专属 · 战略推演工作台</span>
+            <span>免费试用 · 战略推演工作台</span>
           </div>
           <h1
             className="display mt-6 text-bone"
@@ -68,8 +68,9 @@ export default function DemoPage() {
             怎么推演。
           </h1>
           <p className="mt-6 max-w-xl text-base text-ash sm:text-lg">
-            授权后，输入真实商业问题，InnoLab 用 <b className="font-semibold text-bone">83 个方法</b>
+            输入真实商业问题，InnoLab 用 <b className="font-semibold text-bone">83 个方法</b>
             编排出问题重构 → 方法链 → 关键判断 → 推演结论。
+            <span className="text-dust"> 免费试，深度价值在 1:1 咨询。</span>
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-dust">
             <span className="inline-flex items-center gap-1.5">
@@ -104,7 +105,7 @@ export default function DemoPage() {
               5 个手写示范
             </h2>
             <p className="mt-2 text-sm text-ash">
-              没有暗号也能看——这些是手写的推演样本，展示 InnoLab 的输出结构。真正的实时推演在上方工作台（需授权）。
+              这些是手写的推演样本，展示 InnoLab 的输出结构。想直接试？上方工作台免费开一发真实推演。
             </p>
           </div>
 
@@ -114,12 +115,12 @@ export default function DemoPage() {
         {/* 底部小提示 */}
         <footer className="mt-20 rounded-xl border border-fog-2 bg-soot p-6 text-sm text-ash">
           <h3 className="text-base font-semibold text-bone">
-            为什么需要暗号？
+            免费试用，深度价值在 1:1 咨询
           </h3>
           <p className="mt-3 leading-relaxed">
-            InnoLab 推演工作台是邱懿武战略咨询的专属交付工具，不是公开的免费 AI 问答。
-            每次推演调用 MiMo v2.5 Pro，把 83 个方法 + 76 案例编入上下文——成本由邱懿武承担，
-            所以只授权给合作伙伴和客户长期使用。想了解这套方法论能怎么帮你？先看下方公开示范和真实案例，或直接联系。
+            InnoLab 的深度推演免费给你试——每次调用 MiMo v2.5 Pro，把 83 个方法 + 76 案例编入上下文，成本由邱懿武承担。
+            想多用几次，留个联系方式即可；而真正值钱的判断——针对你处境的取舍、落地路径——
+            邱懿武会亲自和你 1:1 深聊。这套工具是他战略咨询的交付增强，不是公开的免费 AI 问答。
           </p>
           <Link
             href="/about"

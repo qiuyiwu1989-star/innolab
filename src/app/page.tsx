@@ -119,8 +119,8 @@ export default function Home() {
                 href="/demo"
                 className="group flex items-center justify-center gap-2 rounded-lg border border-fog-2 px-5 py-4 text-base text-ash transition hover:border-fog-3 hover:text-bone sm:flex-none"
               >
-                进入工作台
-                <span className="text-xs text-dust">需授权</span>
+                免费开一发推演
+                <span className="text-xs text-dust">无需暗号</span>
               </Link>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -416,7 +416,7 @@ export default function Home() {
             <br className="sm:hidden" />
             当问题足够重要、值得一个人陪你想透——
             <br />
-            邱懿武提供 1:1 战略咨询，并把这套智能体作为专属交付工具。
+            邱懿武提供 1:1 战略咨询，这套智能体是他的交付增强工具。
           </p>
           <div className="mx-auto mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
@@ -429,11 +429,11 @@ export default function Home() {
               href="/demo"
               className="rounded-full border border-fog-2 px-6 py-3 text-sm font-medium text-ash transition hover:border-bone hover:text-bone"
             >
-              进入工作台（需授权）
+              免费开一发推演
             </Link>
           </div>
           <p className="mt-4 text-xs text-dust">
-            合作伙伴与客户凭授权暗号使用工作台；没有？先聊聊，看我能不能帮上。
+            工作台免费试用，多用几次留个联系方式即可；真正值钱的判断在 1:1 咨询。
           </p>
         </div>
       </section>

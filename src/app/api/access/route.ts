@@ -11,13 +11,21 @@ export const dynamic = "force-dynamic";
 
 /**
  * POST /api/access
- * Body: { passcode, name, contact }
- * 留资闸门：校验公开暗号 + 强制留称呼 + 手机/邮箱（二选一）。
- * 通过则登记注册、返回 { ok, label, userKey, name }，前端存 localStorage，
- * 后续每次推演带上 userKey → 飞轮可按人归属画像。
+ * Body: { passcode?, name, contact, company? }
+ * 公开化后的留资登记：
+ *   - 无暗号 → 公开留资（称呼+联系方式），登记为"已登记"用户 → 每日 5 次额度。
+ *   - 有暗号且有效 → VIP/授权，返回其 label + unlimited:true → 不限次。
+ *   - 有暗号但无效 → 401。
+ * 登记后返回 { ok, label, userKey, name, unlimited }，前端存 localStorage，
+ * 后续每次推演带上 userKey → 飞轮按人归属画像 + 决定额度档。
  */
 export async function POST(request: Request) {
-  let body: { passcode?: string; name?: string; contact?: string };
+  let body: {
+    passcode?: string;
+    name?: string;
+    contact?: string;
+    company?: string;
+  };
   try {
     body = await request.json();
   } catch {
@@ -27,10 +35,20 @@ export async function POST(request: Request) {
     );
   }
 
+  // 暗号可选：填了就校验（VIP/授权→不限次）；不填就是公开留资（已登记→每日额度）
   const passcode = (body.passcode ?? "").trim();
-  const access = validateAccess(passcode);
-  if (!access) {
-    return NextResponse.json({ ok: false, error: "暗号不正确" }, { status: 401 });
+  let label = "已登记";
+  let unlimited = false;
+  if (passcode) {
+    const access = validateAccess(passcode);
+    if (!access) {
+      return NextResponse.json(
+        { ok: false, error: "暗号不正确" },
+        { status: 401 },
+      );
+    }
+    label = access.label;
+    unlimited = true;
   }
 
   const name = (body.name ?? "").trim().slice(0, 40);
@@ -57,15 +75,16 @@ export async function POST(request: Request) {
     ts: new Date().toISOString(),
     user_key: userKey,
     name,
-    company: (body as { company?: string }).company?.trim().slice(0, 60) ?? "",
+    company: body.company?.trim().slice(0, 60) ?? "",
     contact,
     contact_type: ctype,
   });
 
   return NextResponse.json({
     ok: true,
-    label: access.label,
+    label,
     userKey,
     name,
+    unlimited,
   });
 }

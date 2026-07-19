@@ -257,6 +257,10 @@ interface LiveRunnerProps {
   clientToken?: string;
   /** 留资派生的稳定用户标识：随推演上报 → 飞轮按人归属画像 */
   userKey?: string;
+  /** 是否已留资（决定 429 时提示「留资继续」还是「联系咨询」） */
+  isRegistered?: boolean;
+  /** 匿名用户配额用尽时触发留资弹窗（由 AccessGate 提供） */
+  onRegisterRequest?: () => void;
   /** 个性化记忆：该用户历史推演精要，首轮注入让 AI「记得他」 */
   memoryContext?: string;
 }
@@ -266,6 +270,8 @@ export function LiveRunner({
   casesIndex = [],
   clientToken,
   userKey,
+  isRegistered = false,
+  onRegisterRequest,
   memoryContext,
 }: LiveRunnerProps) {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -1685,13 +1691,31 @@ ${mdToHtml(output)}
                   <p className="mt-2 text-sm text-ash">{error.message}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {error.reason === "rate_limit" ? (
-                      <Link
-                        href="/about"
-                        className="inline-flex items-center gap-1.5 rounded-md bg-volt px-4 py-2 text-xs font-semibold text-ink hover:brightness-110"
-                      >
-                        联系邱懿武咨询
-                        <ArrowRight className="size-3" />
-                      </Link>
+                      <>
+                        {/* 匿名 → 留资继续（免费）；已登记 → 直接引导咨询 */}
+                        {!isRegistered && onRegisterRequest && (
+                          <button
+                            type="button"
+                            onClick={onRegisterRequest}
+                            className="inline-flex items-center gap-1.5 rounded-md bg-volt px-4 py-2 text-xs font-semibold text-ink hover:brightness-110"
+                          >
+                            留个联系方式，免费继续
+                            <ArrowRight className="size-3" />
+                          </button>
+                        )}
+                        <Link
+                          href="/about"
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-md px-4 py-2 text-xs font-semibold",
+                            !isRegistered && onRegisterRequest
+                              ? "border border-fog-3 text-bone hover:border-volt"
+                              : "bg-volt text-ink hover:brightness-110",
+                          )}
+                        >
+                          约邱懿武 1:1 深聊
+                          <ArrowRight className="size-3" />
+                        </Link>
+                      </>
                     ) : (
                       <button
                         type="button"

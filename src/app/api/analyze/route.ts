@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { analyzeStream } from "@/lib/innolab-engine";
-import { getClientIp, unlimitedResult } from "@/lib/rate-limit";
+import {
+  getClientIp,
+  unlimitedResult,
+  checkAndConsume,
+  ANON_PER_IP_DAILY,
+  PER_IP_DAILY,
+  type RateLimitResult,
+} from "@/lib/rate-limit";
 import { validateAccess } from "@/lib/clients";
 import { appendConversation } from "@/lib/conversation-log";
 
@@ -86,36 +93,54 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. 访问授权 —— InnoLab 推演为授权专属（VIP 客户令牌 / 通用暗号）
+  // 2. 访问分档（公开化后）：
+  //    VIP 令牌 / 暗号 → 不限次；已留资 → 每日 5 次；匿名 → 每日 1 次（免费尝一发）。
   const ip = getClientIp(request);
   const ipHash = hashIp(ip);
   const access = validateAccess(body.client_token);
+  const registered = !!body.user_key?.trim();
 
-  if (!access) {
-    logEvent({
-      event: "analyze.denied",
-      reason: "no_access",
-      domain: body.domain ?? "unknown",
-      ip_hash: ipHash,
-      prompt_length: prompt.length,
-    });
-    return NextResponse.json(
-      {
-        error:
-          "InnoLab 推演工作台是邱懿武战略咨询的专属工具，需要授权暗号。请在工作台输入暗号，或联系邱懿武获取访问。",
-        reason: "no_access",
-      },
-      { status: 403 },
-    );
+  let limit: RateLimitResult;
+  let accessLabel: string;
+  if (access) {
+    limit = unlimitedResult();
+    accessLabel = access.label;
+  } else {
+    accessLabel = registered ? "已登记" : "匿名";
+    limit = checkAndConsume(ip, registered ? PER_IP_DAILY : ANON_PER_IP_DAILY);
+    if (!limit.allowed) {
+      logEvent({
+        event: "analyze.throttled",
+        reason: limit.reason,
+        registered,
+        domain: body.domain ?? "unknown",
+        ip_hash: ipHash,
+        prompt_length: prompt.length,
+      });
+      const msg =
+        limit.reason === "global_exhausted"
+          ? "今天全站的免费体验量已经满了——明天再来，或直接约邱懿武 1:1 深聊。"
+          : registered
+            ? "你今天的免费额度用完了。想继续深挖，直接约邱懿武 1:1 最快。"
+            : "你今天的免费体验用完了。留个联系方式（微信/邮箱）就能继续用，也欢迎直接约邱懿武 1:1 深聊。";
+      return NextResponse.json(
+        { error: msg, reason: "rate_limit", registered },
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Remaining-Global": String(limit.remaining.global),
+            "X-RateLimit-Remaining-Ip": String(limit.remaining.ip),
+            "X-RateLimit-Reset": String(Math.floor(limit.resetAt / 1000)),
+          },
+        },
+      );
+    }
   }
-
-  // 授权用户：推演不限次
-  const limit = unlimitedResult();
 
   // 3. 事件日志（不含 prompt 内容；记录授权标签 + 领域 + 来源）
   logEvent({
     event: "analyze.request",
-    access_label: access.label,
+    access_label: accessLabel,
     domain: body.domain ?? "unknown",
     source: body.source ?? "free",
     follow_up_kind: body.follow_up_kind ?? null,
@@ -185,8 +210,7 @@ export async function POST(request: Request) {
   });
 
   // 落盘逻辑抽成闭包，保证「只落一次」+ 可被 finally 安全调用
-  // access 在此一定非 null（上面无授权已 return 403），用局部变量固化类型
-  const accessLabel = access.label;
+  // accessLabel 在上面分档时已确定（VIP名/已登记/匿名）
   let persisted = false;
   async function persistConversation() {
     if (persisted) return;

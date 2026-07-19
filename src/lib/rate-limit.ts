@@ -1,8 +1,11 @@
 // 限流 — 内存 + 文件持久化（pm2/Node 长进程；Vercel serverless 用 Upstash 替换）。
 //
-// 默认配额：
-//   - 全站每日 50 次（防止 API 费用失控）
-//   - 单 IP 每日 5 次（防止单人刷屏）
+// 公开化后的三档配额（哑铃战略的获取端护栏）：
+//   - 匿名（未留资）：单 IP 每日 1 次（免费尝一发，用完引导留资）
+//   - 已留资：单 IP 每日 5 次
+//   - VIP 令牌 / 暗号：不限次（unlimitedResult，不走此逻辑）
+//   - 全站每日 150 次（成本硬顶，防 API 费用失控）
+// 均可用 env 覆盖：INNOLAB_DAILY_QUOTA_GLOBAL / _PER_IP / INNOLAB_FREE_ANON_PER_IP
 //
 // 持久化：每次写后异步刷盘到 rate-limit-state.json，pm2 重启后恢复计数。
 
@@ -10,8 +13,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
-const GLOBAL_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_GLOBAL ?? 50);
-const PER_IP_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_PER_IP ?? 5);
+const GLOBAL_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_GLOBAL ?? 150);
+/** 已留资用户单 IP 每日额度 */
+export const PER_IP_DAILY = Number(process.env.INNOLAB_DAILY_QUOTA_PER_IP ?? 5);
+/** 匿名（未留资）单 IP 每日免费额度 */
+export const ANON_PER_IP_DAILY = Number(
+  process.env.INNOLAB_FREE_ANON_PER_IP ?? 1,
+);
 
 // 持久化状态文件路径（在项目根目录，不进 git）
 const STATE_FILE = path.join(process.cwd(), "rate-limit-state.json");
@@ -104,7 +112,15 @@ export function unlimitedResult(): RateLimitResult {
   };
 }
 
-export function checkAndConsume(ip: string): RateLimitResult {
+/**
+ * 消耗一次配额。
+ * @param ip 客户端 IP
+ * @param perIpLimit 该请求适用的单 IP 每日上限（匿名传 ANON_PER_IP_DAILY，已留资传 PER_IP_DAILY）
+ */
+export function checkAndConsume(
+  ip: string,
+  perIpLimit: number = PER_IP_DAILY,
+): RateLimitResult {
   globalBucket = maybeReset(globalBucket);
   const ipBucket = maybeReset(
     ipBuckets.get(ip) ?? { count: 0, resetAt: Date.now() + WINDOW_MS },
@@ -117,12 +133,12 @@ export function checkAndConsume(ip: string): RateLimitResult {
       reason: "global_exhausted",
       remaining: {
         global: 0,
-        ip: Math.max(0, PER_IP_DAILY - ipBucket.count),
+        ip: Math.max(0, perIpLimit - ipBucket.count),
       },
       resetAt: globalBucket.resetAt,
     };
   }
-  if (ipBucket.count >= PER_IP_DAILY) {
+  if (ipBucket.count >= perIpLimit) {
     return {
       allowed: false,
       reason: "ip_exhausted",
@@ -144,7 +160,7 @@ export function checkAndConsume(ip: string): RateLimitResult {
     allowed: true,
     remaining: {
       global: Math.max(0, GLOBAL_DAILY - globalBucket.count),
-      ip: Math.max(0, PER_IP_DAILY - ipBucket.count),
+      ip: Math.max(0, perIpLimit - ipBucket.count),
     },
     resetAt: ipBucket.resetAt,
   };
