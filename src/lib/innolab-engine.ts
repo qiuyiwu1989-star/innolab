@@ -236,6 +236,10 @@ export interface AnalyzeOptions {
   domain?: string;
   /** thread 续写时的前文精要（关键判断 + 推演结论） */
   priorSummary?: string;
+  /** 顾问态：本次分析对象（客户/公司名）——用于「为 X 定制」的现场交付 */
+  clientName?: string;
+  /** 顾问态：指定优先调用的方法 ID（如 ["ST06","EV01"]）——现场强调某几招 */
+  emphasisMethods?: string[];
   /** 透传 abort 信号，方便客户端断开时停止生成 */
   signal?: AbortSignal;
 }
@@ -332,6 +336,8 @@ export async function* analyzeStream({
   prompt,
   domain,
   priorSummary,
+  clientName,
+  emphasisMethods,
   signal,
 }: AnalyzeOptions): AsyncGenerator<AnalyzeEvent, void, unknown> {
   const apiKey = process.env.MIMO_API_KEY;
@@ -365,15 +371,30 @@ export async function* analyzeStream({
     searchSources = r.sources;
   }
 
+  // 顾问态注入（Consultant / MCP）：本次分析对象 + 指定强调的方法。
+  // 放在案例参考之后、用户问题之前，作为"现场交付指令"影响这次推演。
+  let consultCtx = "";
+  if (clientName?.trim()) {
+    consultCtx += `【本次分析对象】客户：${clientName.trim()}。这是一次面向该客户的现场交付，请紧扣这家的具体处境定制，结论要能直接拿去与该客户当面对齐。\n`;
+  }
+  if (emphasisMethods && emphasisMethods.length > 0) {
+    const ids = emphasisMethods.map((s) => s.trim().toUpperCase()).filter(Boolean);
+    if (ids.length > 0) {
+      consultCtx += `【顾问指定方法】本次请优先调用并显性运用这几招：${ids.join(" · ")}（务必让它们成为推演主线；若某招确实不适用，先说明理由再另择更贴切的方法）。\n`;
+    }
+  }
+  if (consultCtx) consultCtx += "\n";
+
   // 构建 userMessage：
   // 1. 可选：联网检索到的实时事实（最前，作为权威事实）
   // 2. 可选：领域案例参考（动态注入，system prompt 不变→缓存复用）
-  // 3. 可选：thread 续问前文精要
-  // 4. 用户实际问题
+  // 3. 可选：顾问态指令（分析对象 / 指定方法）
+  // 4. 可选：thread 续问前文精要
+  // 5. 用户实际问题
   const domainCtx = buildDomainContext(domain, prompt);
   const userMessage = priorSummary?.trim()
-    ? `${searchCtx}${domainCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
-    : `${searchCtx}${domainCtx}${prompt}`;
+    ? `${searchCtx}${domainCtx}${consultCtx}${priorSummary.trim()}\n\n—— 现在用户追问 ——\n${prompt}`
+    : `${searchCtx}${domainCtx}${consultCtx}${prompt}`;
 
   try {
     const stream = await client.chat.completions.create(
@@ -450,4 +471,41 @@ export async function* analyzeStream({
       };
     }
   }
+}
+
+/* ───── 非流式包装（给 MCP / 服务端调用用）───── */
+
+export interface AnalyzeResult {
+  /** 完整推演 markdown（含参考来源 / 本次方法段） */
+  text: string;
+  /** token 用量（末尾 chunk 携带；无则 null） */
+  usage: { input: number; output: number; total: number } | null;
+  /** 从「## 本次方法」行解析出的方法 ID（无则空数组） */
+  methodsUsed: string[];
+}
+
+/** 从推演全文里解析「## 本次方法」行列出的方法 ID（如 CG16 · ST06）。 */
+function parseMethodsUsed(text: string): string[] {
+  const m = text.match(/##\s*本次方法\s*\n+([^\n]+)/);
+  const line = m?.[1] ?? "";
+  const ids = line.match(/[A-Z]{2}\d{2}/g) ?? [];
+  return Array.from(new Set(ids));
+}
+
+/**
+ * 跑一次完整推演并累积成文本（不流式）。MCP 工具 / 任何服务端非流式场景用。
+ * 命中 error 事件即抛出，让调用方能感知失败。
+ */
+export async function analyzeToText(
+  opts: AnalyzeOptions,
+): Promise<AnalyzeResult> {
+  let text = "";
+  let usage: AnalyzeResult["usage"] = null;
+  for await (const ev of analyzeStream(opts)) {
+    if (ev.type === "delta") text += ev.text;
+    else if (ev.type === "usage")
+      usage = { input: ev.input, output: ev.output, total: ev.total };
+    else if (ev.type === "error") throw new Error(ev.message);
+  }
+  return { text, usage, methodsUsed: parseMethodsUsed(text) };
 }
