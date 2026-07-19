@@ -23,7 +23,9 @@ const DOMAIN_LABELS: Record<string, string> = {
   unknown: "未知",
 };
 
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "innolab-admin";
+// 安全：只认服务器 .env.local 的 INNOLAB_ADMIN_TOKEN，绝不用硬编码兜底
+// （本页含留资联系方式等 PII；仓库公开，兜底口令 = 公网可见 = 泄露）。未配置即拒绝。
+const ADMIN_TOKEN = process.env.INNOLAB_ADMIN_TOKEN;
 
 interface Props {
   searchParams: Promise<{ token?: string }>;
@@ -34,7 +36,7 @@ export const metadata = { robots: { index: false, follow: false } };
 
 export default async function AdminConversationsPage({ searchParams }: Props) {
   const { token } = await searchParams;
-  if (token !== ADMIN_TOKEN) {
+  if (!ADMIN_TOKEN || token !== ADMIN_TOKEN) {
     return (
       <main className="mx-auto max-w-md px-6 py-24 text-center">
         <h1 className="text-xl font-semibold text-bone">需要管理员令牌</h1>

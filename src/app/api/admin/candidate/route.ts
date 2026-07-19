@@ -4,8 +4,8 @@ import { markCandidateByTs } from "@/lib/conversation-log";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// 与 /admin/conversations 页面保持完全一致的令牌解析，确保按钮一定能用
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "innolab-admin";
+// 与 /admin/conversations 一致：只认 INNOLAB_ADMIN_TOKEN，无硬编码兜底，未配置即拒绝
+const ADMIN_TOKEN = process.env.INNOLAB_ADMIN_TOKEN;
 
 /**
  * POST /api/admin/candidate
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ ok: false, error: "bad json" }, { status: 400 });
   }
-  if (body.token !== ADMIN_TOKEN) {
+  if (!ADMIN_TOKEN || body.token !== ADMIN_TOKEN) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
   const ts = (body.ts ?? "").trim();
