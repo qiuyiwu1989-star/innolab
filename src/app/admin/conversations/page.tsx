@@ -7,6 +7,7 @@ import {
   candidateCount,
   feedbackQuality,
   methodUsageStats,
+  qualityMethodSuspects,
 } from "@/lib/conversation-log";
 import { getAllMethods } from "@/lib/methods";
 import { MarkCandidate } from "@/components/admin/mark-candidate";
@@ -47,19 +48,31 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
     );
   }
 
-  const [stats, insights, profiles, quality, methods, recent, candidates, candTotal] =
-    await Promise.all([
-      conversationStats(),
-      conversationInsights(),
-      conversationProfiles(),
-      feedbackQuality(),
-      methodUsageStats(
-        getAllMethods().map((m) => ({ id: m.id, titleCn: m.titleCn })),
-      ),
-      readRecentConversations(80),
-      candidateTsSet(),
-      candidateCount(),
-    ]);
+  const allMethodsLite = getAllMethods().map((m) => ({
+    id: m.id,
+    titleCn: m.titleCn,
+  }));
+  const [
+    stats,
+    insights,
+    profiles,
+    quality,
+    methods,
+    suspects,
+    recent,
+    candidates,
+    candTotal,
+  ] = await Promise.all([
+    conversationStats(),
+    conversationInsights(),
+    conversationProfiles(),
+    feedbackQuality(),
+    methodUsageStats(allMethodsLite),
+    qualityMethodSuspects(allMethodsLite),
+    readRecentConversations(80),
+    candidateTsSet(),
+    candidateCount(),
+  ]);
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">
@@ -117,6 +130,36 @@ export default async function AdminConversationsPage({ searchParams }: Props) {
               )}
             </div>
           ))}
+        </div>
+
+        {/* 翻车方法：出现在 👎 推演里最多的方法 = 优先迭代对象 */}
+        <div className="mt-4 rounded-lg border border-fog-2 bg-soot p-4">
+          <div className="text-[11px] font-semibold text-bone">
+            翻车方法 · 优先迭代
+          </div>
+          <p className="mt-0.5 text-[11px] text-dust">
+            出现在被 👎 推演里最多的方法——这才是「质量数据反哺方法迭代」的直接指针（把 👎 按 prompt 连回推演、取其用到的方法聚合）。
+          </p>
+          {suspects.length === 0 ? (
+            <p className="mt-2 text-[11px] text-dust">
+              暂无信号（还没有 👎，或 👎 的推演匹配不到方法）。攒到几条 👎 后，这里会点名该优先改哪几张卡。
+            </p>
+          ) : (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {suspects.slice(0, 12).map((s) => (
+                <span
+                  key={s.id}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-rose-500/30 bg-rose-500/[0.05] px-2 py-1 text-[11px] text-ash"
+                >
+                  <span className="numeral text-rose-300">{s.id}</span>
+                  {s.titleCn}
+                  <span className="numeral rounded bg-rose-500/20 px-1 text-rose-300">
+                    👎{s.downCount}
+                  </span>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

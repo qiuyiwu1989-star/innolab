@@ -549,3 +549,41 @@ export async function methodUsageStats(
 
   return { counts, zombies, unknownIds: Array.from(unknown), totalRuns };
 }
+
+/**
+ * 质量→方法的反哺连接（飞轮④真正闭环的那一环）：
+ * 哪些方法最常出现在被 👎 的推演里 = 该优先迭代的对象。
+ * 做法：把 feedback(👎) 按 prompt 匹配回对话记录（含背景前缀时用 endsWith 兜底），
+ * 取其 output 里的方法 ID 去重聚合。数据少时可能为空——那也是诚实的「暂无信号」。
+ */
+export async function qualityMethodSuspects(
+  allMethods: { id: string; titleCn: string }[],
+): Promise<{ id: string; titleCn: string; downCount: number }[]> {
+  const known = new Map(allMethods.map((m) => [m.id, m.titleCn]));
+  const downs = (await readFeedback()).filter((f) => f.kind === "down");
+  if (downs.length === 0) return [];
+
+  const convs = await readRecentConversations(100000);
+  const outputFor = (p: string): string | null => {
+    let ends: string | null = null;
+    for (const c of convs) {
+      const cp = (c.prompt ?? "").trim();
+      if (cp === p) return c.output ?? "";
+      if (ends === null && p && cp.endsWith(p)) ends = c.output ?? "";
+    }
+    return ends;
+  };
+
+  const count = new Map<string, number>();
+  for (const d of downs) {
+    const out = outputFor((d.prompt ?? "").trim());
+    if (!out) continue;
+    for (const id of new Set(extractMethodIdsFromOutput(out))) {
+      if (known.has(id)) count.set(id, (count.get(id) ?? 0) + 1);
+    }
+  }
+
+  return Array.from(count.entries())
+    .map(([id, downCount]) => ({ id, titleCn: known.get(id) ?? id, downCount }))
+    .sort((a, b) => b.downCount - a.downCount);
+}
