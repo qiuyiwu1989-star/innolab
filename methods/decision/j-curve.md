@@ -1,6 +1,6 @@
 # J曲线穿越策略（J-Curve Strategy）
 
-## 元信息
+## Meta
 - ID: DC05
 - Engine: Decision
 - Layer: L4

@@ -1,13 +1,11 @@
 # 角色基因理论（Role Gene Model）
 
-## 元信息
+## Meta
 - ID: GN02
 - Engine: Generation
 - Layer: L4
 - Origin: original
-- 来源：造物云IP设计体系，邱懿武
-
-一句话定义：为IP角色定义完整"基因卡"——外在特征×内在人格×行为模式×叙事弧线，四个维度确保角色一致性和生命力。不是"画一个好看的形象"，是"创造一个活的人"。
+- Source: 造物云IP设计体系，邱懿武
 
 ---
 

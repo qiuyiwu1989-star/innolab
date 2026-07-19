@@ -70,9 +70,9 @@
 | ID | English Name | 中文名 | Layer | Origin | 一句话定义 | 文件 |
 |----|-------------|--------|-------|--------|-----------|------|
 | GN01 | Six-Step Coevolution Flywheel | 六步共生飞轮 | L4 | original | 一个通过"洞察→结构化→生成→判断→落地→学习"六步形成自我强化的人机共生生产系统——把所有认知能力"跑起来"的核心引擎。 | generation/six-step-flywheel.md |
-| GN02 | Role Gene Model | 角色基因理论 | L4 | original | 为IP角色定义完整"基因卡"——外在特征×内在人格×行为模式×叙事弧线，四个维度确保角色一致性和生命力。不是"画一个好看的形象"，是"创造一个活的人"。 | generation/role-gene.md |
-| GN03 | Embodied Production | 具身生产法 | L4 | original | 从真实场景出发（非工具出发）的AIGC创作系统，强调创作者在AI协作中的主体性——先有场景洞察，再选工具执行。 | generation/embodied-production.md |
-| GN04 | Old Bottle New Wine | 老瓶换新装策略 | L3 | original | 已验证品类（老瓶）搭配新文化符号（新装），AI让"生成新装"的成本趋近于零——用别人的模具做自己的内容。 | generation/old-bottle-new-label.md |
+| GN02 | Role Gene Model | 角色基因理论 | L4 | original | 为 IP 角色定义完整"基因卡"——外在特征 × 内在人格 × 行为模式 × 叙事弧线，四个维度确保角色一致性和生命力。不是"画一个好看的形象"，是"创造一个活的人"。 | generation/role-gene.md |
+| GN03 | Embodied Production | 具身生产法 | L4 | original | 从真实场景出发（非工具出发）的 AIGC 创作系统，强调创作者在 AI 协作中的主体性——先有场景洞察，再选工具执行。 | generation/embodied-production.md |
+| GN04 | Old Bottle New Wine | 老瓶换新装策略 | L3 | original | 已验证品类（老瓶）搭配新文化符号（新装），AI 让"生成新装"的成本趋近于零——用别人的模具做自己的内容。 | generation/old-bottle-new-label.md |
 | GN05 | Design Thinking | 设计思维 | L3 | classic | 以共情、定义、构思、原型、测试五步，从深度理解用户出发系统化发散与收敛，把"我觉得用户需要"变成"用户真正需要"的创新方案。 | generation/design-thinking.md |
 | GN06 | Disruptive Roadshow Narrative | 颠覆性思维的产品路演法 | L4 | original | 将模糊的产品/创意想法，通过 9 页认知反转结构，生成一套从现状反思到方案承接的路演叙事逻辑。 | generation/disruptive-roadshow.md |
 | GN07 | What If | 假如…会怎么样 | L3 | classic | "假如…会怎么样"是一种反向提问法，通过刻意挑战行业的基本假设、常识和"理所当然"，提出颠覆性的 What If 问题，打破惯性思维，探索全新可能性。 | generation/what-if.md |
@@ -96,7 +96,7 @@
 | DC04 | KANO Model | KANO需求模型 | L3 | classic | 把需求分为基本型、期望型、魅力型、无差异、反向五类，区分"不做会死"与"做了没用"，做出更聪明的功能优先级取舍。 | decision/kano.md |
 | DC05 | J-Curve Strategy | J曲线穿越策略 | L4 | adapted | AI转型投入前期必经价值下坠（J曲线底部），理解其必然性并掌握穿越策略，是领导者最关键的认知修炼。很多人死在谷底，不是方向错了，是没撑过去。 | decision/j-curve.md |
 | DC06 | AI Product Value Assessment | AI产品价值三阶评估法 | L4 | original | 从价值成立度、价值放大度、价值持续度三个维度，用13项指标对需求/产品想法进行系统化打分评估，判断是否值得投入。 | decision/ai-product-value-assessment.md |
-| DC07 | Evaluation Matrix | 评估矩阵 | L3 | classic | 评估矩阵是一种结构化决策工具，通过设定多个评估维度和权重，对多个候选方案进行量化评分，最终得出优先级排序。 | decision/evaluation-matrix.md |
+| DC07 | Evaluation Matrix | 评估矩阵 | L3 | classic | 通过设定多个评估维度与权重，对多个候选方案量化打分排序——把"几个选项各有各的好、凭感觉选"变成一张透明、可讨论、可复算的决策表。 | decision/evaluation-matrix.md |
 | DC08 | Negotiation Preparation | 谈判准备框架 | L3 | adapted | 按"明确三层目标→找出 BATNA→分析对方→设计让步阶梯→准备话术"五步做足谈判前准备，用准备拿到想要的结果而非现场争赢。 | decision/negotiation-prep.md |
 | DC09 | Nonviolent Communication | 非暴力沟通框架 | L3 | adapted | 用"观察→感受→需要→请求"四步表达，把指责变成表达、把对抗变成合作，化解冲突并让对方听得进去。 | decision/nonviolent-communication.md |
 | DC10 | Scenario Planning | 情景规划 | L3 | classic | 情景规划不是预测「最可能的未来」，而是构建「多个可能的未来」——帮助决策者在高度不确定的环境下，把战略设计成「无论哪种情景成真都能活下去，某种情景成真时能跑赢」的组合。 | decision/scenario-planning.md |

@@ -8,6 +8,8 @@
 - Source: AI产品价值评估Agent
 - First Published: InnoLab v3.1
 
+---
+
 ## Definition（一句话定义）
 
 从价值成立度、价值放大度、价值持续度三个维度，用13项指标对需求/产品想法进行系统化打分评估，判断是否值得投入。

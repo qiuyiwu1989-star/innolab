@@ -1,13 +1,11 @@
 # 老瓶换新装策略（Old Bottle New Wine）
 
-## 元信息
+## Meta
 - ID: GN04
 - Engine: Generation
 - Layer: L3
 - Origin: original
-- 来源：AIIP产品战略会议，邱懿武
-
-一句话定义：已验证品类（老瓶）搭配新文化符号（新装），AI让"生成新装"的成本趋近于零——用别人的模具做自己的内容。
+- Source: AIIP产品战略会议，邱懿武
 
 ---
 
