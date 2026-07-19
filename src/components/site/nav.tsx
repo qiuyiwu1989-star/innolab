@@ -40,6 +40,7 @@ export function SiteNav() {
           <NavLink href="/cases">案例</NavLink>
           <NavLink href="/demo">Demo</NavLink>
           <NavLink href="/about">关于</NavLink>
+          <NavLink href="/mcp-guide">MCP</NavLink>
           <button
             type="button"
             onClick={() =>
@@ -103,6 +104,9 @@ export function SiteNav() {
             </MobileLink>
             <MobileLink href="/about" onClick={() => setOpen(false)}>
               关于
+            </MobileLink>
+            <MobileLink href="/mcp-guide" onClick={() => setOpen(false)}>
+              MCP · 对接
             </MobileLink>
             <Link
               href="/about"
