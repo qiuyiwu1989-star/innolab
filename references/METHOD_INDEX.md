@@ -1,11 +1,11 @@
 # 邱懿武的创新实验室 · 方法论索引 v3.4
 
-> 83个方法论 · 六大引擎 · 五层认知深度
+> 86个方法论 · 六大引擎 · 五层认知深度
 > 更新日期：2026-07-19
 
 ---
 
-## 🧠 认知引擎 Cognition Engine（20个）
+## 🧠 认知引擎 Cognition Engine（21个）
 
 定义：决定"你怎么看问题"——看清世界的底层操作系统。
 
@@ -31,10 +31,11 @@
 | CG18 | Affinity Diagram | 亲和图 | L3 | classic | 亲和图是一种将大量零散观察结果、想法或数据通过"沉默分组法"进行自下而上分类整理的工具。团队成员在不讨论的情况下独立将相似的卡片归为一组，再集体为每组命名，从而从杂乱信息中自然浮现出模式和结构。 | cognition/affinity-diagram.md |
 | CG19 | Jevons Paradox Opportunity Reasoning | 杰文斯悖论推理法 | L5 | original | 当智能变得越便宜越普及，什么需求会被激发得越多？——用"结论是被动的"原理推理AI时代的机会，并用"船vs木桩"检验具体产品的存活概率。 | cognition/jevons-paradox-reasoning.md |
 | CG20 | 5 Whys | 五问根因法 | L2 | classic | 五问根因法通过连续追问「为什么」5 次，把表面症状剥开，直达根本原因——避免用解决表象的方案来处理根因问题，导致问题反复出现。 | cognition/five-whys.md |
+| CG21 | First Principles Thinking | 第一性原理思维 | L5 | classic | 抛开"别人怎么做""一向都这么办"的类比与惯例，把一个问题拆到不能再拆的基本事实（公理），再从这些底层事实重新推导出方案——问的不是"和现有方案比怎么改进"，而是"如果从零开始、只认最底层的物理与事实，这件事本该是什么样"。 | cognition/first-principles-thinking.md |
 
 ---
 
-## 🎯 战略引擎 Strategy Engine（20个）
+## 🎯 战略引擎 Strategy Engine（21个）
 
 定义：决定"做什么方向"——选择战场、定义游戏规则。
 
@@ -60,6 +61,7 @@
 | ST18 | Causal Loop Analysis | 系统因果回路分析 | L4 | adapted | 因果回路分析是把一个系统里的关键要素画成连接图，识别正反馈（放大）和负反馈（稳定）循环，从而理解系统行为的方法。 | strategy/causal-loop-analysis.md |
 | ST19 | Theory of Constraints | 约束理论 | L3 | classic | 约束理论（TOC）认为任何系统的产出都由「最薄弱的一个环节」决定，持续改进应聚焦于识别和消除当前约束，而非全面优化。 | strategy/theory-of-constraints.md |
 | ST20 | Platform Business Model | 平台商业模式 | L3 | adapted | 平台商业模式通过构建「双边或多边市场」，让不同用户群体（生产者与消费者）在平台上直接互动创造价值——平台的核心不是自己生产产品，而是设计好规则、吸引两边入场、让网络效应自我放大。 | strategy/platform-business-model.md |
+| ST21 | Pricing Strategy | 定价战略 | L4 | classic | 定价不是给成本加个数字，而是回答"这东西对客户到底值多少钱"——用价值定价、支付意愿、价格锚定、分层套餐与价格敏感度测试，找到那个既能最大化你捕获的价值、又让客户觉得"买得值"的价格。 | strategy/pricing-strategy.md |
 
 ---
 
@@ -84,7 +86,7 @@
 
 ---
 
-## ⚖️ 决策引擎 Decision Engine（10个）
+## ⚖️ 决策引擎 Decision Engine（11个）
 
 定义：决定"选哪个"——在多方案中评估、筛选最优。
 
@@ -100,6 +102,7 @@
 | DC08 | Negotiation Preparation | 谈判准备框架 | L3 | adapted | 按"明确三层目标→找出 BATNA→分析对方→设计让步阶梯→准备话术"五步做足谈判前准备，用准备拿到想要的结果而非现场争赢。 | decision/negotiation-prep.md |
 | DC09 | Nonviolent Communication | 非暴力沟通框架 | L3 | adapted | 用"观察→感受→需要→请求"四步表达，把指责变成表达、把对抗变成合作，化解冲突并让对方听得进去。 | decision/nonviolent-communication.md |
 | DC10 | Scenario Planning | 情景规划 | L3 | classic | 情景规划不是预测「最可能的未来」，而是构建「多个可能的未来」——帮助决策者在高度不确定的环境下，把战略设计成「无论哪种情景成真都能活下去，某种情景成真时能跑赢」的组合。 | decision/scenario-planning.md |
+| DC11 | Probabilistic Decision / Expected Value | 概率决策法 | L4 | classic | 当一个决策的结果不确定、只能用概率描述时，用**期望值 EV = Σ(概率 × 收益)**把每条分支的"赢面×赢多少"加总成一个可比数字，用决策树把选项摊开算清——但当下行是"不可承受/毁灭性"时，就不能只看期望值，要看方差和最坏情况。这是补库里唯一处理概率与不确定性的决策方法，其余决策法都是"确定性加权打分"。 | decision/probabilistic-decision.md |
 
 ---
 
@@ -144,4 +147,4 @@
 
 ## 引擎分布
 
-认知引擎 20 · 战略引擎 20 · 生成引擎 12 · 决策引擎 10 · 产品引擎 15 · 进化引擎 6 ＝ 共 **83** 个
+认知引擎 21 · 战略引擎 21 · 生成引擎 12 · 决策引擎 11 · 产品引擎 15 · 进化引擎 6 ＝ 共 **86** 个
