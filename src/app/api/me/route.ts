@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { deriveUserKey, readRegistrations } from "@/lib/registration-log";
+import { readRegistrations } from "@/lib/registration-log";
 import {
   readConversationsByUserKey,
   getMemoryForUser,
@@ -39,15 +39,17 @@ export async function POST(request: Request) {
   // 校验会话 token → 拿到已认证用户
   const sb = createClient(SB_URL, SB_ANON);
   const { data, error } = await sb.auth.getUser(token);
-  const email = data?.user?.email;
-  if (error || !email) {
+  const uid = data?.user?.id;
+  const email = data?.user?.email ?? "";
+  if (error || !uid) {
     return NextResponse.json(
       { ok: false, error: "会话无效或已过期，请重新登录。" },
       { status: 401 },
     );
   }
 
-  const userKey = deriveUserKey(email);
+  // 按账号本身（auth uid）归属，不用邮箱——不做邮箱验证，避免填别人邮箱串号
+  const userKey = `auth:${uid}`;
   const [history, regs, memory] = await Promise.all([
     readConversationsByUserKey(userKey),
     readRegistrations(),

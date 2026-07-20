@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShieldCheck, X, ArrowRight } from "lucide-react";
 import { LiveRunner } from "@/app/demo/live-runner";
 import type { MethodMeta } from "@/components/demo/method-chain-viz";
+import { getSupabaseBrowser } from "@/lib/supabase-browser";
 
 interface CaseSnippet {
   id: string;
@@ -66,7 +67,21 @@ export function AccessGate({ methodsIndex, casesIndex }: AccessGateProps) {
     setReady(true);
   }, []);
 
-  // 有 userKey（已登记 / VIP 登记过）→ 拉取该用户「记忆」
+  // 用账号登录了 → 用 auth:uid 作为推演归属（覆盖留资 key，让推演记进「我的」）
+  useEffect(() => {
+    const sb = getSupabaseBrowser();
+    if (!sb) return;
+    let alive = true;
+    sb.auth.getSession().then(({ data }) => {
+      const uid = data.session?.user?.id;
+      if (alive && uid) setUserKey(`auth:${uid}`);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // 有 userKey（已登记 / VIP 登记过 / 已登录）→ 拉取该用户「记忆」
   useEffect(() => {
     const uk = userKey.trim();
     if (!uk) return;
