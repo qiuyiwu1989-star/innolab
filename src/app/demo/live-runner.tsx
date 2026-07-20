@@ -353,9 +353,7 @@ export function LiveRunner({
   /** "深入方法"打开的方法选择面板 */
   const [methodDrillOpen, setMethodDrillOpen] = useState(false);
   /** 推演前的意图澄清（快问快答）状态 */
-  const [clarifyState, setClarifyState] = useState<
-    "idle" | "loading" | "asking"
-  >("idle");
+  const [clarifyState, setClarifyState] = useState<"idle" | "asking">("idle");
   const [clarifyQuestions, setClarifyQuestions] = useState<
     { q: string; options: string[] }[]
   >([]);
@@ -1144,16 +1142,21 @@ ${mdToHtml(output)}
     [phase, activeDomain, pickedFromDomain, currentThread, threadHistory, userContext],
   );
 
-  /** 点「分析」先弹意图澄清（即时预置问题）；答/跳过后再深度推演 */
+  /** 点「分析」先弹意图澄清（即时预置问题）；答/跳过后再深度推演。
+   *  已经写得够详细的问题（≥80 字）不打扰，直接深度推演——澄清只针对简短/含糊的提问。*/
   const startAnalyze = useCallback(
     (text: string) => {
       const t = text.trim();
       if (!t || phase === "streaming") return;
+      if (t.length >= 80) {
+        void submit(t);
+        return;
+      }
       setClarifyAnswers({});
       setClarifyQuestions(CLARIFY_QUESTIONS);
       setClarifyState("asking");
     },
-    [phase],
+    [phase, submit],
   );
 
   /** 澄清答完 → 把「问题 → 所选答案」拼进背景，进深度推演 */
@@ -1363,12 +1366,6 @@ ${mdToHtml(output)}
           </form>
 
           {/* 意图澄清 · 快问快答（点「分析」后先补意图，再深度推演）*/}
-          {clarifyState === "loading" && (
-            <div className="mt-3 flex items-center gap-2 rounded-lg border border-fog-2 bg-soot px-4 py-3 text-sm text-dust">
-              <Sparkles className="size-4 animate-pulse text-volt" />
-              正在想该先问你什么，让分析更准…
-            </div>
-          )}
           {clarifyState === "asking" && (
             <div className="mt-4 rounded-xl border border-volt/40 bg-volt/[0.04] p-5">
               <div className="text-sm font-semibold text-bone">
