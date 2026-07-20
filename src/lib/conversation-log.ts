@@ -293,6 +293,22 @@ export interface UserMemory {
  *   ② 推演时作为上下文注入，让 AI 真的记得他之前在想什么
  * 取最近 2 次推演（含完整判断/落地段）做精华，避免过长 + 串味。
  */
+/** 读某个用户（按 user_key）的历史推演，最新在前。给「我的」页展示。 */
+export async function readConversationsByUserKey(
+  userKey: string,
+): Promise<{ ts: string; domain: string; prompt: string; output: string }[]> {
+  if (!userKey?.trim()) return [];
+  const all = await readRecentConversations(100000);
+  return all
+    .filter((c) => c.user_key === userKey)
+    .map((c) => ({
+      ts: c.ts,
+      domain: c.domain,
+      prompt: c.prompt,
+      output: c.output,
+    }));
+}
+
 export async function getMemoryForUser(userKey: string): Promise<UserMemory> {
   const empty: UserMemory = {
     hasMemory: false,
