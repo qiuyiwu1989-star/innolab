@@ -509,3 +509,74 @@ export async function analyzeToText(
   }
   return { text, usage, methodsUsed: parseMethodsUsed(text) };
 }
+
+/* ───── 意图澄清（推演前的快问快答）───── */
+
+export interface ClarifyQuestion {
+  /** 一个"会改变结论"的关键问题 */
+  q: string;
+  /** 3-4 个可点选的具体选项（最后一个可为"其他/不确定"） */
+  options: string[];
+}
+
+/**
+ * 推演前先生成 2-3 个关键澄清问题（每个配可点选项），让用户快速补全意图。
+ * 快、便宜（低 max_tokens）；解析失败返回空数组（前端据此跳过澄清、直接推演）。
+ */
+export async function clarifyIntent(
+  prompt: string,
+  signal?: AbortSignal,
+): Promise<ClarifyQuestion[]> {
+  const apiKey = process.env.MIMO_API_KEY;
+  const baseURL = process.env.MIMO_BASE_URL ?? DEFAULT_BASE_URL;
+  const model = process.env.MIMO_MODEL ?? DEFAULT_MODEL;
+  if (!apiKey || apiKey === "PASTE_YOUR_KEY_HERE") return [];
+
+  const system = `你是邱懿武本人的战略顾问助理。用户给的商业问题往往信息不足以给出精准判断——真顾问会先问几个关键问题再动手，因为"信息不足的分析毫无价值"。
+你的任务：生成 **正好 2 个"会改变结论"的关键澄清问题**，每个配 **3-4 个具体、互斥的可点选项**，让用户点几下就能补全意图。
+只问真正影响分析方向的（如：所处阶段/规模、核心卡点在哪、目标是什么、已经试过什么、关键数字区间），**绝不查户口式罗列**。选项要具体、贴该问题的常见情况，最后一个可以是"其他 / 说不好"。
+**默认就要生成这 2 个问题——宁可多问也别漏问。只有当用户的问题里已经同时给足了「规模/阶段 + 核心卡点 + 目标」时，才输出 {"questions":[]}。**
+严格只输出 JSON、不要任何解释、不要 markdown 围栏：
+{"questions":[{"q":"问题文本","options":["选项1","选项2","选项3"]}]}`;
+
+  try {
+    const client = new OpenAI({ apiKey, baseURL });
+    const res = await client.chat.completions.create(
+      {
+        model,
+        max_tokens: 500,
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: prompt.slice(0, 2000) },
+        ],
+      },
+      { signal },
+    );
+    const raw = res.choices?.[0]?.message?.content ?? "";
+    // 从可能带围栏的文本里抠出 JSON 对象
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (!m) return [];
+    const parsed = JSON.parse(m[0]) as { questions?: ClarifyQuestion[] };
+    const qs = Array.isArray(parsed.questions) ? parsed.questions : [];
+    return qs
+      .filter(
+        (x) =>
+          x &&
+          typeof x.q === "string" &&
+          x.q.trim() &&
+          Array.isArray(x.options) &&
+          x.options.length >= 2,
+      )
+      .slice(0, 2)
+      .map((x) => ({
+        q: x.q.trim(),
+        options: x.options
+          .map((o) => String(o).trim())
+          .filter(Boolean)
+          .slice(0, 4),
+      }));
+  } catch {
+    return [];
+  }
+}

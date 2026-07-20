@@ -248,6 +248,29 @@ interface CaseSnippet {
   related_methods: string[];
 }
 
+/** 推演前的意图澄清（预置、即时——不走慢的 LLM 调用；点选即补全"会改变结论"的关键维度） */
+const CLARIFY_QUESTIONS: { q: string; options: string[] }[] = [
+  {
+    q: "你们现在的阶段 / 规模？",
+    options: ["刚起步 / 验证期", "有规模、在扩张", "成熟稳定", "说不好"],
+  },
+  {
+    q: "最卡的是哪一环？",
+    options: [
+      "方向 / 定位",
+      "获客 / 增长",
+      "留存 / 续约 / 复购",
+      "产品 / 功能",
+      "定价 / 商业模式",
+      "团队 / 组织",
+    ],
+  },
+  {
+    q: "你这次最想要的？",
+    options: ["判断该不该做", "具体怎么落地", "找出问题根因", "说不好"],
+  },
+];
+
 interface LiveRunnerProps {
   /** Server-side built methods index for method chain visualization */
   methodsIndex?: Record<string, MethodMeta>;
@@ -329,6 +352,16 @@ export function LiveRunner({
   const [expandedMsgIds, setExpandedMsgIds] = useState<Set<string>>(new Set());
   /** "深入方法"打开的方法选择面板 */
   const [methodDrillOpen, setMethodDrillOpen] = useState(false);
+  /** 推演前的意图澄清（快问快答）状态 */
+  const [clarifyState, setClarifyState] = useState<
+    "idle" | "loading" | "asking"
+  >("idle");
+  const [clarifyQuestions, setClarifyQuestions] = useState<
+    { q: string; options: string[] }[]
+  >([]);
+  const [clarifyAnswers, setClarifyAnswers] = useState<Record<number, string>>(
+    {},
+  );
   /** 首屏灵感提示 — 循环展示示例问题 */
   const [exampleIdx, setExampleIdx] = useState(0);
   const [exampleVisible, setExampleVisible] = useState(true);
@@ -1111,6 +1144,32 @@ ${mdToHtml(output)}
     [phase, activeDomain, pickedFromDomain, currentThread, threadHistory, userContext],
   );
 
+  /** 点「分析」先弹意图澄清（即时预置问题）；答/跳过后再深度推演 */
+  const startAnalyze = useCallback(
+    (text: string) => {
+      const t = text.trim();
+      if (!t || phase === "streaming") return;
+      setClarifyAnswers({});
+      setClarifyQuestions(CLARIFY_QUESTIONS);
+      setClarifyState("asking");
+    },
+    [phase],
+  );
+
+  /** 澄清答完 → 把「问题 → 所选答案」拼进背景，进深度推演 */
+  const runWithClarify = useCallback(() => {
+    const pairs = clarifyQuestions
+      .map((cq, qi) =>
+        clarifyAnswers[qi] ? `${cq.q} → ${clarifyAnswers[qi]}` : null,
+      )
+      .filter(Boolean);
+    const base = prompt.trim();
+    const enriched =
+      pairs.length > 0 ? `${base}\n\n【补充背景】\n${pairs.join("\n")}` : base;
+    setClarifyState("idle");
+    void submit(enriched);
+  }, [clarifyQuestions, clarifyAnswers, prompt, submit]);
+
   return (
     <div className="relative">
       {/* —— 输入区（idle 时显示）—— */}
@@ -1225,7 +1284,7 @@ ${mdToHtml(output)}
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              submit(prompt);
+              startAnalyze(prompt);
             }}
           >
             {/* 灵感示例：prompt 为空时显示，淡入淡出切换 */}
@@ -1257,7 +1316,7 @@ ${mdToHtml(output)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                     e.preventDefault();
-                    submit(prompt);
+                    startAnalyze(prompt);
                   }
                 }}
                 placeholder="输入你的商业问题…"
@@ -1302,6 +1361,73 @@ ${mdToHtml(output)}
               </div>
             </div>
           </form>
+
+          {/* 意图澄清 · 快问快答（点「分析」后先补意图，再深度推演）*/}
+          {clarifyState === "loading" && (
+            <div className="mt-3 flex items-center gap-2 rounded-lg border border-fog-2 bg-soot px-4 py-3 text-sm text-dust">
+              <Sparkles className="size-4 animate-pulse text-volt" />
+              正在想该先问你什么，让分析更准…
+            </div>
+          )}
+          {clarifyState === "asking" && (
+            <div className="mt-4 rounded-xl border border-volt/40 bg-volt/[0.04] p-5">
+              <div className="text-sm font-semibold text-bone">
+                先补几个关键信息，分析会准很多
+              </div>
+              <p className="mt-1 text-xs text-dust">
+                点选即可（这题没有合适的就留空，跳过它）
+              </p>
+              <div className="mt-4 space-y-4">
+                {clarifyQuestions.map((cq, qi) => (
+                  <div key={qi}>
+                    <div className="text-sm text-ash">{cq.q}</div>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {cq.options.map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() =>
+                            setClarifyAnswers((a) => ({
+                              ...a,
+                              [qi]: a[qi] === opt ? "" : opt,
+                            }))
+                          }
+                          className={cn(
+                            "rounded-md border px-2.5 py-1 text-xs transition",
+                            clarifyAnswers[qi] === opt
+                              ? "border-volt bg-volt/15 text-bone"
+                              : "border-fog-2 text-ash hover:border-volt/50 hover:text-bone",
+                          )}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={runWithClarify}
+                  className="inline-flex items-center gap-2 rounded-md bg-volt px-4 py-2 text-xs font-semibold text-ink transition hover:brightness-110"
+                >
+                  开始深度推演
+                  <ArrowRight className="size-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClarifyState("idle");
+                    void submit(prompt);
+                  }}
+                  className="text-xs text-dust transition hover:text-ash"
+                >
+                  跳过，直接分析
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* 方法探索地图 — 点击"已探索 N 个方法"后展开 */}
           {showMethodMap && seenMethodIds.size > 0 && (
