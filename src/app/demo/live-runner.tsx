@@ -783,7 +783,11 @@ export function LiveRunner({
   ul { margin:8px 0; padding-left:22px; }
   li { margin:5px 0; font-size:14px; }
   strong { color:#000; }
-  .rpt-foot { margin-top:40px; padding-top:16px; border-top:1px solid #eee; font-size:12px; color:#999; }
+  .rpt-foot { margin-top:24px; padding-top:16px; border-top:1px solid #eee; font-size:12px; color:#999; }
+  .rpt-cta { margin-top:40px; background:#f6f7f3; border:1px solid #5b8a00; border-radius:10px; padding:18px 20px; }
+  .rpt-cta .t { font-size:15px; font-weight:700; color:#1a1a1a; }
+  .rpt-cta .d { font-size:13px; color:#444; margin-top:6px; line-height:1.7; }
+  .rpt-cta .a { font-size:14px; font-weight:700; color:#5b8a00; margin-top:10px; }
   @media print { body { padding:0; } button { display:none; } }
 </style></head><body>
 <div class="rpt-head">
@@ -793,7 +797,12 @@ export function LiveRunner({
 </div>
 <div class="rpt-q"><strong>你的问题：</strong>${esc(submittedPrompt)}</div>
 ${mdToHtml(output)}
-<div class="rpt-foot">本报告由 InnoLab（innolab.cc）基于邱懿武的 86 个战略创新方法生成。<br>如需邱懿武本人就此议题做深度咨询，请通过 innolab.cc/about 联系。</div>
+<div class="rpt-cta">
+  <div class="t">这份分析，是起点，不是终点。</div>
+  <div class="d">以上是 AI 用邱懿武的方法体系拆出的判断。想把它真正推到能落地——有人陪你盯住取舍、把最关键那一步想透——正是邱懿武 1:1 战略咨询做的事。</div>
+  <div class="a">预约 1:1 战略咨询 → innolab.cc/about</div>
+</div>
+<div class="rpt-foot">本报告由 InnoLab（innolab.cc）基于邱懿武的 86 个战略创新方法生成，仅供参考。</div>
 </body></html>`);
     win.document.close();
     setTimeout(() => win.print(), 400);
@@ -2020,12 +2029,12 @@ ${mdToHtml(output)}
                     <h3 className="display mt-2 text-2xl text-bone sm:text-3xl">
                       {fromReplay
                         ? "这次是从历史调出来的"
-                        : "再问一个？或者让邱懿武亲自帮你。"}
+                        : "这份分析，是起点。"}
                     </h3>
                     <p className="mt-3 text-sm text-ash">
                       {fromReplay
                         ? "没有重新调用 AI，没扣配额。"
-                        : `今天还剩 ${remaining.ip ?? "?"} 次。当问题足够重要、值得一个人陪你想透，邱懿武提供 1:1 战略咨询。`}
+                        : "你刚看到的，是 AI 用邱懿武的方法体系拆出来的判断。想把它真正推到能落地——有人陪你盯住取舍、把最关键那一步想透——正是邱懿武 1:1 战略咨询做的事。"}
                     </p>
                   </div>
                   {!fromReplay && (
@@ -2033,7 +2042,7 @@ ${mdToHtml(output)}
                       href="/about"
                       className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-volt px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 sm:self-center"
                     >
-                      联系邱懿武
+                      约邱懿武 1:1
                       <ArrowRight className="size-4" />
                     </Link>
                   )}
