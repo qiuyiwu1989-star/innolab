@@ -25,7 +25,6 @@ import {
   appendToHistory,
   readHistory,
   removeFromHistory,
-  buildShareUrl,
   type HistoryItem,
 } from "@/lib/demo-history";
 import {
@@ -840,16 +839,31 @@ ${mdToHtml(output)}
   }, [submittedPrompt, output]);
 
   /** 复制分享链接 */
+  /** 分享这份「分析结果」：存成公开报告 → 复制 /r/<id> 链接（别人打开看到完整分析）。 */
   const copyShareLink = useCallback(async () => {
+    if (!submittedPrompt.trim() || !output.trim()) return;
     try {
-      const url = buildShareUrl(submittedPrompt, activeDomain);
-      await navigator.clipboard.writeText(url);
-      setCopied("link");
-      setTimeout(() => setCopied(null), 2200);
+      const res = await fetch("/api/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: submittedPrompt,
+          output,
+          domain: activeDomain,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data.url) {
+        await navigator.clipboard.writeText(
+          `${window.location.origin}${data.url}`,
+        );
+        setCopied("link");
+        setTimeout(() => setCopied(null), 2200);
+      }
     } catch {
       /* noop */
     }
-  }, [submittedPrompt, activeDomain]);
+  }, [submittedPrompt, output, activeDomain]);
 
   /** 提交反馈 */
   const sendFeedback = useCallback(
@@ -1940,7 +1954,7 @@ ${mdToHtml(output)}
                         <Share2 className="size-3" />
                       )}
                       <span>
-                        {copied === "link" ? "已复制" : "分享给朋友"}
+                        {copied === "link" ? "已复制链接" : "分享这份分析"}
                       </span>
                     </button>
                     <button
