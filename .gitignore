@@ -52,3 +52,9 @@ rate-limit-state.json
 data/
 
 # 部署密码不进 git（deploy 脚本从环境变量读）
+
+# skill 构建产物（发布走 GitHub Release 附件）
+dist/
+
+# 谱里的私密部分不进 git（仓库是公开的）
+谱/私密/
