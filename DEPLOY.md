@@ -1,5 +1,8 @@
 # Deploy
 
+> ⚠️ **本文档停留在 2026 年 5–6 月，多处已过时**（当时 74 方法 / 10 案例 / 旧域名，现为 86 方法 / 76 案例 / innolab.cc）。
+> **最新状态以 `CLAUDE.md` 和 `谱/进度.md` 为准。**
+
 > 当前**已经上线**在 <https://innolab.qiuyiwu.com>（自建 VPS）。  
 > 这份文档说明：① 增量更新 ② 服务器从零开始重装 ③ 备选 Vercel 路径
 
@@ -8,7 +11,7 @@
 push 完代码后：
 
 ```bash
-ssh ubuntu@43.159.171.3 'bash ~/innolab/scripts/deploy-update.sh'
+ssh ubuntu@<服务器 IP，见密码管理器> 'bash ~/innolab/scripts/deploy-update.sh'
 ```
 
 脚本会：
@@ -166,7 +169,7 @@ INNOLAB_ADMIN_TOKEN
 ### 用户报 502
 
 ```bash
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 pm2 status innolab          # 看进程是不是挂了
 pm2 logs innolab --lines 50 # 看具体错误
 pm2 restart innolab         # 重启
@@ -175,7 +178,7 @@ pm2 restart innolab         # 重启
 ### /demo 返回"未配置 MIMO_API_KEY"
 
 ```bash
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 cat ~/innolab/.env.local | grep MIMO_API_KEY
 # 没有就加，然后 pm2 reload innolab
 ```
@@ -192,7 +195,7 @@ sudo systemctl status certbot.timer
 
 ```bash
 # 临时把全站配额加大
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 sed -i 's/INNOLAB_DAILY_QUOTA_GLOBAL=50/INNOLAB_DAILY_QUOTA_GLOBAL=200/' ~/innolab/.env.local
 pm2 reload innolab
 ```
@@ -204,7 +207,7 @@ pm2 reload innolab
 ### 看实时流量
 
 ```bash
-ssh ubuntu@43.159.171.3 'pm2 logs innolab | grep analyze.request'
+ssh ubuntu@<服务器 IP，见密码管理器> 'pm2 logs innolab | grep analyze.request'
 ```
 
 ### 网页看汇总

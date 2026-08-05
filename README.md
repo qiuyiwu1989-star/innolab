@@ -1,5 +1,8 @@
 # InnoLab — AI 创新战略咨询师
 
+> ⚠️ **本文档停留在 2026 年 5–6 月，多处已过时**（当时 74 方法 / 10 案例 / 旧域名，现为 86 方法 / 76 案例 / innolab.cc）。
+> **最新状态以 `CLAUDE.md` 和 `谱/进度.md` 为准。**
+
 > 用 74 个方法论分析你的真实商业问题。  
 > 从认知到产品化，一次完整的战略推演。
 
@@ -50,7 +53,7 @@ InnoLab 不是方法论清单，是一台**编排引擎** —— 把模糊的商
 ## 生产部署架构
 
 ```
-腾讯云香港 43.159.171.3 · Ubuntu 24.04
+腾讯云香港 <服务器 IP，见密码管理器> · Ubuntu 24.04
 ├─ nvm + Node 22 + npm 10 + pm2 7
 ├─ pm2 进程 "innolab" :3010
 ├─ nginx 反代 :443 → :3010
@@ -77,7 +80,7 @@ npm run dev
 ### 增量更新（已上线后）
 
 ```bash
-ssh ubuntu@43.159.171.3 'bash ~/innolab/scripts/deploy-update.sh'
+ssh ubuntu@<服务器 IP，见密码管理器> 'bash ~/innolab/scripts/deploy-update.sh'
 ```
 
 脚本会：git pull → npm ci → npm run build → pm2 reload → smoke test。
@@ -128,7 +131,7 @@ cases/<domain>/<slug>.json + 登记到 cases/case-index.json
 
 # 推到生产
 git add . && git commit -m "feat: add ..." && git push
-ssh ubuntu@43.159.171.3 'bash ~/innolab/scripts/deploy-update.sh'
+ssh ubuntu@<服务器 IP，见密码管理器> 'bash ~/innolab/scripts/deploy-update.sh'
 ```
 
 ## 项目状态

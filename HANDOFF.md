@@ -1,8 +1,11 @@
 # InnoLab 交接文档
 
+> ⚠️ **本文档停留在 2026 年 5–6 月，多处已过时**（当时 74 方法 / 10 案例 / 旧域名，现为 86 方法 / 76 案例 / innolab.cc）。
+> **最新状态以 `CLAUDE.md` 和 `谱/进度.md` 为准。**
+
 > **生产 URL**：<https://innolab.qiuyiwu.com> ✅ 已上线  
 > **GitHub**：<https://github.com/qiuyiwu1989-star/innolab>  
-> **服务器**：腾讯云香港 43.159.171.3（Ubuntu 24.04，ubuntu 用户）
+> **服务器**：腾讯云香港 <服务器 IP，见密码管理器>（Ubuntu 24.04，ubuntu 用户）
 
 ## 项目状态（一句话）
 
@@ -23,7 +26,7 @@ InnoLab 已经是一个**完整运行的产品**——74 方法 + 10 案例 + �
 如果某项有问题：
 
 - 截图发我
-- 或者 `ssh ubuntu@43.159.171.3 'pm2 logs innolab --lines 50'` 看日志
+- 或者 `ssh ubuntu@<服务器 IP，见密码管理器> 'pm2 logs innolab --lines 50'` 看日志
 
 ## 已交付清单（v0.1 → v0.9）
 
@@ -66,7 +69,7 @@ InnoLab 已经是一个**完整运行的产品**——74 方法 + 10 案例 + �
 
 ```bash
 # SSH
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 
 # 看 InnoLab 状态
 pm2 status innolab
@@ -99,7 +102,7 @@ INNOLAB_DAILY_QUOTA_PER_IP=10    # 单 IP 每日（默认 5）
 ## /admin/stats token 配置
 
 ```bash
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 echo 'INNOLAB_ADMIN_TOKEN=随机字符串' >> ~/innolab/.env.local
 pm2 reload innolab
 # 访问：https://innolab.qiuyiwu.com/admin/stats?token=随机字符串

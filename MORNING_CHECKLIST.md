@@ -1,5 +1,8 @@
 # 早晨验收清单
 
+> ⚠️ **本文档停留在 2026 年 5–6 月，多处已过时**（当时 74 方法 / 10 案例 / 旧域名，现为 86 方法 / 76 案例 / innolab.cc）。
+> **最新状态以 `CLAUDE.md` 和 `谱/进度.md` 为准。**
+
 > 我在你睡觉期间打磨完了。这份文档是你 5 分钟验收用的。
 
 ## 🟢 一句话：可以对外发了
@@ -113,7 +116,7 @@ InnoLab 已经是一个**完整、上线、用户能直接用**的产品。
 这个要先配 token。SSH 上去：
 
 ```bash
-ssh ubuntu@43.159.171.3
+ssh ubuntu@<服务器 IP，见密码管理器>
 echo 'INNOLAB_ADMIN_TOKEN=随便填' >> ~/innolab/.env.local
 pm2 reload innolab
 exit
@@ -169,7 +172,7 @@ https://innolab.qiuyiwu.com/admin/stats?token=随便填
 
 **scripts/deploy-update.sh**：以后你 push 完代码，一行命令同步生产：
 ```bash
-ssh ubuntu@43.159.171.3 'bash ~/innolab/scripts/deploy-update.sh'
+ssh ubuntu@<服务器 IP，见密码管理器> 'bash ~/innolab/scripts/deploy-update.sh'
 ```
 
 ---

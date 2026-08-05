@@ -1,5 +1,8 @@
 # InnoLab 使用说明书
 
+> ⚠️ **本文档停留在 2026 年 5–6 月，多处已过时**（当时 74 方法 / 10 案例 / 旧域名，现为 86 方法 / 76 案例 / innolab.cc）。
+> **最新状态以 `CLAUDE.md` 和 `谱/进度.md` 为准。**
+
 > **一句话**：InnoLab 是邱懿武战略咨询的「授权专属推演工具」。
 > 公开内容(方法库/案例库)谁都能看；真正的 AI 推演在「门内」，需暗号或 VIP 链接。
 > 网址：**https://innolab.cc**
@@ -99,7 +102,7 @@
 
 ```bash
 # SSH 登录
-ssh ubuntu@43.159.171.3        # 密码 <服务器密码:见密码管理器,勿写入仓库>
+ssh ubuntu@<服务器 IP，见密码管理器>        # 密码 <服务器密码:见密码管理器,勿写入仓库>
 nano /home/ubuntu/innolab/.env.local
 ```
 
@@ -153,7 +156,7 @@ git push https://<你的GitHubToken>@github.com/qiuyiwu1989-star/innolab.git mas
 | 通用暗号 | `innolab.cc` |
 | 利丰 VIP | https://innolab.cc/c/lifung-7h3q |
 | 飞轮看板 | https://innolab.cc/admin/conversations?token=innolab-admin |
-| 服务器 | ubuntu@43.159.171.3（pm2 进程 `innolab`，端口 3010） |
+| 服务器 | ubuntu@<服务器 IP，见密码管理器>（pm2 进程 `innolab`，端口 3010） |
 | 部署 | `INNOLAB_SSH_PASS='密码' python3 deploy.py` |
 | AI 引擎 | 小米 MiMo `mimo-v2.5-pro`（OpenAI 兼容） |
 | 数据落盘 | 服务器 `data/`：conversations / registrations / feedback / candidate-cases（不进 git） |
