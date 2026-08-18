@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getAllMethods } from "@/lib/methods";
+import { getAllMethodsLite } from "@/lib/methods";
 import { MethodsExplorer } from "./methods-explorer";
 
 export const metadata: Metadata = {
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function MethodsPage() {
-  const methods = getAllMethods();
+  // 列表不显示正文，只传精简字段——传全量会把 321KB markdown 序列化进页面
+  const methods = getAllMethodsLite();
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20">
       <header className="mb-12">

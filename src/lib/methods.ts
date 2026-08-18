@@ -211,3 +211,17 @@ export function getMethodGuide(
 export function getMethodsByEngine(engine: EngineKey): Method[] {
   return getAllMethods().filter((m) => m.engine === engine);
 }
+
+/**
+ * 列表页专用：去掉 raw 的方法卡。
+ *
+ * 为什么要有它：Method.raw 是整张卡的 markdown 原文，86 张加起来 321KB。
+ * 列表页把 getAllMethods() 直接传给客户端组件时，这 321KB 会被序列化进页面，
+ * 而列表根本不显示正文 —— /methods 曾因此 gzip 后仍有 361KB、加载 12 秒。
+ * 凡是数据要跨到客户端组件的地方，用这个，别用 getAllMethods()。
+ */
+export type MethodLite = Omit<Method, "raw">;
+
+export function getAllMethodsLite(): MethodLite[] {
+  return getAllMethods().map(({ raw: _raw, ...rest }) => rest);
+}

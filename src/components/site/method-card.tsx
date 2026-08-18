@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Method } from "@/lib/methods";
+import type { MethodLite } from "@/lib/methods";
 import { engines } from "@/lib/engines";
 import { Badge } from "@/components/ui/badge";
 import { getMethodViz } from "@/lib/method-viz";
 import { MethodViz } from "@/components/site/method-viz";
 
-export function MethodCard({ method }: { method: Method }) {
+export function MethodCard({ method }: { method: MethodLite }) {
   const engine = engines.find((e) => e.key === method.engine);
   const viz = getMethodViz(method.slug);
   return (

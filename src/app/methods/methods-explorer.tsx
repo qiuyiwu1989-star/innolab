@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
-import type { Method } from "@/lib/methods";
+import type { MethodLite } from "@/lib/methods";
 import { engines, layers, type EngineKey } from "@/lib/engines";
 import { MethodCard } from "@/components/site/method-card";
 import { cn } from "@/lib/utils";
 
 type LayerKey = (typeof layers)[number]["id"];
 
-export function MethodsExplorer({ methods }: { methods: Method[] }) {
+export function MethodsExplorer({ methods }: { methods: MethodLite[] }) {
   const [engine, setEngine] = useState<EngineKey | "all">("all");
   const [layer, setLayer] = useState<LayerKey | "all">("all");
   const [q, setQ] = useState("");

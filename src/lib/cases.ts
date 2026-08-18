@@ -127,3 +127,29 @@ export function getAllDomains(): string[] {
   }
   return Array.from(set).sort();
 }
+
+/**
+ * 列表页专用：analysis_flow 只保留 key_judgment。
+ *
+ * 为什么要有它：完整的 analysis_flow 是整份推演过程，76 个案例加起来 247KB。
+ * 列表页只显示 key_judgment 一行，把全量传给客户端组件时那 247KB 会被序列化进页面 ——
+ * /cases 曾因此 gzip 后仍有 344KB、加载 19 秒。数据要跨到客户端组件时用这个。
+ */
+// 注意：不能写成 Omit<CaseDetail, "analysis_flow">。CaseDetail 带索引签名
+// [key: string]: unknown，Omit 作用在这种类型上会把具名属性全塌陷成 unknown
+// （domain / tags 会变成 {}）。所以从没有索引签名的 CaseIndexEntry 起手。
+export type CaseListItem = CaseIndexEntry & {
+  analysis_flow?: { key_judgment?: string };
+};
+
+export function getAllCasesLite(): CaseListItem[] {
+  return getAllCases().map((c) => {
+    const { analysis_flow, ...rest } = c;
+    return {
+      ...(rest as CaseIndexEntry),
+      analysis_flow: analysis_flow
+        ? { key_judgment: analysis_flow.key_judgment }
+        : undefined,
+    };
+  });
+}

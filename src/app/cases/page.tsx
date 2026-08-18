@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getAllCases, getAllDomains } from "@/lib/cases";
+import { getAllCasesLite, getAllDomains } from "@/lib/cases";
 import { CasesExplorer } from "./cases-explorer";
 
 export const metadata: Metadata = {
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function CasesPage() {
-  const cases = getAllCases();
+  // 列表只显示 key_judgment 一行，传全量 analysis_flow 会把 247KB 序列化进页面
+  const cases = getAllCasesLite();
   const domains = getAllDomains();
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20">

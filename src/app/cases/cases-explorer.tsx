@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, X, ArrowUpRight } from "lucide-react";
-import type { CaseDetail } from "@/lib/cases";
+import type { CaseListItem } from "@/lib/cases";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export function CasesExplorer({
   cases,
   domains,
 }: {
-  cases: CaseDetail[];
+  cases: CaseListItem[];
   domains: string[];
 }) {
   const [domain, setDomain] = useState<string | "all">("all");
@@ -152,7 +152,7 @@ function DomainChip({
   );
 }
 
-function CaseCard({ c }: { c: CaseDetail }) {
+function CaseCard({ c }: { c: CaseListItem }) {
   const hasDetail = c.file !== null;
   const keyJudgment = c.analysis_flow?.key_judgment;
   const body = (
